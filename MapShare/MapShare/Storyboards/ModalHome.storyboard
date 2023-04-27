@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2HZ-IP-dXP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,18 +18,50 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fQM-ar-rcV">
-                                <rect key="frame" x="127" y="103" width="140" height="35"/>
+                                <rect key="frame" x="107" y="79" width="179" height="35"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="New MapShare"/>
+                                <connections>
+                                    <action selector="newMSButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Vl3-D3-OIV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRr-hA-gzh">
+                                <rect key="frame" x="346" y="79" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="MGV-o7-iJT"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="secondaryLabelColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="xmark" catalog="system"/>
+                                <connections>
+                                    <action selector="xMarkButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="bgy-pS-CaJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7T3-DX-pQn">
+                                <rect key="frame" x="39.333333333333343" y="154" width="314.33333333333326" height="50"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="u6h-IK-QFy"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="Add Contacts" imagePadding="10">
+                                    <imageReference key="image" image="person.2.fill" catalog="system" symbolScale="large"/>
+                                </buttonConfiguration>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="fQM-ar-rcV" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="Sax-NL-KS6"/>
+                            <constraint firstItem="7T3-DX-pQn" firstAttribute="top" secondItem="fQM-ar-rcV" secondAttribute="bottom" constant="40" id="BAg-46-nso"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="hRr-hA-gzh" secondAttribute="trailing" constant="12" id="Bff-dy-tFi"/>
+                            <constraint firstItem="fQM-ar-rcV" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="Sax-NL-KS6"/>
+                            <constraint firstItem="hRr-hA-gzh" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="WSd-Fu-TaH"/>
                             <constraint firstItem="fQM-ar-rcV" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="YyH-ke-7kY"/>
+                            <constraint firstItem="7T3-DX-pQn" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="bTl-Qb-gf5"/>
+                            <constraint firstItem="7T3-DX-pQn" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.8" id="fK1-EB-nfR"/>
+                            <constraint firstItem="hRr-hA-gzh" firstAttribute="leading" relation="lessThanOrEqual" secondItem="fQM-ar-rcV" secondAttribute="trailing" constant="60" id="ts3-Vn-xLP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OQn-bA-eC3"/>
@@ -37,26 +70,16 @@
             </objects>
             <point key="canvasLocation" x="1066.4122137404579" y="24.647887323943664"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="oRI-hk-n1d">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2HZ-IP-dXP" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZYD-pn-3lP">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="BRt-dR-8TR"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="c8L-Vi-yfG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="139.69465648854961" y="24.647887323943664"/>
-        </scene>
     </scenes>
     <resources>
+        <image name="person.2.fill" catalog="system" width="128" height="81"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
