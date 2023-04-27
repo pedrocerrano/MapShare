@@ -10,6 +10,8 @@ import UIKit
 class ModalHomeViewController: UIViewController {
     
     //MARK: - OUTLETS
+    @IBOutlet weak var newMSButton: UIButton!
+    @IBOutlet weak var xMarkButton: UIButton!
     
     
     //MARK: - PROPERTIES
@@ -38,6 +40,11 @@ class ModalHomeViewController: UIViewController {
         }
     }
     
+    func configureXButton() {
+        if sheetPresentationController.selectedDetentIdentifier == sheetPresentationController.detents[0].identifier {
+            xMarkButton.isHidden = true
+        }
+    }
     
     
     //MARK: - FUNCTIONS
@@ -48,22 +55,6 @@ class ModalHomeViewController: UIViewController {
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
     }
     
-    
-    //    func buildDetent(screenHeight: CGFloat) -> [UISheetPresentationController.Detent] {
-    //        let bottomDetent = UISheetPresentationController.Detent.custom { context in
-    //            screenHeight * Constants.Detents.bottomDetentMultipler
-    //        }
-    //
-    //        let middleDetent = UISheetPresentationController.Detent.custom { context in
-    //            screenHeight * Constants.Detents.middleDetentMultiplier
-    //        }
-    //
-    //        let topDetent = UISheetPresentationController.Detent.custom { context in
-    //            screenHeight * Constants.Detents.topDetentMultiplier
-    //        }
-    //
-    //        return [bottomDetent, middleDetent, topDetent]
-    //    }
     
     /*
      // MARK: - Navigation
