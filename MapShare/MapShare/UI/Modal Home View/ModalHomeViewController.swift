@@ -18,11 +18,13 @@ class ModalHomeViewController: UIViewController {
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
-    
+
+    var modalHomeViewModel: ModalHomeViewModel!
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        modalHomeViewModel = ModalHomeViewModel()
         configureSheetPresentationController()
     }
     
@@ -40,10 +42,8 @@ class ModalHomeViewController: UIViewController {
         }
     }
     
-    func configureXButton() {
-        if sheetPresentationController.selectedDetentIdentifier == sheetPresentationController.detents[0].identifier {
-            xMarkButton.isHidden = true
-        }
+    @IBAction func addContactsButtonTapped(_ sender: Any) {
+        modalHomeViewModel.createNewMapShareSession()
     }
     
     
@@ -56,11 +56,13 @@ class ModalHomeViewController: UIViewController {
     }
     
     
-    /*
      // MARK: - Navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     
+         if segue.identifier == "toAddContactsVC" {
+             guard let destinationVC = segue.destination as? AddContactsViewController,
+                   let session = modalHomeViewModel.session else { return }
+             destinationVC.addContactsViewModel = AddContactsViewModel(session: session, delegate: destinationVC.self)
+         }
      }
-     */
     
 } //: CLASS

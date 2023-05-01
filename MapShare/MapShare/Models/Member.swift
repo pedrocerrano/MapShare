@@ -8,7 +8,8 @@
 import CoreLocation
 
 struct Member {
-    let name: String
+    let firstName: String
+    let lastName: String
     let isOrganizer: Bool
     var isActive: Bool
     var currentLocation: CLLocationCoordinate2D
