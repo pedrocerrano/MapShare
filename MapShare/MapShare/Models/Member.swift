@@ -8,6 +8,7 @@
 import CoreLocation
 
 struct Member {
+    let memberUUID: String
     let firstName: String
     let lastName: String
     let isOrganizer: Bool
