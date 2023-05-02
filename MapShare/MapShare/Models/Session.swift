@@ -8,9 +8,15 @@
 import CoreLocation
 
 struct Session {
-    let sessionName: String
-    let sessionUUID: String
+    var sessionName: String
+    var sessionUUID: String
     var members: [Member]
-    var destination: MSDestination
+    var destination: MSDestination?
     var isActive: Bool
+}
+
+extension Session: Equatable {
+    static func == (lhs: Session, rhs: Session) -> Bool {
+        return lhs.sessionUUID == rhs.sessionUUID
+    }
 }
