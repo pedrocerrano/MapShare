@@ -57,3 +57,14 @@ class ModalHomeViewController: UIViewController {
      }
     
 } //: CLASS
+
+
+extension ModalHomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3 #warning("Update this value once the model has been incorporated")
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        <#code#>
+    }
+} 

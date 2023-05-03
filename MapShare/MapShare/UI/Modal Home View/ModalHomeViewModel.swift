@@ -11,24 +11,17 @@ class ModalHomeViewModel {
     
     //MARK: - PROPERTIES
     var session: Session?
+    var organizer: Member?
     
-    init(session: Session? = nil) {
-        self.session = session
+    init(session: Session? = nil, organizer: Member? = nil) {
+        self.session   = session
+        self.organizer = organizer
     }
     
     
     //MARK: - FUNCTIONS
-    func createNewMapShareSession() {
-        let name = "Untitled MapShare"
+    func createNewMapShareSession(sessionName: String, organizerName: String ) {
         let uuid = UUID().uuidString
-        let newSession = Session(sessionName: name, sessionUUID: uuid, members: [], isActive: false)
-        session = newSession
+        let newSession = Session(sessionName: sessionName, sessionUUID: uuid, members: [], isActive: true)
     }
-    
-//    func createNewMapShareSession(session: Session) {
-//        let name = "Untitled MapShare"
-//        let uuid = UUID().uuidString
-//        let newSession = Session(sessionName: name, sessionUUID: uuid, members: session.members, isActive: false)
-//        session = newSession
-//    }
 }

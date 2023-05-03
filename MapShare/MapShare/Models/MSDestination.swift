@@ -8,6 +8,22 @@
 import CoreLocation
 
 struct MSDestination {
+    
+    enum MSDestinationKey {
+        static let name                 = "name"
+        static let destinationLatitude  = "destinationLatitude"
+        static let destinationLongitude = "destinationLongitude"
+    }
+    
     let name: String
-    let coordinates: CLLocationCoordinate2D
+    let destinationLatitude: Double
+    let destinationLongitude: Double
+    
+    var destinationDictionaryRepresentation: [String : AnyHashable] {
+        [
+            MSDestinationKey.name                 : self.name,
+            MSDestinationKey.destinationLatitude  : self.destinationLatitude,
+            MSDestinationKey.destinationLongitude : self.destinationLongitude
+        ]
+    }
 }

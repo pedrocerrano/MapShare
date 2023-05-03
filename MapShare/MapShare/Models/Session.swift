@@ -7,12 +7,40 @@
 
 import CoreLocation
 
-struct Session {
+class Session {
+    
+    enum SessionKey {
+        static let sessionName = "sessionName"
+        static let sessionUUID = "sessionUUID"
+        static let members     = "members"
+        static let destination = "destination"
+        static let isActive    = "isActive"
+    }
+    
     var sessionName: String
-    var sessionUUID: String
+    let sessionUUID: String
     var members: [Member]
-    var destination: MSDestination?
+    var destination: [MSDestination]?
     var isActive: Bool
+    
+    var sessionDictionaryRepresentation: [String : AnyHashable] {
+        [
+            SessionKey.sessionName : self.sessionName,
+            SessionKey.sessionUUID : self.sessionUUID,
+            SessionKey.members     : self.members.map { $0.memberDictionaryRepresentation },
+            SessionKey.destination : self.destination?.map { $0.destinationDictionaryRepresentation },
+            SessionKey.isActive    : self.isActive
+        ]
+    }
+    
+    init(sessionName: String, sessionUUID: String, members: [Member], destination: [MSDestination]? = nil, isActive: Bool) {
+        self.sessionName = sessionName
+        self.sessionUUID = sessionUUID
+        self.members     = members
+        self.destination = destination
+        self.isActive    = isActive
+    }
+    
 }
 
 extension Session: Equatable {
