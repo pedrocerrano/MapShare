@@ -28,6 +28,8 @@ class ModalHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         modalHomeViewModel = ModalHomeViewModel()
+        recentDestinationsTableView.dataSource = self
+        recentDestinationsTableView.delegate = self
         configureSheetPresentationController()
     }
     
@@ -61,10 +63,13 @@ class ModalHomeViewController: UIViewController {
 
 extension ModalHomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3 #warning("Update this value once the model has been incorporated")
+        return 3
+        #warning("Update this value once the model has been incorporated")
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        let cell = tableView.dequeueReusableCell(withIdentifier: "recentDestinationsCell", for: indexPath)
+        
+        return cell
     }
-} 
+} //: TableViewDataSource and Delegate

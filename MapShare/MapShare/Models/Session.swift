@@ -43,6 +43,29 @@ class Session {
     
 }
 
+
+//MARK: - EXT: Convenience Initializer
+extension Session {
+    convenience init?(fromSessionDictionary sessionDictionary: [String : Any]) {
+        guard let sessionName       = sessionDictionary[SessionKey.sessionName] as? String,
+              let sessionUUID       = sessionDictionary[SessionKey.sessionUUID] as? String,
+              let membersDictionary = sessionDictionary[SessionKey.members] as? [[String : AnyHashable]],
+              let isActive          = sessionDictionary[SessionKey.isActive] as? Bool else {
+            print("Failed to initialize Session model object")
+            return nil
+        }
+        
+        let membersArray = membersDictionary.compactMap { Member(fromMemberDictionary: $0) }
+        let destinationDictionary = sessionDictionary[SessionKey.destination] as? [[String : AnyHashable]]          // Does this need to be unwrapped?
+        let destinationArray      = destinationDictionary?.compactMap { MSDestination(fromMSDestinationDictionary: $0) }
+        #warning("Because the object on line 23 is optional, the destination object on line 59 might have issues")
+        
+        self.init(sessionName: sessionName, sessionUUID: sessionUUID, members: membersArray, destination: destinationArray, isActive: isActive)
+    }
+}
+
+
+//MARK: - EXT: EQUATABLE
 extension Session: Equatable {
     static func == (lhs: Session, rhs: Session) -> Bool {
         return lhs.sessionUUID == rhs.sessionUUID
