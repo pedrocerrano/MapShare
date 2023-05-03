@@ -14,6 +14,11 @@ struct FirebaseService {
     let ref = Firestore.firestore()
     
     //MARK: - FUNCTIONS
-    
+    func saveNewSessionToFirestore(sessionName: String, withOrganizer organizer: Member) {
+        let sessionUUID = UUID().uuidString
+        let sessionCode = "ABCDEF"
+        let newSession  = Session(sessionName: sessionName, sessionUUID: sessionUUID, sessionCode: sessionCode, members: [organizer], isActive: true)
+        ref.collection(Session.SessionKey.collectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
+    }
     
 }
