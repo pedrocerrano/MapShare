@@ -12,10 +12,12 @@ import CoreLocationUI
 
 class MapHomeViewController: UIViewController {
     
+    // Note: - My location: Lat: 34.255 Long: -84.31
+    
     // MARK: - Properties
     let locationManager = CLLocationManager()
     var currentCoordinate: CLLocationCoordinate2D?
-    let annotation = MKPointAnnotation()
+    var annotation: CustomAnnotation?
     var previousLocation: CLLocation?
     
     var geoCoder = CLGeocoder()
@@ -34,6 +36,8 @@ class MapHomeViewController: UIViewController {
         centerViewOnUser()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
+//        let london = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), title: "London", subtitle: "Test 1-2 check check")
+//        mapView.addAnnotation(london)
     }
     
     // MARK: - IB Actions
@@ -49,10 +53,12 @@ class MapHomeViewController: UIViewController {
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        
+        let annotation = CustomAnnotation(coordinate: coordinate, title: "Test", subtitle: "Test")
+
+        self.annotation = annotation
         annotation.coordinate = coordinate
         print("Annotation Coordinates: \(coordinate)")
-        
+
         if mapView.annotations.count == 1 {
             guard let last = mapView.annotations.last else { return }
             mapView.removeAnnotation(last)
@@ -147,7 +153,9 @@ class MapHomeViewController: UIViewController {
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
-        let destinationCoordinate = annotation.coordinate
+//        let annotation = MKPointAnnotation()
+        
+        let destinationCoordinate = self.annotation!.coordinate
         let startingLocation = MKPlacemark(coordinate: coordinate)
         let destination = MKPlacemark(coordinate: destinationCoordinate)
         
@@ -174,6 +182,34 @@ extension MapHomeViewController: CLLocationManagerDelegate {
 } //: LocationManagerDelegate
 
 extension MapHomeViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
+        let identifier = "Route"
+
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+
+        if annotationView == nil {
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+
+            let btn = UIButton(type: .detailDisclosure)
+            annotationView?.rightCalloutAccessoryView = btn
+        } else {
+            annotationView?.annotation = annotation
+        }
+        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        guard let destination = view.annotation as? CustomAnnotation else { return }
+        let name = destination.title
+        let info = destination.subtitle
+        
+        let ac = UIAlertController(title: name, message: info, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
+    }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let center = getCenterLocation(for: mapView)
@@ -203,7 +239,7 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        renderer.strokeColor = .blue
+        renderer.strokeColor = .cyan
         
         return renderer
     }
