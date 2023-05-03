@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		295B87982A0035D60016DFFA /* AddContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B87972A0035D60016DFFA /* AddContactsViewModel.swift */; };
-		295B879B2A0036AD0016DFFA /* AddContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879A2A0036AD0016DFFA /* AddContactsTableViewCell.swift */; };
 		295B879D2A003ACE0016DFFA /* ModalHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* ModalHomeViewModel.swift */; };
 		29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B308332A02A02900470D52 /* OnboardingViewController.swift */; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
@@ -23,15 +21,12 @@
 		29E6A0CE29FADE2000D109B1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0CD29FADE2000D109B1 /* Constants.swift */; };
 		29E6A0D429FADEF700D109B1 /* ModalHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D329FADEF700D109B1 /* ModalHomeViewController.swift */; };
 		29E6A0D629FAE0CD00D109B1 /* ModalHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* ModalHome.storyboard */; };
-		29E6A0D929FB106A00D109B1 /* AddContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */; };
 		29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29F859A72A0187BF00A53792 /* GoogleService-Info.plist */; };
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		295B87972A0035D60016DFFA /* AddContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsViewModel.swift; sourceTree = "<group>"; };
-		295B879A2A0036AD0016DFFA /* AddContactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsTableViewCell.swift; sourceTree = "<group>"; };
 		295B879C2A003ACE0016DFFA /* ModalHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalHomeViewModel.swift; sourceTree = "<group>"; };
 		29B308332A02A02900470D52 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		29E5A53629F81B23008D8834 /* MapShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,7 +43,6 @@
 		29E6A0CD29FADE2000D109B1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		29E6A0D329FADEF700D109B1 /* ModalHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalHomeViewController.swift; sourceTree = "<group>"; };
 		29E6A0D529FAE0CD00D109B1 /* ModalHome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ModalHome.storyboard; sourceTree = "<group>"; };
-		29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsViewController.swift; sourceTree = "<group>"; };
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,14 +59,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		295B87992A00367D0016DFFA /* Custom Views */ = {
-			isa = PBXGroup;
-			children = (
-				295B879A2A0036AD0016DFFA /* AddContactsTableViewCell.swift */,
-			);
-			path = "Custom Views";
-			sourceTree = "<group>";
-		};
 		29B308322A028A1700470D52 /* Onboarding View */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,7 +142,6 @@
 				29B308322A028A1700470D52 /* Onboarding View */,
 				29E6A0D129FADECF00D109B1 /* Map Home */,
 				29E6A0D229FADED800D109B1 /* Modal Home View */,
-				29E6A0D729FB104900D109B1 /* Add Contacts View */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -176,16 +161,6 @@
 				295B879C2A003ACE0016DFFA /* ModalHomeViewModel.swift */,
 			);
 			path = "Modal Home View";
-			sourceTree = "<group>";
-		};
-		29E6A0D729FB104900D109B1 /* Add Contacts View */ = {
-			isa = PBXGroup;
-			children = (
-				29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */,
-				295B87972A0035D60016DFFA /* AddContactsViewModel.swift */,
-				295B87992A00367D0016DFFA /* Custom Views */,
-			);
-			path = "Add Contacts View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,9 +242,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				295B879B2A0036AD0016DFFA /* AddContactsTableViewCell.swift in Sources */,
-				29E6A0D929FB106A00D109B1 /* AddContactsViewController.swift in Sources */,
-				295B87982A0035D60016DFFA /* AddContactsViewModel.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
 				29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */,

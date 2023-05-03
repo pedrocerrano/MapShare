@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Allow access to Contacts to add MapShare Members.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>In order to use this app, you must allow access to your location.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -27,7 +25,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Allow access to Contacts to add MapShare Members.</string>
 </dict>
 </plist>
