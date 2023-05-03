@@ -21,13 +21,15 @@ class ModalHomeViewModel {
     
     //MARK: - FUNCTIONS
     func createNewMapShareSession(sessionName: String, organizerName: String ) {
-        let sessionUUID        = UUID().uuidString
         let organizerUUID      = UUID().uuidString
         let organizerLatitude  = Double(0.0)
         let organizerLongitude = Double(0.0)
-        #warning("Pass in current latitude and longitude for Organizer")
+#warning("Pass in current latitude and longitude for Organizer")
         let organizer          = Member(memberName: organizerName, memberUUID: organizerUUID, isOrganizer: true, isActive: true, currentLocLatitude: organizerLatitude, currentLocLongitude: organizerLongitude)
-        let newSession         = Session(sessionName: sessionName, sessionUUID: sessionUUID, members: [organizer], isActive: true)
+        
+        let sessionCode        = "ABCDEF"
+        let sessionUUID        = UUID().uuidString
+        let newSession         = Session(sessionName: sessionName, sessionUUID: sessionUUID, sessionCode: sessionCode, members: [organizer], isActive: true)
         #warning("Pass this into Firebase")
     }
 }
