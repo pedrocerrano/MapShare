@@ -28,6 +28,7 @@ class MapHomeViewController: UIViewController {
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.hidesBackButton = true
         setupModalHomeSheetController()
         checkLocationServices()
         centerViewOnUser()
@@ -35,10 +36,11 @@ class MapHomeViewController: UIViewController {
         mapView.addGestureRecognizer(tapGesture)
     }
     
-    // MARK: - Actions
+    // MARK: - IB Actions
     @IBAction func routeButtonTapped(_ sender: Any) {
         getDirections()
     }
+    
     @IBAction func currentLocationButtonTapped(_ sender: Any) {
         centerViewOnUser()
     }
@@ -166,11 +168,10 @@ class MapHomeViewController: UIViewController {
 } //: CLASS
 
 extension MapHomeViewController: CLLocationManagerDelegate {
-    
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationAuthorization()
     }
-}
+} //: LocationManagerDelegate
 
 extension MapHomeViewController: MKMapViewDelegate {
     
@@ -206,4 +207,4 @@ extension MapHomeViewController: MKMapViewDelegate {
         
         return renderer
     }
-}
+} //: MapViewDelegate
