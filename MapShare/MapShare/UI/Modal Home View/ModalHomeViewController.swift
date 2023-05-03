@@ -39,13 +39,15 @@ class ModalHomeViewController: UIViewController {
         guard let sessionName = sessionNameTextField.text,
               let organizerName = organizerNameTextField.text else { return }
         let markerColor = "BLUE"
+        let highlandVillageLat: Double = 33.08484
+        let highlandVillageLon: Double = -97.05305
         
         if sessionName.isEmpty {
             presentSessionNeedsNameAlert()
         } else if organizerName.isEmpty {
             presentOrganizerNeedsNameAlert()
         } else {
-            modalHomeViewModel.createNewMapShareSession(sessionName: sessionName, organizerName: organizerName, markerColor: markerColor)
+            modalHomeViewModel.createNewMapShareSession(sessionName: sessionName, organizerName: organizerName, markerColor: markerColor, organizerLatitude: highlandVillageLat, organizerLongitude: highlandVillageLon)
             sessionNameTextField.resignFirstResponder()
             sessionNameTextField.text?.removeAll()
             organizerNameTextField.resignFirstResponder()

@@ -22,11 +22,8 @@ class ModalHomeViewModel {
     
     
     //MARK: - FUNCTIONS
-    func createNewMapShareSession(sessionName: String, organizerName: String, markerColor: String) {
+    func createNewMapShareSession(sessionName: String, organizerName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
         let organizerUUID      = UUID().uuidString
-        let organizerLatitude  = Double(0.0)
-        let organizerLongitude = Double(0.0)
-        #warning("Pass in current latitude and longitude for Organizer")
         let organizer          = Member(memberName: organizerName, mapMarkerColor: markerColor, memberUUID: organizerUUID, isOrganizer: true, isActive: true, currentLocLatitude: organizerLatitude, currentLocLongitude: organizerLongitude)
         service.saveNewSessionToFirestore(sessionName: sessionName, withOrganizer: organizer)
         #warning("Will likely need a completion handler")

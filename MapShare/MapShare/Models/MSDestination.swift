@@ -46,7 +46,7 @@ extension MSDestination {
               let destinationUUID      = msDestinationDictionary[MSDestinationKey.destinationUUID] as? String,
               let destinationLatitude  = msDestinationDictionary[MSDestinationKey.destinationLatitude] as? Double,
               let destinationLongitude = msDestinationDictionary[MSDestinationKey.destinationLongitude] as? Double else {
-            print("Failed to initialize MSDEstination model object")
+            print("Failed to initialize MSDestination model object")
             return nil
         }
         
