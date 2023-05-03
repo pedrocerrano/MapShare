@@ -1,5 +1,5 @@
 //
-//  ModalHomeViewModel.swift
+//  NewSessionViewModel.swift
 //  MapShare
 //
 //  Created by iMac Pro on 5/1/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ModalHomeViewModel {
+class NewSessionViewModel {
     
     //MARK: - PROPERTIES
     var session: Session?

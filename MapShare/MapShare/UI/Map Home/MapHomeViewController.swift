@@ -62,7 +62,7 @@ class MapHomeViewController: UIViewController {
     
     func setupModalHomeSheetController() {
         let storyboard = UIStoryboard(name: "ModalHome", bundle: nil)
-        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ModalHomeVC") as? ModalHomeViewController else { return }
+        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
         sheetController.isModalInPresentation = true
         self.parent?.present(sheetController, animated: true, completion: nil)
     }

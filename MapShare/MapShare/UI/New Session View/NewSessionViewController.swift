@@ -1,5 +1,5 @@
 //
-//  ModalHomeViewController.swift
+//  NewSessionViewController.swift
 //  MapShare
 //
 //  Created by iMac Pro on 4/27/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ModalHomeViewController: UIViewController {
+class NewSessionViewController: UIViewController {
     
     //MARK: - OUTLETS
     @IBOutlet weak var sessionNameTextField: UITextField!
@@ -22,12 +22,12 @@ class ModalHomeViewController: UIViewController {
         presentationController as! UISheetPresentationController
     }
 
-    var modalHomeViewModel: ModalHomeViewModel!
+    var modalHomeViewModel: NewSessionViewModel!
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        modalHomeViewModel = ModalHomeViewModel()
+        modalHomeViewModel = NewSessionViewModel()
         recentDestinationsTableView.dataSource = self
         recentDestinationsTableView.delegate = self
         configureSheetPresentationController()
@@ -91,7 +91,7 @@ class ModalHomeViewController: UIViewController {
 } //: CLASS
 
 
-extension ModalHomeViewController: UITableViewDataSource, UITableViewDelegate {
+extension NewSessionViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
         #warning("Update this value once the model has been incorporated")

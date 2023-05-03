@@ -21,4 +21,35 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.collectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
     }
     
+    func loadSessionFromFirestore() {
+        
+    }
+    
+    func addMemberToSessionOnFirestore() {
+        
+    }
+    
+    func deleteMemberFromFirestore() {
+        
+    }
+    
+    func deleteSessionFromFirestore() {
+        
+    }
+    
+    func saveNewDestinationToFirestore() {
+        
+    }
+    
+    func updateDestinationOnFirestore() {
+        
+    }
+    
+    func deleteDestinationOnFirestore() {
+        
+    }
+    
+    func updateLocationOfMemberToFirestore() {
+        
+    }
 }
