@@ -23,7 +23,7 @@ class ActiveSessionViewController: UIViewController {
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-//        activeSessionViewModel = ActiveSessionViewModel()
+        #warning("Be sure to initialize the view model via segue navigation")
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate = self
     }
@@ -33,7 +33,6 @@ class ActiveSessionViewController: UIViewController {
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
         
     }
-    
     
 
     /*
@@ -57,9 +56,7 @@ extension ActiveSessionViewController: UITableViewDataSource,UITableViewDelegate
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
         
         
-        
         return cell
     }
-    
     
 } //: TableView

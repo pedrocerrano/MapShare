@@ -21,8 +21,6 @@ class ActiveSessionTableViewCell: UITableViewCell {
         if member.isOrganizer == false {
             isOrganizerImageView.isHidden = true
         }
-        
     }
     
-
 }
