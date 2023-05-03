@@ -22,7 +22,7 @@
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="New MapShare"/>
+                                <buttonConfiguration key="configuration" style="plain" title="MapShare"/>
                                 <connections>
                                     <action selector="newMSButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Vl3-D3-OIV"/>
                                 </connections>
@@ -40,7 +40,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7T3-DX-pQn">
-                                <rect key="frame" x="39" y="154" width="314.33333333333326" height="50"/>
+                                <rect key="frame" x="39.333333333333343" y="154" width="314.33333333333326" height="50"/>
                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="u6h-IK-QFy"/>
