@@ -11,6 +11,7 @@ class Member {
     
     enum MemberKey {
         static let memberName          = "memberName"
+        static let mapMarkerColor      = "mapMarkerColor"
         static let memberUUID          = "memberUUID"
         static let isOrganizer         = "isOrganizer"
         static let isActive            = "isActive"
@@ -19,6 +20,7 @@ class Member {
     }
     
     let memberName: String
+    let mapMarkerColor: String
     let memberUUID: String
     let isOrganizer: Bool
     var isActive: Bool
@@ -28,6 +30,7 @@ class Member {
     var memberDictionaryRepresentation: [String : AnyHashable] {
         [
             MemberKey.memberName          : self.memberName,
+            MemberKey.mapMarkerColor      : self.mapMarkerColor,
             MemberKey.memberUUID          : self.memberUUID,
             MemberKey.isOrganizer         : self.isOrganizer,
             MemberKey.isActive            : self.isActive,
@@ -36,8 +39,9 @@ class Member {
         ]
     }
     
-    init(memberName: String, memberUUID: String, isOrganizer: Bool, isActive: Bool, currentLocLatitude: Double, currentLocLongitude: Double) {
+    init(memberName: String, mapMarkerColor: String, memberUUID: String, isOrganizer: Bool, isActive: Bool, currentLocLatitude: Double, currentLocLongitude: Double) {
         self.memberName          = memberName
+        self.mapMarkerColor      = mapMarkerColor
         self.memberUUID          = memberUUID
         self.isOrganizer         = isOrganizer
         self.isActive            = isActive
@@ -51,6 +55,7 @@ class Member {
 extension Member {
     convenience init?(fromMemberDictionary memberDictionary: [String : Any]) {
         guard let memberName = memberDictionary[MemberKey.memberName] as? String,
+              let mapMarkerColor = memberDictionary[MemberKey.mapMarkerColor] as? String,
               let memberUUID = memberDictionary[MemberKey.memberUUID] as? String,
               let isOrganizer = memberDictionary[MemberKey.isOrganizer] as? Bool,
               let isActive = memberDictionary[MemberKey.isActive] as? Bool,
@@ -60,7 +65,7 @@ extension Member {
             return nil
         }
         
-        self.init(memberName: memberName, memberUUID: memberUUID, isOrganizer: isOrganizer, isActive: isActive, currentLocLatitude: currentLocLatitude, currentLocLongitude: currentLocLongitude)
+        self.init(memberName: memberName, mapMarkerColor: mapMarkerColor, memberUUID: memberUUID, isOrganizer: isOrganizer, isActive: isActive, currentLocLatitude: currentLocLatitude, currentLocLongitude: currentLocLongitude)
     }
 }
 

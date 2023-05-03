@@ -36,7 +36,21 @@ class ModalHomeViewController: UIViewController {
     
     //MARK: - IB ACTIONS
     @IBAction func createSessionButtonTapped(_ sender: Any) {
+        guard let sessionName = sessionNameTextField.text,
+              let organizerName = organizerNameTextField.text else { return }
+        let markerColor = "BLUE"
         
+        if sessionName.isEmpty {
+            presentSessionNeedsNameAlert()
+        } else if organizerName.isEmpty {
+            presentOrganizerNeedsNameAlert()
+        } else {
+            modalHomeViewModel.createNewMapShareSession(sessionName: sessionName, organizerName: organizerName, markerColor: markerColor)
+            sessionNameTextField.resignFirstResponder()
+            sessionNameTextField.text?.removeAll()
+            organizerNameTextField.resignFirstResponder()
+            organizerNameTextField.text?.removeAll()
+        }
     }
     
     @IBAction func searchDestinationsButtonTapped(_ sender: Any) {
@@ -50,6 +64,20 @@ class ModalHomeViewController: UIViewController {
         sheetPresentationController.detents = Constants.Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+    }
+    
+    func presentSessionNeedsNameAlert() {
+        let emptySessionNameAlertController = UIAlertController(title: "No Name Given", message: "Please name this MapShare session.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Will do!", style: .cancel)
+        emptySessionNameAlertController.addAction(dismissAction)
+        present(emptySessionNameAlertController, animated: true)
+    }
+    
+    func presentOrganizerNeedsNameAlert() {
+        let emptyOrganizerNameAlertController = UIAlertController(title: "What's Your Name?", message: "Please share your name so members will distinguish you on the map.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        emptyOrganizerNameAlertController.addAction(dismissAction)
+        present(emptyOrganizerNameAlertController, animated: true)
     }
     
     

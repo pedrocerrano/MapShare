@@ -10,12 +10,14 @@ import CoreLocation
 class Session {
     
     enum SessionKey {
-        static let sessionName = "sessionName"
-        static let sessionUUID = "sessionUUID"
-        static let sessionCode = "sessionCode"
-        static let members     = "members"
-        static let destination = "destination"
-        static let isActive    = "isActive"
+        static let sessionName    = "sessionName"
+        static let sessionUUID    = "sessionUUID"
+        static let sessionCode    = "sessionCode"
+        static let members        = "members"
+        static let destination    = "destination"
+        static let isActive       = "isActive"
+        
+        static let collectionType = "mapShareSession"
     }
     
     var sessionName: String
