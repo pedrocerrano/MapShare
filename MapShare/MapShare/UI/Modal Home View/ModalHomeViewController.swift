@@ -10,7 +10,11 @@ import UIKit
 class ModalHomeViewController: UIViewController {
     
     //MARK: - OUTLETS
-    @IBOutlet weak var newMSButton: UIButton!
+    @IBOutlet weak var sessionNameTextField: UITextField!
+    @IBOutlet weak var organizerNameTextField: UITextField!
+    @IBOutlet weak var iconColorButton: UIButton!
+    @IBOutlet weak var createSessionButton: UIButton!
+    @IBOutlet weak var recentDestinationsTableView: UITableView!
     
     
     //MARK: - PROPERTIES
@@ -29,10 +33,12 @@ class ModalHomeViewController: UIViewController {
     
     
     //MARK: - IB ACTIONS
-    @IBAction func newMSButtonTapped(_ sender: Any) {
-        sheetPresentationController.animateChanges {
-            sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
-        }
+    @IBAction func createSessionButtonTapped(_ sender: Any) {
+        
+    }
+    
+    @IBAction func searchDestinationsButtonTapped(_ sender: Any) {
+        
     }
     
     

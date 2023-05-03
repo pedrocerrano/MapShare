@@ -30,7 +30,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Seeion Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fln-Q4-K20">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Organizer Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fln-Q4-K20">
                                 <rect key="frame" x="20" y="247" width="353" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="eAX-5D-cwI"/>
@@ -65,29 +65,35 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="CREATE"/>
+                                <connections>
+                                    <action selector="createSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="kFb-DT-JGl"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S26-XM-uDp">
-                                <rect key="frame" x="108" y="462" width="177" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S26-XM-uDp">
+                                <rect key="frame" x="106.66666666666669" y="462" width="180" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="9IU-aN-Azq"/>
                                     <constraint firstAttribute="width" constant="180" id="hYG-hI-gJ1"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Search Destinations"/>
+                                <connections>
+                                    <action selector="searchDestinationsButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="6Wn-vq-Ib2"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="N8c-eT-1Av">
                                 <rect key="frame" x="20" y="518" width="353" height="300"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recentDestinationsCell" id="Qlu-xP-lQ1">
-                                        <rect key="frame" x="0.0" y="50" width="353" height="45.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="50" width="353" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qlu-xP-lQ1" id="zmX-Ud-kJm">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="45.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Destination Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lkr-24-ASc">
-                                                    <rect key="frame" x="8" y="12.000000000000002" width="337" height="21.666666666666671"/>
+                                                    <rect key="frame" x="8" y="12" width="337" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -120,6 +126,7 @@
                             <constraint firstItem="KS8-mT-GFG" firstAttribute="top" secondItem="fln-Q4-K20" secondAttribute="bottom" constant="12" id="Y86-Lr-uLC"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="KS8-mT-GFG" secondAttribute="trailing" constant="20" id="aHQ-2k-VmG"/>
                             <constraint firstItem="fln-Q4-K20" firstAttribute="top" secondItem="xAb-QK-fgm" secondAttribute="bottom" constant="12" id="bUj-Ye-K0b"/>
+                            <constraint firstItem="S26-XM-uDp" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="dw8-Iv-CC2"/>
                             <constraint firstItem="tZS-Wz-qK6" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="gG4-Yl-RYL"/>
                             <constraint firstItem="N8c-eT-1Av" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="i1h-dm-VFV"/>
                             <constraint firstItem="tZS-Wz-qK6" firstAttribute="top" secondItem="KS8-mT-GFG" secondAttribute="bottom" constant="20" id="kaJ-Fg-xXR"/>
@@ -131,6 +138,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OQn-bA-eC3"/>
+                    <connections>
+                        <outlet property="createSessionButton" destination="tZS-Wz-qK6" id="doA-jQ-7yy"/>
+                        <outlet property="iconColorButton" destination="KS8-mT-GFG" id="gnE-G0-RR5"/>
+                        <outlet property="organizerNameTextField" destination="fln-Q4-K20" id="hNb-NL-ZOC"/>
+                        <outlet property="recentDestinationsTableView" destination="N8c-eT-1Av" id="yBL-IM-1r3"/>
+                        <outlet property="sessionNameTextField" destination="xAb-QK-fgm" id="mMb-u8-5ja"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
