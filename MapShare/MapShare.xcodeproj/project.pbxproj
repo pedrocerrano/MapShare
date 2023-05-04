@@ -27,6 +27,7 @@
 		29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29F859A72A0187BF00A53792 /* GoogleService-Info.plist */; };
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
+		AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsViewController.swift; sourceTree = "<group>"; };
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
 				29E6A0C829FADE0C00D109B1 /* MSDestination.swift */,
+				AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 			files = (
 				295B879B2A0036AD0016DFFA /* AddContactsTableViewCell.swift in Sources */,
 				29E6A0D929FB106A00D109B1 /* AddContactsViewController.swift in Sources */,
+				AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */,
 				295B87982A0035D60016DFFA /* AddContactsViewModel.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,

@@ -11,14 +11,13 @@ import CoreLocation
 import CoreLocationUI
 
 class MapHomeViewController: UIViewController {
-    
-    // Note: - My location: Lat: 34.255 Long: -84.31
-    
+        
     // MARK: - Properties
     let locationManager = CLLocationManager()
     var currentCoordinate: CLLocationCoordinate2D?
     var annotation: CustomAnnotation?
     var previousLocation: CLLocation?
+    var annotations: [CustomAnnotation] = []
     
     var geoCoder = CLGeocoder()
     var directionsArray: [MKDirections] = []
@@ -36,8 +35,6 @@ class MapHomeViewController: UIViewController {
         centerViewOnUser()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
-//        let london = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), title: "London", subtitle: "Test 1-2 check check")
-//        mapView.addAnnotation(london)
     }
     
     // MARK: - IB Actions
@@ -153,7 +150,6 @@ class MapHomeViewController: UIViewController {
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
-//        let annotation = MKPointAnnotation()
         
         let destinationCoordinate = self.annotation!.coordinate
         let startingLocation = MKPlacemark(coordinate: coordinate)
@@ -183,23 +179,22 @@ extension MapHomeViewController: CLLocationManagerDelegate {
 
 extension MapHomeViewController: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-
-        let identifier = "Route"
-
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-
-        if annotationView == nil {
-            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-
-            let btn = UIButton(type: .detailDisclosure)
-            annotationView?.rightCalloutAccessoryView = btn
-        } else {
-            annotationView?.annotation = annotation
-        }
-        return annotationView
-    }
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//        let identifier = "Route"
+//
+//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+//
+//        if annotationView == nil {
+//            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+//            annotationView?.canShowCallout = true
+//
+//            let btn = UIButton(type: .detailDisclosure)
+//            annotationView?.rightCalloutAccessoryView = btn
+//        } else {
+//            annotationView?.annotation = annotation
+//        }
+//        return annotationView
+//    }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         guard let destination = view.annotation as? CustomAnnotation else { return }
