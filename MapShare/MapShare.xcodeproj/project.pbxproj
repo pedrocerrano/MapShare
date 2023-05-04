@@ -26,6 +26,7 @@
 		29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */; };
 		29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */; };
 		29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EB7FD82A03DFC600F2242F /* MapHome.storyboard */; };
+		29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB7FDD2A04078500F2242F /* String+Ext.swift */; };
 		29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29F859A72A0187BF00A53792 /* GoogleService-Info.plist */; };
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
@@ -53,6 +54,7 @@
 		29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewController.swift; sourceTree = "<group>"; };
 		29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewSession.storyboard; sourceTree = "<group>"; };
 		29EB7FD92A03DFC600F2242F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MapShare/Storyboards/Base.lproj/MapHome.storyboard; sourceTree = "<group>"; };
+		29EB7FDD2A04078500F2242F /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				29F859A72A0187BF00A53792 /* GoogleService-Info.plist */,
+				29EB7FDC2A04076A00F2242F /* Extensions */,
 				29E6A0C529FADE0C00D109B1 /* Models */,
 				29E6A0CC29FADE2000D109B1 /* Helper Files */,
 				29E6A0D029FADE4100D109B1 /* UI */,
@@ -184,6 +187,14 @@
 				295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */,
 			);
 			path = "New Session View";
+			sourceTree = "<group>";
+		};
+		29EB7FDC2A04076A00F2242F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				29EB7FDD2A04078500F2242F /* String+Ext.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,6 +281,7 @@
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
+				29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */,
 				29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */,
 				295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */,
 				29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */,

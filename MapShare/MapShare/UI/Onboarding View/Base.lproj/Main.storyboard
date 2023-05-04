@@ -11,7 +11,6 @@
         <!--Onboarding View Controller-->
         <scene sceneID="Q4z-4K-h6W">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hH1-rE-Jcm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="we1-de-ve7" customClass="OnboardingViewController" customModule="MapShare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8OY-b1-jT9">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
@@ -29,7 +28,7 @@
                                     <constraint firstAttribute="height" constant="45" id="A6E-et-zfV"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Explore">
+                                <buttonConfiguration key="configuration" style="filled" title="EXPLORE">
                                     <fontDescription key="titleFontDescription" type="system" pointSize="24"/>
                                 </buttonConfiguration>
                                 <connections>
@@ -68,13 +67,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="TmJ-Vr-nKP"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hH1-rE-Jcm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1194.6564885496182" y="17.605633802816904"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TWg-Dh-DNQ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Y9u-tg-efe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fAx-yx-Cix" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qpr-su-GPW">
@@ -86,6 +85,7 @@
                         <segue destination="we1-de-ve7" kind="relationship" relationship="rootViewController" id="A6g-Eb-pAC"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y9u-tg-efe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="356" y="18"/>
         </scene>
@@ -97,7 +97,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r3u-uI-fBa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2048" y="18"/>
+            <point key="canvasLocation" x="1934" y="18"/>
         </scene>
     </scenes>
     <resources>

@@ -10,7 +10,9 @@ import CoreLocation
 class Member {
     
     enum MemberKey {
-        static let memberName          = "memberName"
+        static let firstName           = "firstName"
+        static let lastName            = "lastName"
+        static let screenName          = "screenName"
         static let mapMarkerColor      = "mapMarkerColor"
         static let memberUUID          = "memberUUID"
         static let isOrganizer         = "isOrganizer"
@@ -19,7 +21,9 @@ class Member {
         static let currentLocLongitude = "currentLocLongitude"
     }
     
-    let memberName: String
+    let firstName: String
+    let lastName: String
+    let screenName: String
     let mapMarkerColor: String
     let memberUUID: String
     let isOrganizer: Bool
@@ -29,7 +33,9 @@ class Member {
     
     var memberDictionaryRepresentation: [String : AnyHashable] {
         [
-            MemberKey.memberName          : self.memberName,
+            MemberKey.firstName           : self.firstName,
+            MemberKey.lastName            : self.lastName,
+            MemberKey.screenName          : self.screenName,
             MemberKey.mapMarkerColor      : self.mapMarkerColor,
             MemberKey.memberUUID          : self.memberUUID,
             MemberKey.isOrganizer         : self.isOrganizer,
@@ -39,8 +45,10 @@ class Member {
         ]
     }
     
-    init(memberName: String, mapMarkerColor: String, memberUUID: String, isOrganizer: Bool, isActive: Bool, currentLocLatitude: Double, currentLocLongitude: Double) {
-        self.memberName          = memberName
+    init(firstName: String, lastName: String, screenName: String, mapMarkerColor: String, memberUUID: String, isOrganizer: Bool, isActive: Bool, currentLocLatitude: Double, currentLocLongitude: Double) {
+        self.firstName           = firstName
+        self.lastName            = lastName
+        self.screenName          = screenName
         self.mapMarkerColor      = mapMarkerColor
         self.memberUUID          = memberUUID
         self.isOrganizer         = isOrganizer
@@ -54,18 +62,20 @@ class Member {
 //MARK: - EXT: Convenience Initializer
 extension Member {
     convenience init?(fromMemberDictionary memberDictionary: [String : Any]) {
-        guard let memberName = memberDictionary[MemberKey.memberName] as? String,
-              let mapMarkerColor = memberDictionary[MemberKey.mapMarkerColor] as? String,
-              let memberUUID = memberDictionary[MemberKey.memberUUID] as? String,
-              let isOrganizer = memberDictionary[MemberKey.isOrganizer] as? Bool,
-              let isActive = memberDictionary[MemberKey.isActive] as? Bool,
-              let currentLocLatitude = memberDictionary[MemberKey.currentLocLatitude] as? Double,
+        guard let firstName           = memberDictionary[MemberKey.firstName] as? String,
+              let lastName            = memberDictionary[MemberKey.lastName] as? String,
+              let screenName          = memberDictionary[MemberKey.screenName] as? String,
+              let mapMarkerColor      = memberDictionary[MemberKey.mapMarkerColor] as? String,
+              let memberUUID          = memberDictionary[MemberKey.memberUUID] as? String,
+              let isOrganizer         = memberDictionary[MemberKey.isOrganizer] as? Bool,
+              let isActive            = memberDictionary[MemberKey.isActive] as? Bool,
+              let currentLocLatitude  = memberDictionary[MemberKey.currentLocLatitude] as? Double,
               let currentLocLongitude = memberDictionary[MemberKey.currentLocLongitude] as? Double else {
             print("Failed to initialize Member model object")
             return nil
         }
         
-        self.init(memberName: memberName, mapMarkerColor: mapMarkerColor, memberUUID: memberUUID, isOrganizer: isOrganizer, isActive: isActive, currentLocLatitude: currentLocLatitude, currentLocLongitude: currentLocLongitude)
+        self.init(firstName: firstName, lastName: lastName, screenName: screenName, mapMarkerColor: mapMarkerColor, memberUUID: memberUUID, isOrganizer: isOrganizer, isActive: isActive, currentLocLatitude: currentLocLatitude, currentLocLongitude: currentLocLongitude)
     }
 }
 
