@@ -11,10 +11,11 @@ class NewSessionViewController: UIViewController {
     
     //MARK: - OUTLETS
     @IBOutlet weak var sessionNameTextField: UITextField!
-    @IBOutlet weak var organizerNameTextField: UITextField!
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var screenNameTextField: UITextField!
     @IBOutlet weak var iconColorButton: UIButton!
     @IBOutlet weak var createSessionButton: UIButton!
-    @IBOutlet weak var recentDestinationsTableView: UITableView!
     
     
     //MARK: - PROPERTIES
@@ -22,14 +23,12 @@ class NewSessionViewController: UIViewController {
         presentationController as! UISheetPresentationController
     }
 
-    var modalHomeViewModel: NewSessionViewModel!
+    var newSessionViewModel: NewSessionViewModel!
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        modalHomeViewModel = NewSessionViewModel()
-        recentDestinationsTableView.dataSource = self
-        recentDestinationsTableView.delegate = self
+        newSessionViewModel = NewSessionViewModel()
         configureSheetPresentationController()
     }
     
@@ -37,21 +36,35 @@ class NewSessionViewController: UIViewController {
     //MARK: - IB ACTIONS
     @IBAction func createSessionButtonTapped(_ sender: Any) {
         guard let sessionName = sessionNameTextField.text,
-              let organizerName = organizerNameTextField.text else { return }
+              let firstName = firstNameTextField.text,
+              let lastName = lastNameTextField.text,
+              let screenName = screenNameTextField.text else { return }
         let markerColor = "BLUE"
         let highlandVillageLat: Double = 33.08484
         let highlandVillageLon: Double = -97.05305
+        var optionalScreenName = ""
+        if screenName.isEmpty {
+            optionalScreenName = firstName
+        } else {
+            optionalScreenName = screenName
+        }
         
         if sessionName.isEmpty {
             presentSessionNeedsNameAlert()
-        } else if organizerName.isEmpty {
-            presentOrganizerNeedsNameAlert()
+        } else if firstName.isEmpty {
+            presentNeedsFirstNameAlert()
+        } else if lastName.isEmpty {
+            presentNeedsLastNameAlert()
         } else {
-            modalHomeViewModel.createNewMapShareSession(sessionName: sessionName, organizerName: organizerName, markerColor: markerColor, organizerLatitude: highlandVillageLat, organizerLongitude: highlandVillageLon)
+            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: highlandVillageLat, organizerLongitude: highlandVillageLon)
             sessionNameTextField.resignFirstResponder()
             sessionNameTextField.text?.removeAll()
-            organizerNameTextField.resignFirstResponder()
-            organizerNameTextField.text?.removeAll()
+            firstNameTextField.resignFirstResponder()
+            firstNameTextField.text?.removeAll()
+            lastNameTextField.resignFirstResponder()
+            lastNameTextField.text?.removeAll()
+            screenNameTextField.resignFirstResponder()
+            screenNameTextField.text?.removeAll()
         }
     }
     
@@ -75,11 +88,18 @@ class NewSessionViewController: UIViewController {
         present(emptySessionNameAlertController, animated: true)
     }
     
-    func presentOrganizerNeedsNameAlert() {
-        let emptyOrganizerNameAlertController = UIAlertController(title: "What's Your Name?", message: "Please share your name so members will distinguish you on the map.", preferredStyle: .alert)
+    func presentNeedsFirstNameAlert() {
+        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for the MapShare members to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyOrganizerNameAlertController.addAction(dismissAction)
-        present(emptyOrganizerNameAlertController, animated: true)
+        emptyFirstNameAlertController.addAction(dismissAction)
+        present(emptyFirstNameAlertController, animated: true)
+    }
+    
+    func presentNeedsLastNameAlert() {
+        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for the MapShare members to identify you.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        emptyLastNameAlertController.addAction(dismissAction)
+        present(emptyLastNameAlertController, animated: true)
     }
     
     
@@ -90,16 +110,3 @@ class NewSessionViewController: UIViewController {
     
 } //: CLASS
 
-
-extension NewSessionViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-        #warning("Update this value once the model has been incorporated")
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "recentDestinationsCell", for: indexPath)
-        
-        return cell
-    }
-} //: TableViewDataSource and Delegate

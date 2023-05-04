@@ -68,16 +68,27 @@
                                                     <rect key="frame" x="4" y="4" width="345" height="36"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="BBB-1T-PC9">
-                                                            <rect key="frame" x="0.0" y="5.6666666666666643" width="145.66666666666666" height="25"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="145.66666666666666" height="36"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Member Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fpH-ho-veR">
-                                                                    <rect key="frame" x="0.0" y="2.3333333333333339" width="112.66666666666667" height="20.333333333333329"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lhA-Nu-Lob">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="112.66666666666667" height="36"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Member Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fpH-ho-veR">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="112.66666666666667" height="14"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vRf-Mg-27l">
+                                                                            <rect key="frame" x="0.0" y="22" width="112.66666666666667" height="14"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="n4g-XF-lz7">
-                                                                    <rect key="frame" x="120.66666666666669" y="-0.33333333333333215" width="25" height="24.666666666666664"/>
+                                                                    <rect key="frame" x="120.66666666666669" y="5.3333333333333321" width="25" height="24.666666666666664"/>
                                                                     <color key="tintColor" systemColor="systemYellowColor"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="n4g-XF-lz7" secondAttribute="height" multiplier="1:1" id="8A7-cZ-Bj8"/>
@@ -108,6 +119,7 @@
                                             <outlet property="dotColorImageView" destination="mJt-03-9WX" id="Gsr-0m-j9a"/>
                                             <outlet property="isOrganizerImageView" destination="n4g-XF-lz7" id="LAC-3X-bQJ"/>
                                             <outlet property="memberNameLabel" destination="fpH-ho-veR" id="koM-vC-Tkn"/>
+                                            <outlet property="memberScreenNameLabel" destination="vRf-Mg-27l" id="wkh-7P-Jos"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

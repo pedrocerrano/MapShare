@@ -22,9 +22,9 @@ class NewSessionViewModel {
     
     
     //MARK: - FUNCTIONS
-    func createNewMapShareSession(sessionName: String, organizerName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
+    func createNewMapShareSession(sessionName: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
         let organizerUUID      = UUID().uuidString
-        let organizer          = Member(memberName: organizerName, mapMarkerColor: markerColor, memberUUID: organizerUUID, isOrganizer: true, isActive: true, currentLocLatitude: organizerLatitude, currentLocLongitude: organizerLongitude)
+        let organizer          = Member(firstName: firstName, lastName: lastName, screenName: screenName, mapMarkerColor: markerColor, memberUUID: organizerUUID, isOrganizer: true, isActive: true, currentLocLatitude: organizerLatitude, currentLocLongitude: organizerLongitude)
         service.saveNewSessionToFirestore(sessionName: sessionName, withOrganizer: organizer)
         #warning("Will likely need a completion handler")
     }
