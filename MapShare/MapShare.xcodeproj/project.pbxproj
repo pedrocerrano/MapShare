@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		295B87982A0035D60016DFFA /* AddContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B87972A0035D60016DFFA /* AddContactsViewModel.swift */; };
-		295B879B2A0036AD0016DFFA /* AddContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879A2A0036AD0016DFFA /* AddContactsTableViewCell.swift */; };
-		295B879D2A003ACE0016DFFA /* ModalHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* ModalHomeViewModel.swift */; };
+		295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079302A0309A00059D774 /* ActiveSessionViewController.swift */; };
+		295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 295079322A030A5D0059D774 /* ActiveSession.storyboard */; };
+		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
+		295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */; };
+		295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */; };
 		29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B308332A02A02900470D52 /* OnboardingViewController.swift */; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
 		29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53B29F81B23008D8834 /* SceneDelegate.swift */; };
@@ -21,9 +23,10 @@
 		29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0C729FADE0C00D109B1 /* Member.swift */; };
 		29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0C829FADE0C00D109B1 /* MSDestination.swift */; };
 		29E6A0CE29FADE2000D109B1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0CD29FADE2000D109B1 /* Constants.swift */; };
-		29E6A0D429FADEF700D109B1 /* ModalHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D329FADEF700D109B1 /* ModalHomeViewController.swift */; };
-		29E6A0D629FAE0CD00D109B1 /* ModalHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* ModalHome.storyboard */; };
-		29E6A0D929FB106A00D109B1 /* AddContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */; };
+		29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */; };
+		29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */; };
+		29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EB7FD82A03DFC600F2242F /* MapHome.storyboard */; };
+		29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB7FDD2A04078500F2242F /* String+Ext.swift */; };
 		29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29F859A72A0187BF00A53792 /* GoogleService-Info.plist */; };
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
@@ -31,9 +34,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		295B87972A0035D60016DFFA /* AddContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsViewModel.swift; sourceTree = "<group>"; };
-		295B879A2A0036AD0016DFFA /* AddContactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsTableViewCell.swift; sourceTree = "<group>"; };
-		295B879C2A003ACE0016DFFA /* ModalHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalHomeViewModel.swift; sourceTree = "<group>"; };
+		295079302A0309A00059D774 /* ActiveSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewController.swift; sourceTree = "<group>"; };
+		295079322A030A5D0059D774 /* ActiveSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActiveSession.storyboard; sourceTree = "<group>"; };
+		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
+		295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionTableViewCell.swift; sourceTree = "<group>"; };
+		295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewModel.swift; sourceTree = "<group>"; };
 		29B308332A02A02900470D52 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		29E5A53629F81B23008D8834 /* MapShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5A53929F81B23008D8834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,9 +52,10 @@
 		29E6A0C729FADE0C00D109B1 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		29E6A0C829FADE0C00D109B1 /* MSDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSDestination.swift; sourceTree = "<group>"; };
 		29E6A0CD29FADE2000D109B1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		29E6A0D329FADEF700D109B1 /* ModalHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalHomeViewController.swift; sourceTree = "<group>"; };
-		29E6A0D529FAE0CD00D109B1 /* ModalHome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ModalHome.storyboard; sourceTree = "<group>"; };
-		29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactsViewController.swift; sourceTree = "<group>"; };
+		29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewController.swift; sourceTree = "<group>"; };
+		29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewSession.storyboard; sourceTree = "<group>"; };
+		29EB7FD92A03DFC600F2242F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MapShare/Storyboards/Base.lproj/MapHome.storyboard; sourceTree = "<group>"; };
+		29EB7FDD2A04078500F2242F /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
@@ -67,10 +73,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		295B87992A00367D0016DFFA /* Custom Views */ = {
+		2950792F2A0308FF0059D774 /* Active Session View */ = {
 			isa = PBXGroup;
 			children = (
-				295B879A2A0036AD0016DFFA /* AddContactsTableViewCell.swift */,
+				295079322A030A5D0059D774 /* ActiveSession.storyboard */,
+				295079302A0309A00059D774 /* ActiveSessionViewController.swift */,
+				295079342A0316740059D774 /* ActiveSessionViewModel.swift */,
+				295079362A03177B0059D774 /* Custom Views */,
+			);
+			path = "Active Session View";
+			sourceTree = "<group>";
+		};
+		295079362A03177B0059D774 /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -78,6 +95,7 @@
 		29B308322A028A1700470D52 /* Onboarding View */ = {
 			isa = PBXGroup;
 			children = (
+				29E5A53F29F81B23008D8834 /* Main.storyboard */,
 				29B308332A02A02900470D52 /* OnboardingViewController.swift */,
 			);
 			path = "Onboarding View";
@@ -103,10 +121,10 @@
 			isa = PBXGroup;
 			children = (
 				29F859A72A0187BF00A53792 /* GoogleService-Info.plist */,
+				29EB7FDC2A04076A00F2242F /* Extensions */,
 				29E6A0C529FADE0C00D109B1 /* Models */,
 				29E6A0CC29FADE2000D109B1 /* Helper Files */,
 				29E6A0D029FADE4100D109B1 /* UI */,
-				29E6A0CF29FADE3700D109B1 /* Storyboards */,
 				29E5A54D29F81B3A008D8834 /* Supporting Files */,
 			);
 			path = MapShare;
@@ -144,22 +162,13 @@
 			path = "Helper Files";
 			sourceTree = "<group>";
 		};
-		29E6A0CF29FADE3700D109B1 /* Storyboards */ = {
-			isa = PBXGroup;
-			children = (
-				29E5A53F29F81B23008D8834 /* Main.storyboard */,
-				29E6A0D529FAE0CD00D109B1 /* ModalHome.storyboard */,
-			);
-			path = Storyboards;
-			sourceTree = "<group>";
-		};
 		29E6A0D029FADE4100D109B1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				29B308322A028A1700470D52 /* Onboarding View */,
 				29E6A0D129FADECF00D109B1 /* Map Home */,
-				29E6A0D229FADED800D109B1 /* Modal Home View */,
-				29E6A0D729FB104900D109B1 /* Add Contacts View */,
+				29E6A0D229FADED800D109B1 /* New Session View */,
+				2950792F2A0308FF0059D774 /* Active Session View */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -167,28 +176,28 @@
 		29E6A0D129FADECF00D109B1 /* Map Home */ = {
 			isa = PBXGroup;
 			children = (
+				29EB7FD82A03DFC600F2242F /* MapHome.storyboard */,
 				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
 			);
 			path = "Map Home";
 			sourceTree = "<group>";
 		};
-		29E6A0D229FADED800D109B1 /* Modal Home View */ = {
+		29E6A0D229FADED800D109B1 /* New Session View */ = {
 			isa = PBXGroup;
 			children = (
-				29E6A0D329FADEF700D109B1 /* ModalHomeViewController.swift */,
-				295B879C2A003ACE0016DFFA /* ModalHomeViewModel.swift */,
+				29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */,
+				29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */,
+				295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */,
 			);
-			path = "Modal Home View";
+			path = "New Session View";
 			sourceTree = "<group>";
 		};
-		29E6A0D729FB104900D109B1 /* Add Contacts View */ = {
+		29EB7FDC2A04076A00F2242F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				29E6A0D829FB106A00D109B1 /* AddContactsViewController.swift */,
-				295B87972A0035D60016DFFA /* AddContactsViewModel.swift */,
-				295B87992A00367D0016DFFA /* Custom Views */,
+				29EB7FDD2A04078500F2242F /* String+Ext.swift */,
 			);
-			path = "Add Contacts View";
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,7 +265,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				29E5A54629F81B24008D8834 /* LaunchScreen.storyboard in Resources */,
-				29E6A0D629FAE0CD00D109B1 /* ModalHome.storyboard in Resources */,
+				295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */,
+				29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */,
+				29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */,
 				29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */,
 				29E5A54329F81B24008D8834 /* Assets.xcassets in Resources */,
 				29E5A54129F81B23008D8834 /* Main.storyboard in Resources */,
@@ -275,13 +286,17 @@
 				AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */,
 				295B87982A0035D60016DFFA /* AddContactsViewModel.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
+				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
+				29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */,
 				29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */,
+				295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */,
 				29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */,
 				29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */,
+				295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */,
 				29E6A0CE29FADE2000D109B1 /* Constants.swift in Sources */,
-				29E6A0D429FADEF700D109B1 /* ModalHomeViewController.swift in Sources */,
-				295B879D2A003ACE0016DFFA /* ModalHomeViewModel.swift in Sources */,
+				29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */,
+				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
 				29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */,
 				29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
@@ -305,6 +320,14 @@
 				29E5A54529F81B24008D8834 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		29EB7FD82A03DFC600F2242F /* MapHome.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29EB7FD92A03DFC600F2242F /* Base */,
+			);
+			name = MapHome.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
