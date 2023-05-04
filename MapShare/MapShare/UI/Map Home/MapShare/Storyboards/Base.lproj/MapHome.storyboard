@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Map view configurations" minToolsVersion="14.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Map Home View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MapHomeViewController" customModule="MapShare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsUserLocation="YES" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DrH-Fw-j6D">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <standardMapConfiguration key="preferredConfiguration" elevationStyle="realistic" showsTraffic="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="VwX-2m-tSV"/>
+                                </connections>
+                            </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hye-2h-drw">
+                                <rect key="frame" x="20" y="103" width="353" height="25"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xv3-fm-8ZS">
+                                <rect key="frame" x="273" y="136" width="100" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="qSH-67-YGP"/>
+                                </constraints>
+                                <color key="tintColor" red="0.21626689700000001" green="0.64705884459999996" blue="0.1418456011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Route!"/>
+                                <connections>
+                                    <action selector="routeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fcn-Mp-1Jl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18j-ye-pGs">
+                                <rect key="frame" x="273" y="179" width="100" height="34.333333333333343"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="CRC-rh-xaW"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled">
+                                    <imageReference key="image" image="location" catalog="system" symbolScale="medium"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aAf-IX-X4G"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="xv3-fm-8ZS" firstAttribute="top" secondItem="Hye-2h-drw" secondAttribute="bottom" constant="8" id="5xy-rE-tFN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DrH-Fw-j6D" secondAttribute="trailing" id="7K1-EA-BFt"/>
+                            <constraint firstAttribute="bottom" secondItem="DrH-Fw-j6D" secondAttribute="bottom" id="D8a-rU-G9T"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="18j-ye-pGs" secondAttribute="trailing" constant="20" id="MBP-XF-Ngj"/>
+                            <constraint firstItem="Hye-2h-drw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Rhg-Sg-h3z"/>
+                            <constraint firstItem="DrH-Fw-j6D" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="cCy-65-MNH"/>
+                            <constraint firstItem="DrH-Fw-j6D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fmQ-AZ-EUb"/>
+                            <constraint firstItem="18j-ye-pGs" firstAttribute="top" secondItem="xv3-fm-8ZS" secondAttribute="bottom" constant="8" id="hkU-tb-Ldp"/>
+                            <constraint firstItem="Hye-2h-drw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="l4p-ki-Wm0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Hye-2h-drw" secondAttribute="trailing" constant="20" id="rCP-JU-gcS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xv3-fm-8ZS" secondAttribute="trailing" constant="20" id="vKr-jU-Oig"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Vl0-7c-V40"/>
+                    <connections>
+                        <outlet property="addressLabel" destination="Hye-2h-drw" id="gY4-Ei-5s2"/>
+                        <outlet property="mapView" destination="DrH-Fw-j6D" id="u7B-Ep-uAj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2048" y="18"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="location" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
