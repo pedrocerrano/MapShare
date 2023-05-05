@@ -39,8 +39,17 @@ class ActiveSessionViewController: UIViewController {
     
     //MARK: - IB ACTIONS
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
-        #warning("if isOrganizer == true, delete the entire active session and dismiss view")
-        #warning("if isOrganizer == false, delete one member from the session and reload the tableview")
+        print("This prints")
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.dismissalTransitionWillBegin()
+        }
+        guard let activeSessionViewModel else { return }
+        #warning("The line above will need to be deleted to get the following code to work, once the segue passes data throughout the app")
+        if activeSessionViewModel.session.members[0].isOrganizer == true {
+            organizerEndedActiveSessionAlert()
+        } else {
+            memberExitsActiveSessionAlert()
+        }
     }
     
     
@@ -55,6 +64,31 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+    }
+    
+    
+    //MARK: - ALERTS
+    func organizerEndedActiveSessionAlert() {
+        let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
+            #warning("Add Firestore delete session and trigger navigation to dismiss modal")
+        }
+        organizerEndedActiveSessionAlertController.addAction(dismissAction)
+        organizerEndedActiveSessionAlertController.addAction(confirmAction)
+        present(organizerEndedActiveSessionAlertController, animated: true)
+    }
+    
+    
+    func memberExitsActiveSessionAlert() {
+        let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
+            #warning("Add Firestore delete member from session and trigger all views to refresh/reload")
+        }
+        memberExitsActiveSessionAlertController.addAction(dismissAction)
+        memberExitsActiveSessionAlertController.addAction(confirmAction)
+        present(memberExitsActiveSessionAlertController, animated: true)
     }
     
 

@@ -97,9 +97,12 @@ class NewSessionViewController: UIViewController {
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
         sheetController.isModalInPresentation = true
         self.present(sheetController, animated: true, completion: nil)
+
         #warning("Consider implementing a sheetController.dismiss(animated: true) action")
     }
     
+    
+    //MARK: - ALERTS
     func presentSessionNeedsNameAlert() {
         let emptySessionNameAlertController = UIAlertController(title: "No Name Given", message: "Please name this MapShare session.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Will do!", style: .cancel)
