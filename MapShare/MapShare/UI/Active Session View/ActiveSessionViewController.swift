@@ -17,21 +17,44 @@ class ActiveSessionViewController: UIViewController {
     
     
     //MARK: - PROPERTIES
+    override var sheetPresentationController: UISheetPresentationController {
+        presentationController as! UISheetPresentationController
+    }
+    
     var activeSessionViewModel: ActiveSessionViewModel!
     
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        #warning("Be sure to initialize the view model via segue navigation")
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate = self
+        configureSheetPresentationController()
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
+        }
+        configureUI()
     }
     
     
     //MARK: - IB ACTIONS
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
-        
+        #warning("if isOrganizer == true, delete the entire active session and dismiss view")
+        #warning("if isOrganizer == false, delete one member from the session and reload the tableview")
+    }
+    
+    
+    //MARK: - FUNCTIONS
+    func configureUI() {
+        sessionControlButton.layer.cornerRadius = sessionControlButton.frame.height / 2
+    }
+    
+    
+    func configureSheetPresentationController() {
+        let screenHeight = view.frame.height
+        sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
+        sheetPresentationController.prefersGrabberVisible = true
+        sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
     }
     
 

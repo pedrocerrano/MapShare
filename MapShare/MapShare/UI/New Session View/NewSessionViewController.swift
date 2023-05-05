@@ -22,7 +22,7 @@ class NewSessionViewController: UIViewController {
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
-
+    
     var newSessionViewModel: NewSessionViewModel!
     
     //MARK: - LIFECYCLE
@@ -34,6 +34,17 @@ class NewSessionViewController: UIViewController {
     
     
     //MARK: - IB ACTIONS
+    @IBAction func mapSearchButtonTapped(_ sender: Any) {
+        
+    }
+    
+    @IBAction func mapShareButtonTapped(_ sender: Any) {
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
+        }
+    }
+    
+    
     @IBAction func createSessionButtonTapped(_ sender: Any) {
         guard let sessionName = sessionNameTextField.text,
               let firstName = firstNameTextField.text,
@@ -65,20 +76,28 @@ class NewSessionViewController: UIViewController {
             lastNameTextField.text?.removeAll()
             screenNameTextField.resignFirstResponder()
             screenNameTextField.text?.removeAll()
+            sheetPresentationController.animateChanges {
+                sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
+            }
+            displayActiveSessionSheetController()
         }
-    }
-    
-    @IBAction func searchDestinationsButtonTapped(_ sender: Any) {
-        
     }
     
     
     //MARK: - FUNCTIONS
     func configureSheetPresentationController() {
         let screenHeight = view.frame.height
-        sheetPresentationController.detents = Constants.Detents.buildDetent(screenHeight: screenHeight)
+        sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+    }
+    
+    func displayActiveSessionSheetController() {
+        let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
+        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
+        sheetController.isModalInPresentation = true
+        self.present(sheetController, animated: true, completion: nil)
+        #warning("Consider implementing a sheetController.dismiss(animated: true) action")
     }
     
     func presentSessionNeedsNameAlert() {
@@ -103,10 +122,15 @@ class NewSessionViewController: UIViewController {
     }
     
     
-     // MARK: - Navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-     }
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        #warning("Need to configure identifier")
+        if segue.identifier == "" {
+            guard let destinationVC = segue.destination as? ActiveSessionViewController,
+                  let session = newSessionViewModel.session else { return }
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
+        }
+    }
     
 } //: CLASS
 
