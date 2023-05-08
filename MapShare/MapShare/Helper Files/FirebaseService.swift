@@ -8,21 +8,35 @@
 import Foundation
 import FirebaseFirestore
 
+enum FirebaseError: Error {
+    case firebaseError(Error)
+    case unableToDecode
+    case noDataFound
+}
+
 struct FirebaseService {
     
     //MARK: - PROPERTIES
     let ref = Firestore.firestore()
     
     //MARK: - FUNCTIONS
-    func saveNewSessionToFirestore(sessionName: String, withOrganizer organizer: Member) {
-        let sessionUUID = UUID().uuidString
-        let sessionCode = String.generateRandomCode()
-        let newSession  = Session(sessionName: sessionName, sessionUUID: sessionUUID, sessionCode: sessionCode, members: [organizer], destination: [], isActive: true)
+    func saveNewSessionToFirestore(newSession: Session) {
         ref.collection(Session.SessionKey.collectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
     }
     
-    func loadSessionFromFirestore() {
-        
+    func loadSessionFromFirestore(forSession session: Session, completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).getDocument { document, error in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(.failure(.firebaseError(error)))
+                return
+            }
+            
+            guard let document else { completion(.failure(.noDataFound)) ; return }
+            let session = document.data().map { Session(fromSessionDictionary: $0) }
+            guard let session else { return }
+            completion(.success(session))
+        }
     }
     
     func addMemberToSessionOnFirestore() {
@@ -33,8 +47,8 @@ struct FirebaseService {
         
     }
     
-    func deleteSessionFromFirestore() {
-        
+    func deleteSessionFromFirestore(session: Session) {
+        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).delete()
     }
     
     func saveNewDestinationToFirestore() {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ActiveSessionViewModel {
+class ActiveSessionViewModel {
     
     //MARK: - PROPERTIES
     var session: Session
@@ -20,7 +20,18 @@ struct ActiveSessionViewModel {
     
     //MARK: - FUNCTIONS
     func loadSession() {
-        
+        service.loadSessionFromFirestore(forSession: session) { result in
+            switch result {
+            case .success(let loadedSession):
+                guard let loadedSession else { return }
+                self.session = loadedSession
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
+    func deleteSession() {
+        service.deleteSessionFromFirestore(session: session)
+    }
 }
