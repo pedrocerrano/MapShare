@@ -109,13 +109,14 @@ class ActiveSessionViewController: UIViewController {
 //MARK: - EXT: TableViewDataSource and Delegate
 extension ActiveSessionViewController: UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-        #warning("Update this value once the model has been incorporated")
+        return activeSessionViewModel.session.members.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
         
+        let member = activeSessionViewModel.session.members[indexPath.row]
+        cell.configureCell(with: member)
         
         return cell
     }
