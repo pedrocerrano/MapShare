@@ -47,6 +47,9 @@
                                 <buttonConfiguration key="configuration" style="filled" title="JOIN">
                                     <fontDescription key="titleFontDescription" type="system" pointSize="24"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <segue destination="hbW-aG-z9R" kind="presentation" id="2zP-C9-IGi"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gv1-mb-ZIg"/>
@@ -97,7 +100,15 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r3u-uI-fBa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1934" y="18"/>
+            <point key="canvasLocation" x="1946" y="0.0"/>
+        </scene>
+        <!--JoinSession-->
+        <scene sceneID="Hio-P7-K1a">
+            <objects>
+                <viewControllerPlaceholder storyboardName="JoinSession" id="hbW-aG-z9R" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DIS-oj-2uY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1955" y="35"/>
         </scene>
     </scenes>
     <resources>
