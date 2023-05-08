@@ -72,7 +72,8 @@ class ActiveSessionViewController: UIViewController {
         let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            #warning("Add Firestore delete session")
+            self.activeSessionViewModel.deleteSession()
+            #warning("Add Alert for other members that the organizer ended the session, and consider a completion handler to do so")
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }

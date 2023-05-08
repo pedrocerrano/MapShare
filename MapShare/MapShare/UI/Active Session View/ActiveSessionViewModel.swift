@@ -30,4 +30,8 @@ class ActiveSessionViewModel {
             }
         }
     }
+    
+    func deleteSession() {
+        service.deleteSessionFromFirestore(session: session)
+    }
 }

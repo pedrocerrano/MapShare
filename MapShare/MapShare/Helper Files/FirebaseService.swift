@@ -47,8 +47,8 @@ struct FirebaseService {
         
     }
     
-    func deleteSessionFromFirestore() {
-        
+    func deleteSessionFromFirestore(session: Session) {
+        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).delete()
     }
     
     func saveNewDestinationToFirestore() {
