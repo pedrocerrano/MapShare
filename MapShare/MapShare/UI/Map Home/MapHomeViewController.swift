@@ -13,14 +13,14 @@ import CoreLocationUI
 class MapHomeViewController: UIViewController {
         
     // MARK: - Properties
+    var geoCoder = CLGeocoder()
+    var previousLocation: CLLocation?
+    var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
     var currentCoordinate: CLLocationCoordinate2D?
-    var annotation: CustomAnnotation?
-    var previousLocation: CLLocation?
-    var annotations: [CustomAnnotation] = []
     
-    var geoCoder = CLGeocoder()
-    var directionsArray: [MKDirections] = []
+    var annotation: CustomAnnotation?
+    var customAnnotations: [CustomAnnotation] = []
     
     //MARK: - OUTLETS
     @IBOutlet weak var mapView: MKMapView!
@@ -30,7 +30,7 @@ class MapHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        setupModalHomeSheetController()
+//        setupModalHomeSheetController()
         checkLocationServices()
         centerViewOnUser()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -50,25 +50,25 @@ class MapHomeViewController: UIViewController {
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        let annotation = CustomAnnotation(coordinate: coordinate, title: "Test", subtitle: "Test")
-
-        self.annotation = annotation
+        let annotation = CustomAnnotation(coordinate: coordinate, title: nil, subtitle: nil)
+        
         annotation.coordinate = coordinate
         print("Annotation Coordinates: \(coordinate)")
+        customAnnotations.append(annotation)
 
-        if mapView.annotations.count == 1 {
-            guard let last = mapView.annotations.last else { return }
-            mapView.removeAnnotation(last)
+        if customAnnotations.count > 1 {
+            customAnnotations.removeFirst()
+            mapView.removeAnnotation(annotation)
         }
         mapView.addAnnotation(annotation)
     }
     
-    func setupModalHomeSheetController() {
-        let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
-        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
-        sheetController.isModalInPresentation = true
-        self.parent?.present(sheetController, animated: true, completion: nil)
-    }
+//    func setupModalHomeSheetController() {
+//        let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
+//        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
+//        sheetController.isModalInPresentation = true
+//        self.parent?.present(sheetController, animated: true, completion: nil)
+//    }
     
     func setUpLocationManager() {
         locationManager.delegate = self
@@ -150,8 +150,9 @@ class MapHomeViewController: UIViewController {
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
+        guard let annotation = annotation else { return MKDirections.Request() }
         
-        let destinationCoordinate = self.annotation!.coordinate
+        let destinationCoordinate = annotation.coordinate
         let startingLocation = MKPlacemark(coordinate: coordinate)
         let destination = MKPlacemark(coordinate: destinationCoordinate)
         
@@ -177,24 +178,42 @@ extension MapHomeViewController: CLLocationManagerDelegate {
     }
 } //: LocationManagerDelegate
 
+extension MapHomeViewController: UIPopoverPresentationControllerDelegate {
+    func showDetails(from view: UIView) {
+        let annotationViewPopover = CustomAnnotationViewController()
+        let popOver = annotationViewPopover.popoverPresentationController
+        popOver?.sourceView = view
+        popOver?.delegate = self
+        present(annotationViewPopover, animated: true, completion: nil)
+    }
+} //: PopoverDelegate
+
 extension MapHomeViewController: MKMapViewDelegate {
-    
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        let identifier = "Route"
-//
-//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-//
-//        if annotationView == nil {
-//            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-//            annotationView?.canShowCallout = true
-//
-//            let btn = UIButton(type: .detailDisclosure)
-//            annotationView?.rightCalloutAccessoryView = btn
-//        } else {
-//            annotationView?.annotation = annotation
-//        }
-//        return annotationView
-//    }
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        view.setSelected(true, animated: true)
+        if view.annotation is CustomAnnotation {
+            showDetails(from: view)
+        }
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
+
+        let identifier = "Route"
+
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+
+        if annotationView == nil {
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+
+            let btn = UIButton(type: .detailDisclosure)
+            annotationView?.rightCalloutAccessoryView = btn
+        } else {
+            annotationView?.annotation = annotation
+        }
+        return annotationView
+    }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         guard let destination = view.annotation as? CustomAnnotation else { return }

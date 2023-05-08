@@ -31,6 +31,8 @@
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
 		AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */; };
+		AFAFB5732A099A5400C23445 /* CustomAnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAFB5712A099A5400C23445 /* CustomAnnotationViewController.swift */; };
+		AFAFB5742A099A5400C23445 /* CustomAnnotationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFAFB5722A099A5400C23445 /* CustomAnnotationViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +61,8 @@
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		AFAFB5712A099A5400C23445 /* CustomAnnotationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationViewController.swift; sourceTree = "<group>"; };
+		AFAFB5722A099A5400C23445 /* CustomAnnotationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAnnotationViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 		29E6A0D029FADE4100D109B1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				AFAFB56E2A09999300C23445 /* Custom Annotation View */,
 				29B308322A028A1700470D52 /* Onboarding View */,
 				29E6A0D129FADECF00D109B1 /* Map Home */,
 				29E6A0D229FADED800D109B1 /* New Session View */,
@@ -198,6 +203,15 @@
 				29EB7FDD2A04078500F2242F /* String+Ext.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		AFAFB56E2A09999300C23445 /* Custom Annotation View */ = {
+			isa = PBXGroup;
+			children = (
+				AFAFB5722A099A5400C23445 /* CustomAnnotationViewController.xib */,
+				AFAFB5712A099A5400C23445 /* CustomAnnotationViewController.swift */,
+			);
+			path = "Custom Annotation View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,6 +278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFAFB5742A099A5400C23445 /* CustomAnnotationViewController.xib in Resources */,
 				29E5A54629F81B24008D8834 /* LaunchScreen.storyboard in Resources */,
 				295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */,
 				29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */,
@@ -281,10 +296,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				295B879B2A0036AD0016DFFA /* AddContactsTableViewCell.swift in Sources */,
-				29E6A0D929FB106A00D109B1 /* AddContactsViewController.swift in Sources */,
+				AFAFB5732A099A5400C23445 /* CustomAnnotationViewController.swift in Sources */,
 				AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */,
-				295B87982A0035D60016DFFA /* AddContactsViewModel.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
