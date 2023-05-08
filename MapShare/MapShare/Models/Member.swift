@@ -21,12 +21,12 @@ class Member {
         static let currentLocLongitude = "currentLocLongitude"
     }
     
-    let firstName: String
-    let lastName: String
-    let screenName: String
-    let mapMarkerColor: String
-    let memberUUID: String
-    let isOrganizer: Bool
+    var firstName: String
+    var lastName: String
+    var screenName: String
+    var mapMarkerColor: String
+    var memberUUID: String
+    var isOrganizer: Bool
     var isActive: Bool
     var currentLocLatitude: Double
     var currentLocLongitude: Double

@@ -21,8 +21,8 @@ class Session {
     }
     
     var sessionName: String
-    let sessionUUID: String
-    let sessionCode: String
+    var sessionUUID: String
+    var sessionCode: String
     var members: [Member]
     var destination: [MSDestination]
     var isActive: Bool

@@ -79,7 +79,6 @@ class NewSessionViewController: UIViewController {
             sheetPresentationController.animateChanges {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
             }
-            displayActiveSessionSheetController()
         }
     }
     
@@ -97,8 +96,6 @@ class NewSessionViewController: UIViewController {
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
         sheetController.isModalInPresentation = true
         self.present(sheetController, animated: true, completion: nil)
-
-        #warning("Consider implementing a sheetController.dismiss(animated: true) action")
     }
     
     
@@ -127,13 +124,11 @@ class NewSessionViewController: UIViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        #warning("Need to configure identifier")
-        if segue.identifier == "" {
+        if segue.identifier == "toActiveSessionVC" {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = newSessionViewModel.session else { return }
             destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
         }
     }
-    
 } //: CLASS
 

@@ -34,17 +34,13 @@ class ActiveSessionViewController: UIViewController {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
         configureUI()
+        activeSessionViewModel.loadSession()
     }
     
     
     //MARK: - IB ACTIONS
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
-        print("This prints")
-        sheetPresentationController.animateChanges {
-            sheetPresentationController.dismissalTransitionWillBegin()
-        }
-        guard let activeSessionViewModel else { return }
-        #warning("The line above will need to be deleted to get the following code to work, once the segue passes data throughout the app")
+        #warning("How do I make it so that the index below is any member?")
         if activeSessionViewModel.session.members[0].isOrganizer == true {
             organizerEndedActiveSessionAlert()
         } else {
@@ -55,6 +51,10 @@ class ActiveSessionViewController: UIViewController {
     
     //MARK: - FUNCTIONS
     func configureUI() {
+        let session = activeSessionViewModel.session
+        sessionNameLabel.text = session.sessionName
+        sessionCodeLabel.text = session.sessionCode
+        
         sessionControlButton.layer.cornerRadius = sessionControlButton.frame.height / 2
     }
     
@@ -72,7 +72,10 @@ class ActiveSessionViewController: UIViewController {
         let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            #warning("Add Firestore delete session and trigger navigation to dismiss modal")
+            #warning("Add Firestore delete session")
+            self.sheetPresentationController.animateChanges {
+                self.sheetPresentationController.dismissalTransitionWillBegin()
+            }
         }
         organizerEndedActiveSessionAlertController.addAction(dismissAction)
         organizerEndedActiveSessionAlertController.addAction(confirmAction)
@@ -110,7 +113,7 @@ extension ActiveSessionViewController: UITableViewDataSource,UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
         
         
         return cell

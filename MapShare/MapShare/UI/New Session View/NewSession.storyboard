@@ -86,6 +86,7 @@
                                 <buttonConfiguration key="configuration" style="filled" title="CREATE"/>
                                 <connections>
                                     <action selector="createSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="kFb-DT-JGl"/>
+                                    <segue destination="rPM-q5-ug7" kind="show" identifier="toActiveSessionVC" id="fHc-Xx-Rnr"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Optional Screen Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0bu-ZL-fqh">
@@ -141,6 +142,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1993.1297709923663" y="24.647887323943664"/>
+        </scene>
+        <!--ActiveSession-->
+        <scene sceneID="xwJ-9b-qei">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ActiveSession" id="rPM-q5-ug7" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="apU-F3-5of"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GFt-Qk-iPr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2604" y="25"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ylR-lN-KR6">
