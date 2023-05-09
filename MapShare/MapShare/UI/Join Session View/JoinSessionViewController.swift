@@ -30,6 +30,7 @@ class JoinSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         joinSessionViewModel = JoinSessionViewModel(delegate: self)
+        codeEntryTextField.delegate = self
         
         disableJoinSessionTextFields()
     }
@@ -39,7 +40,12 @@ class JoinSessionViewController: UIViewController {
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
         tellTheGroupLabel.isHidden = true
         guard let codeEntry = codeEntryTextField.text else { return }
-        joinSessionViewModel.searchFirebase(with: codeEntry)
+        if codeEntry.isEmpty || codeEntry.count != 6 {
+            presentNeedsSixDigitsAlert()
+        } else {
+            joinSessionViewModel.searchFirebase(with: codeEntry)
+            codeEntryTextField.resignFirstResponder()
+        }
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
@@ -69,6 +75,29 @@ class JoinSessionViewController: UIViewController {
         joinSessionButton.isHidden = false
     }
     
+    
+    //MARK: - ALERTS
+    func presentNeedsSixDigitsAlert() {
+        let needsSixDigitsAlertController = UIAlertController(title: "Invalid Session Code", message: "Please retype a six-digit session code.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        needsSixDigitsAlertController.addAction(dismissAction)
+        present(needsSixDigitsAlertController, animated: true)
+    }
+    
+    func presentNeedsFirstNameAlert() {
+        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for the MapShare members to identify you.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        emptyFirstNameAlertController.addAction(dismissAction)
+        present(emptyFirstNameAlertController, animated: true)
+    }
+    
+    func presentNeedsLastNameAlert() {
+        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for the MapShare members to identify you.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        emptyLastNameAlertController.addAction(dismissAction)
+        present(emptyLastNameAlertController, animated: true)
+    }
+    
 
     /*
     // MARK: - Navigation
@@ -84,7 +113,7 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
     func sessionExists() {
         guard let codeEntry = codeEntryTextField.text else { return }
         tellTheGroupLabel.text = """
-                                    We found \"\(codeEntry)\".
+                                    We found \"\(codeEntry)\"
                                     Share with the group:
                                  """
         enableJoinSessionTextFields()
@@ -98,3 +127,19 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
                                      """
     }
 } //: ViewModelDelegate
+
+
+//MARK: - EXT: TextFieldDelegate
+extension JoinSessionViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let codeEntry = codeEntryTextField.text {
+            if codeEntry.isEmpty || codeEntry.count != 6 {
+                presentNeedsSixDigitsAlert()
+            } else {
+                joinSessionViewModel.searchFirebase(with: codeEntry)
+                codeEntryTextField.resignFirstResponder()
+            }
+        }
+        return true
+    }
+} //: TextFieldDelegate
