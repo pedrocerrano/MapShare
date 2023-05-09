@@ -11,16 +11,19 @@ class ActiveSessionTableViewCell: UITableViewCell {
 
     //MARK: - OUTLETS
     @IBOutlet weak var memberNameLabel: UILabel!
+    @IBOutlet weak var memberScreenNameLabel: UILabel!
     @IBOutlet weak var isOrganizerImageView: UIImageView!
     @IBOutlet weak var dotColorImageView: UIImageView!
     
     
     //MARK: - FUNCTIONS
     func configureCell(with member: Member) {
-        memberNameLabel.text = member.memberName
+        memberNameLabel.text       = "\(member.firstName) \(member.lastName)"
+        memberScreenNameLabel.text = member.screenName
+        
         if member.isOrganizer == false {
             isOrganizerImageView.isHidden = true
         }
     }
     
-}
+} //: CLASS
