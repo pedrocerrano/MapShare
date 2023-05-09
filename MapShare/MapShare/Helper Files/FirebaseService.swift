@@ -39,16 +39,31 @@ struct FirebaseService {
         }
     }
     
+    func deleteSessionFromFirestore(session: Session) {
+        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).delete()
+    }
+    
+    func searchFirebaseForActiveSession(withCode codeEntered: String, completion: @escaping(Result<Bool, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document(codeEntered).getDocument { document, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+            
+            guard let document else { completion(.failure(.noDataFound)) ; return }
+            let session = document.data().map { Session(fromSessionDictionary: $0) }
+            guard let session else { completion(.success(false)) ; return }
+            if session?.sessionCode == codeEntered {
+                completion(.success(true))
+            }
+        }
+    }
+    
     func addMemberToSessionOnFirestore() {
         
     }
     
     func deleteMemberFromFirestore() {
         
-    }
-    
-    func deleteSessionFromFirestore(session: Session) {
-        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).delete()
     }
     
     func saveNewDestinationToFirestore() {
