@@ -100,7 +100,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r3u-uI-fBa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1946" y="0.0"/>
+            <point key="canvasLocation" x="1955" y="1"/>
         </scene>
         <!--JoinSession-->
         <scene sceneID="Hio-P7-K1a">
@@ -108,7 +108,7 @@
                 <viewControllerPlaceholder storyboardName="JoinSession" id="hbW-aG-z9R" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DIS-oj-2uY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1955" y="35"/>
+            <point key="canvasLocation" x="1964" y="35"/>
         </scene>
     </scenes>
     <resources>

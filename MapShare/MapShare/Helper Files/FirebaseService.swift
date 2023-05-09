@@ -58,8 +58,9 @@ struct FirebaseService {
         }
     }
     
-    func addMemberToSessionOnFirestore() {
-        
+    func addMemberToSessionOnFirestore(withCode sessionCode: String, member: Member, completion: @escaping() -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document(sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayUnion([member.memberDictionaryRepresentation])])
+        completion()
     }
     
     func deleteMemberFromFirestore() {
@@ -80,5 +81,20 @@ struct FirebaseService {
     
     func updateLocationOfMemberToFirestore() {
         
+    }
+    
+    func forTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document("9486YS").getDocument { document, error in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(.failure(.firebaseError(error)))
+                return
+            }
+            
+            guard let document else { completion(.failure(.noDataFound)) ; return }
+            let session = document.data().map { Session(fromSessionDictionary: $0) }
+            guard let session else { return }
+            completion(.success(session))
+        }
     }
 }

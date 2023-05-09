@@ -32,7 +32,7 @@ class JoinSessionViewController: UIViewController {
         joinSessionViewModel = JoinSessionViewModel(delegate: self)
         codeEntryTextField.delegate = self
         
-        disableJoinSessionTextFields()
+        hideJoinSessionTextFields()
     }
     
     
@@ -41,6 +41,7 @@ class JoinSessionViewController: UIViewController {
         tellTheGroupLabel.isHidden = true
         guard let codeEntry = codeEntryTextField.text else { return }
         if codeEntry.isEmpty || codeEntry.count != 6 {
+            hideJoinSessionTextFields()
             presentNeedsSixDigitsAlert()
         } else {
             joinSessionViewModel.searchFirebase(with: codeEntry)
@@ -49,12 +50,43 @@ class JoinSessionViewController: UIViewController {
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
+        guard let firstName = memberfirstNameTextField.text,
+              let lastName = memberLastNameTextField.text,
+              let screenName = memberScreenNameTextField.text else { return }
+        let markerColor = "RED"
+        let dallasLat: Double = 32.779167
+        let dallasLon: Double = -96.808891
+        var optionalScreenName = ""
+        if screenName.isEmpty {
+            optionalScreenName = firstName
+        } else {
+            optionalScreenName = screenName
+        }
+        
+        if firstName.isEmpty {
+            presentNeedsFirstNameAlert()
+        } else if lastName.isEmpty {
+            presentNeedsLastNameAlert()
+        } else {
+            joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: dallasLat, memberLongitude: dallasLon)
+            memberfirstNameTextField.resignFirstResponder()
+            memberfirstNameTextField.text?.removeAll()
+            memberLastNameTextField.resignFirstResponder()
+            memberLastNameTextField.text?.removeAll()
+            memberScreenNameTextField.resignFirstResponder()
+            memberScreenNameTextField.text?.removeAll()
+            waitingStatusLabel.isHidden = false
+            waitingStatusLabel.text = "Waiting for admission"
+            #warning("Setup Activity Indicator")
+            
+            NotificationCenter.default.post(name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
+        }
         
     }
     
     
     //MARK: - FUNCTIONS
-    func disableJoinSessionTextFields() {
+    func hideJoinSessionTextFields() {
         tellTheGroupLabel.isHidden = true
         memberfirstNameTextField.isHidden = true
         memberLastNameTextField.isHidden = true
@@ -65,7 +97,7 @@ class JoinSessionViewController: UIViewController {
         waitingStatusLabel.isHidden = true
     }
     
-    func enableJoinSessionTextFields() {
+    func revealJoinSessionTextFields() {
         tellTheGroupLabel.isHidden = false
         memberfirstNameTextField.isHidden = false
         memberLastNameTextField.isHidden = false
@@ -85,26 +117,27 @@ class JoinSessionViewController: UIViewController {
     }
     
     func presentNeedsFirstNameAlert() {
-        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for the MapShare members to identify you.", preferredStyle: .alert)
+        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for others to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyFirstNameAlertController.addAction(dismissAction)
         present(emptyFirstNameAlertController, animated: true)
     }
     
     func presentNeedsLastNameAlert() {
-        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for the MapShare members to identify you.", preferredStyle: .alert)
+        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for others to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyLastNameAlertController.addAction(dismissAction)
         present(emptyLastNameAlertController, animated: true)
     }
     
 
-    /*
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        if segue.identifier == "toJoinActiveSessionVC" {
+//            guard let destinationVC = segue.destination as? ActiveSessionViewController,
+//                  let member
+        }
     }
-    */
 } //: CLASS
 
 
@@ -116,7 +149,8 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
                                     We found \"\(codeEntry)\"
                                     Share with the group:
                                  """
-        enableJoinSessionTextFields()
+        joinSessionViewModel.validSessionCode = codeEntry
+        revealJoinSessionTextFields()
     }
     
     func noSessionFoundWithCode() {
@@ -132,12 +166,24 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
 //MARK: - EXT: TextFieldDelegate
 extension JoinSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let codeEntry = codeEntryTextField.text {
-            if codeEntry.isEmpty || codeEntry.count != 6 {
-                presentNeedsSixDigitsAlert()
-            } else {
-                joinSessionViewModel.searchFirebase(with: codeEntry)
-                codeEntryTextField.resignFirstResponder()
+        if textField == self.codeEntryTextField {
+            if let codeEntry = codeEntryTextField.text {
+                if codeEntry.isEmpty || codeEntry.count != 6 {
+                    presentNeedsSixDigitsAlert()
+                } else {
+                    joinSessionViewModel.searchFirebase(with: codeEntry)
+                    joinSessionViewModel.validSessionCode = codeEntry
+                    codeEntryTextField.resignFirstResponder()
+                }
+            }
+        } else {
+            #warning("Need to configure the keyboard to advance to the next textfield when return is pressed")
+            if textField == self.memberfirstNameTextField {
+                if let firstName = memberfirstNameTextField.text {
+                    if firstName.isEmpty == true {
+                        print("Booyah")
+                    }
+                }
             }
         }
         return true

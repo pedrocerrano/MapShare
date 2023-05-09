@@ -12,6 +12,7 @@ class ActiveSessionViewModel {
     //MARK: - PROPERTIES
     var session: Session
     var service: FirebaseService
+    let sectionTitles = ["Active Members", "Waiting Room"]
     
     init(session: Session, service: FirebaseService = FirebaseService()) {
         self.session = session

@@ -28,7 +28,7 @@ class ActiveSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         activeSessionTableView.dataSource = self
-        activeSessionTableView.delegate = self
+        activeSessionTableView.delegate   = self
         configureSheetPresentationController()
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
@@ -108,17 +108,46 @@ class ActiveSessionViewController: UIViewController {
 
 //MARK: - EXT: TableViewDataSource and Delegate
 extension ActiveSessionViewController: UITableViewDataSource,UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return activeSessionViewModel.sectionTitles[section]
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activeSessionViewModel.session.members.count
+        switch section {
+        case 0:
+            return activeSessionViewModel.session.members.filter { $0.isActive == true }.count
+        case 1:
+            return activeSessionViewModel.session.members.filter { $0.isActive == false }.count
+        default:
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
+        switch indexPath.section {
+        case 0:
+            guard let activeCell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
+            
+            let member = activeSessionViewModel.session.members.filter { $0.isActive == true }[indexPath.row]
+            activeCell.configureCell(with: member)
+            
+            return activeCell
+        case 1:
+            guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
+            
+            let member = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
+            waitingRoomCell.configureWaitingRoomCell(withMember: member)
+            
+            return waitingRoomCell
+        default:
+            break
+        }
         
-        let member = activeSessionViewModel.session.members[indexPath.row]
-        cell.configureCell(with: member)
-        
-        return cell
+        // The line below shouldn't hit because of how the switch handled the returned cells above.
+        return UITableViewCell()
     }
-    
 } //: TableView

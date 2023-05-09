@@ -47,7 +47,7 @@
                                     <constraint firstAttribute="height" constant="40" id="ayu-tk-OoB"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="v5A-g1-3SS">
                                 <rect key="frame" x="98.333333333333329" y="344.33333333333331" width="196.33333333333337" height="40"/>
@@ -55,7 +55,7 @@
                                     <constraint firstAttribute="height" constant="40" id="Whx-Y5-QhP"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Optional Screen Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CYe-tn-TtU">
                                 <rect key="frame" x="98.333333333333329" y="396.33333333333331" width="196.33333333333337" height="40"/>
@@ -63,7 +63,7 @@
                                     <constraint firstAttribute="height" constant="40" id="W0I-JC-xAl"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="join"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Wr-V3-Xfk">
                                 <rect key="frame" x="254.66666666666663" y="448.33333333333331" width="40" height="40"/>
@@ -85,6 +85,7 @@
                                 <buttonConfiguration key="configuration" style="filled" title="Join"/>
                                 <connections>
                                     <action selector="joinSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1Pp-c0-SJh"/>
+                                    <segue destination="Kms-U8-SMw" kind="show" identifier="toJoinActiveSessionVC" id="ddg-DO-qqG"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(waiting)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Dn-Nr-lEn">
@@ -156,6 +157,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="139" y="19"/>
+        </scene>
+        <!--ActiveSession-->
+        <scene sceneID="xLU-r7-cux">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ActiveSession" id="Kms-U8-SMw" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Km6-eF-W3F"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uPp-UL-82a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="728" y="18"/>
         </scene>
     </scenes>
     <resources>

@@ -9,4 +9,7 @@ import UIKit
 
 struct Constants {
 
+    struct Notifications {
+        static let newMemberWaitingToJoin = Notification.Name("newMemberWaitingToJoin")
+    }
 }
