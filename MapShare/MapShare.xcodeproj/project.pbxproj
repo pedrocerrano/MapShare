@@ -16,6 +16,7 @@
 		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
+		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
 		29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B308332A02A02900470D52 /* OnboardingViewController.swift */; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
 		29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53B29F81B23008D8834 /* SceneDelegate.swift */; };
@@ -47,6 +48,7 @@
 		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
+		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
 		29B308332A02A02900470D52 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		29E5A53629F81B23008D8834 /* MapShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5A53929F81B23008D8834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				29E6A0CD29FADE2000D109B1 /* Constants.swift */,
 				29F859AC2A018A7500A53792 /* FirebaseService.swift */,
 				29883D922A056F6700DB2D96 /* Detents.swift */,
+				29912B622A0BDFDF00EA9995 /* UIElements.swift */,
 			);
 			path = "Helper Files";
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */,
 				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
+				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
 				29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */,
 				29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
@@ -478,6 +482,8 @@
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -506,6 +512,8 @@
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

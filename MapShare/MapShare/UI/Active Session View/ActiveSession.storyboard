@@ -133,16 +133,20 @@
                                                     <rect key="frame" x="0.0" y="8" width="353" height="36.666666666666664"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGZ-Z0-z4d">
-                                                            <rect key="frame" x="0.0" y="1.3333333333333321" width="63.333333333333336" height="34.333333333333343"/>
-                                                            <color key="tintColor" systemColor="systemRedColor"/>
-                                                            <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="filled" title="Deny"/>
+                                                            <rect key="frame" x="0.0" y="3.3333333333333357" width="55" height="30"/>
+                                                            <color key="backgroundColor" systemColor="systemRedColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="55" id="Uzn-vG-Xnt"/>
+                                                            </constraints>
+                                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" title="Deny"/>
                                                             <connections>
                                                                 <action selector="denyNewMemberButtonTapped:" destination="etm-Us-MJ6" eventType="touchUpInside" id="t97-cv-pyz"/>
                                                             </connections>
                                                         </button>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="6Y8-mw-5Ii">
-                                                            <rect key="frame" x="71.333333333333314" y="0.33333333333333215" width="205" height="36.333333333333343"/>
+                                                            <rect key="frame" x="63" y="0.33333333333333215" width="227" height="36.333333333333343"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Member Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4qS-Dx-clW">
                                                                     <rect key="frame" x="0.0" y="0.0" width="107" height="19.333333333333332"/>
@@ -159,10 +163,15 @@
                                                             </subviews>
                                                         </stackView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZP-WJ-FKp">
-                                                            <rect key="frame" x="284.33333333333331" y="1.3333333333333321" width="68.666666666666686" height="34.333333333333343"/>
-                                                            <color key="tintColor" systemColor="systemGreenColor"/>
-                                                            <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="filled" title="Admit"/>
+                                                            <rect key="frame" x="298" y="3.3333333333333357" width="55" height="30"/>
+                                                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="55" id="GHQ-5k-etG"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" title="Admit"/>
                                                             <connections>
                                                                 <action selector="admitNewMemberButtonTapped:" destination="etm-Us-MJ6" eventType="touchUpInside" id="XVR-L8-jJu"/>
                                                             </connections>
