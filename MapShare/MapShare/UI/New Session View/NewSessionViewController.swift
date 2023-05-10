@@ -10,6 +10,7 @@ import UIKit
 class NewSessionViewController: UIViewController {
     
     //MARK: - OUTLETS
+    @IBOutlet weak var newMapShareTitleLabel: UILabel!
     @IBOutlet weak var sessionNameTextField: UITextField!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -35,16 +36,15 @@ class NewSessionViewController: UIViewController {
     
     
     //MARK: - IB ACTIONS
-    @IBAction func mapSearchButtonTapped(_ sender: Any) {
-        
-    }
-    
     @IBAction func mapShareButtonTapped(_ sender: Any) {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
         }
     }
     
+    @IBAction func mapSearchButtonTapped(_ sender: Any) {
+        
+    }
     
     @IBAction func createSessionButtonTapped(_ sender: Any) {
         guard let sessionName = sessionNameTextField.text,
