@@ -17,11 +17,9 @@
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
 		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
-		29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B308332A02A02900470D52 /* OnboardingViewController.swift */; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
 		29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53B29F81B23008D8834 /* SceneDelegate.swift */; };
 		29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */; };
-		29E5A54129F81B23008D8834 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E5A53F29F81B23008D8834 /* Main.storyboard */; };
 		29E5A54329F81B24008D8834 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29E5A54229F81B24008D8834 /* Assets.xcassets */; };
 		29E5A54629F81B24008D8834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E5A54429F81B24008D8834 /* LaunchScreen.storyboard */; };
 		29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0C629FADE0C00D109B1 /* Session.swift */; };
@@ -50,12 +48,10 @@
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
 		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
-		29B308332A02A02900470D52 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		29E5A53629F81B23008D8834 /* MapShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5A53929F81B23008D8834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29E5A53B29F81B23008D8834 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHomeViewController.swift; sourceTree = "<group>"; };
-		29E5A54029F81B23008D8834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		29E5A54229F81B24008D8834 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29E5A54529F81B24008D8834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		29E5A54729F81B24008D8834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,15 +109,6 @@
 				297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */,
 			);
 			path = "Join Session View";
-			sourceTree = "<group>";
-		};
-		29B308322A028A1700470D52 /* Onboarding View */ = {
-			isa = PBXGroup;
-			children = (
-				29E5A53F29F81B23008D8834 /* Main.storyboard */,
-				29B308332A02A02900470D52 /* OnboardingViewController.swift */,
-			);
-			path = "Onboarding View";
 			sourceTree = "<group>";
 		};
 		29E5A52D29F81B23008D8834 = {
@@ -190,7 +177,6 @@
 		29E6A0D029FADE4100D109B1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				29B308322A028A1700470D52 /* Onboarding View */,
 				29E6A0D129FADECF00D109B1 /* Map Home */,
 				29E6A0D229FADED800D109B1 /* New Session View */,
 				297626AD2A09786C00F7BCC4 /* Join Session View */,
@@ -297,7 +283,6 @@
 				29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */,
 				29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */,
 				29E5A54329F81B24008D8834 /* Assets.xcassets in Resources */,
-				29E5A54129F81B23008D8834 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +309,6 @@
 				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
-				29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */,
 				29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
@@ -335,14 +319,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		29E5A53F29F81B23008D8834 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				29E5A54029F81B23008D8834 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		29E5A54429F81B24008D8834 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -490,7 +466,7 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -520,7 +496,7 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
