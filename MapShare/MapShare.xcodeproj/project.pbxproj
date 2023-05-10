@@ -462,8 +462,6 @@
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
@@ -492,8 +490,6 @@
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;

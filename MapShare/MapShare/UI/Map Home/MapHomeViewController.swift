@@ -26,7 +26,6 @@ class MapHomeViewController: UIViewController {
     
     //MARK: - OUTLETS
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var addressLabel: UILabel!
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
@@ -34,18 +33,13 @@ class MapHomeViewController: UIViewController {
         navigationItem.hidesBackButton = true
         registerMapAnnotations()
         setupModalHomeSheetController()
-        checkLocationServices()
         centerViewOnUser()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
+        locationManagerDidChangeAuthorization(locationManager)
     }
     
     // MARK: - IB Actions
-    @IBAction func routeButtonTapped(_ sender: Any) {
-        guard let annotation = self.annotation else { return }
-        getDirections(annotation: annotation )
-    }
-    
     @IBAction func currentLocationButtonTapped(_ sender: Any) {
         centerViewOnUser()
     }
@@ -74,11 +68,6 @@ class MapHomeViewController: UIViewController {
         self.parent?.present(sheetController, animated: true, completion: nil)
     }
     
-    func setUpLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
     func centerViewOnUser() {
         guard let location = locationManager.location?.coordinate else { return }
         let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 1000.0, longitudinalMeters: 1000.0)
@@ -88,10 +77,10 @@ class MapHomeViewController: UIViewController {
     func checkLocationServices() {
         DispatchQueue.global().async {
             if CLLocationManager.locationServicesEnabled() {
-                self.setUpLocationManager()
-                self.checkLocationServices()
+                self.locationManager.delegate = self
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             } else {
-                // Note: - Show alert letting the user know they have to turn this on...
+                self.alertLocationAccessNeeded()
             }
         }
     }
@@ -108,25 +97,6 @@ class MapHomeViewController: UIViewController {
         centerViewOnUser()
         locationManager.startUpdatingLocation()
         previousLocation = getCenterLocation(for: mapView)
-    }
-    
-    func checkLocationAuthorization() {
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            // Note: - Show an alert instructing how to turn on permissions.
-            break
-        case .denied:
-            // Note: - Show an alert instructing how to turn on permissions.
-            break
-        case .authorizedAlways:
-            startTrackingLocation()
-        case .authorizedWhenInUse:
-            startTrackingLocation()
-        @unknown default:
-            break
-        }
     }
     
     @objc func getDirections(annotation: MKAnnotation) {
@@ -172,11 +142,37 @@ class MapHomeViewController: UIViewController {
         directionsArray.append(directions)
         let _ = directionsArray.map { $0.cancel() }
     }
+    
+    func alertLocationAccessNeeded() {
+        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
+        
+        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted", message: "In order to utilize this application, we need access to your location.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Go To Settings", style: .default, handler: { (alert) -> Void in
+            UIApplication.shared.open(settingsAppURL)
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
 } //: CLASS
 
 extension MapHomeViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkLocationAuthorization()
+        checkLocationServices()
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+            break
+        case .restricted, .denied:
+            alertLocationAccessNeeded()
+            break
+        case .authorizedWhenInUse:
+            startTrackingLocation()
+            break
+        default:
+            break
+        }
     }
 } //: LocationManagerDelegate
 
@@ -192,31 +188,6 @@ extension MapHomeViewController: MKMapViewDelegate {
         return annotationView
     }
     
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        guard let previousLocation = self.previousLocation else { return }
-        let center = getCenterLocation(for: mapView)
-        
-        guard center.distance(from: previousLocation) > 50 else { return }
-        self.previousLocation = center
-        
-        geoCoder.cancelGeocode()
-        
-        geoCoder.reverseGeocodeLocation(center) { [weak self] placemarks, _ in
-            guard let self = self else { return }
-            
-            guard let placemark = placemarks?.first else {
-                return
-            }
-            
-            let streetNumber = placemark.subThoroughfare ?? ""
-            let streetName = placemark.thoroughfare ?? ""
-            
-            DispatchQueue.main.async {
-                self.addressLabel.text = "\(streetNumber) \(streetName)"
-            }
-        }
-    }
-    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         renderer.strokeColor = .cyan
@@ -224,11 +195,11 @@ extension MapHomeViewController: MKMapViewDelegate {
         return renderer
     }
     
-    private func registerMapAnnotations() {
+    func registerMapAnnotations() {
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: self.identifier)
     }
     
-    private func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
+    func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
         annotation.title = "Route"
         
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.identifier, for: annotation)
