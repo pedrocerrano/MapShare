@@ -18,6 +18,8 @@ class MapHomeViewController: UIViewController {
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
     var currentCoordinate: CLLocationCoordinate2D?
+    let identifier = "Route"
+    let btn = UIButton(type: .detailDisclosure)
     
     var annotation: CustomAnnotation?
     var customAnnotations: [CustomAnnotation] = []
@@ -30,7 +32,8 @@ class MapHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-//        setupModalHomeSheetController()
+        registerMapAnnotations()
+        setupModalHomeSheetController()
         checkLocationServices()
         centerViewOnUser()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -39,7 +42,8 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func routeButtonTapped(_ sender: Any) {
-        getDirections()
+        guard let annotation = self.annotation else { return }
+        getDirections(annotation: annotation )
     }
     
     @IBAction func currentLocationButtonTapped(_ sender: Any) {
@@ -53,22 +57,22 @@ class MapHomeViewController: UIViewController {
         let annotation = CustomAnnotation(coordinate: coordinate, title: nil, subtitle: nil)
         
         annotation.coordinate = coordinate
-        print("Annotation Coordinates: \(coordinate)")
         customAnnotations.append(annotation)
-
+        
         if customAnnotations.count > 1 {
-            customAnnotations.removeFirst()
-            mapView.removeAnnotation(annotation)
+            mapView.removeAnnotations(customAnnotations)
+            mapView.addAnnotation(annotation)
+        } else {
+            mapView.addAnnotation(annotation)
         }
-        mapView.addAnnotation(annotation)
     }
     
-//    func setupModalHomeSheetController() {
-//        let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
-//        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
-//        sheetController.isModalInPresentation = true
-//        self.parent?.present(sheetController, animated: true, completion: nil)
-//    }
+    func setupModalHomeSheetController() {
+        let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
+        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
+        sheetController.isModalInPresentation = true
+        self.parent?.present(sheetController, animated: true, completion: nil)
+    }
     
     func setUpLocationManager() {
         locationManager.delegate = self
@@ -125,14 +129,14 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    func getDirections() {
+    @objc func getDirections(annotation: MKAnnotation) {
         guard let location = locationManager.location?.coordinate else {
             // Note: - Inform User that we don't have their current location.
             return
         }
-        
-        let request = createDirectionsRequest(from: location)
+        let request = createDirectionsRequest(from: location, annotation: annotation)
         let directions = MKDirections(request: request)
+        
         resetMapView(withNew: directions)
         
         directions.calculate { response, error in
@@ -149,14 +153,12 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request {
-        guard let annotation = annotation else { return MKDirections.Request() }
-        
+    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
         let destinationCoordinate = annotation.coordinate
         let startingLocation = MKPlacemark(coordinate: coordinate)
         let destination = MKPlacemark(coordinate: destinationCoordinate)
-        
         let request = MKDirections.Request()
+        
         request.source = MKMapItem(placemark: startingLocation)
         request.destination = MKMapItem(placemark: destination)
         request.transportType = .automobile
@@ -178,57 +180,21 @@ extension MapHomeViewController: CLLocationManagerDelegate {
     }
 } //: LocationManagerDelegate
 
-extension MapHomeViewController: UIPopoverPresentationControllerDelegate {
-    func showDetails(from view: UIView) {
-        let annotationViewPopover = CustomAnnotationViewController()
-        let popOver = annotationViewPopover.popoverPresentationController
-        popOver?.sourceView = view
-        popOver?.delegate = self
-        present(annotationViewPopover, animated: true, completion: nil)
-    }
-} //: PopoverDelegate
-
 extension MapHomeViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        view.setSelected(true, animated: true)
-        if view.annotation is CustomAnnotation {
-            showDetails(from: view)
-        }
-    }
-
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
-
-        let identifier = "Route"
-
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-
-        if annotationView == nil {
-            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-
-            let btn = UIButton(type: .detailDisclosure)
-            annotationView?.rightCalloutAccessoryView = btn
-        } else {
-            annotationView?.annotation = annotation
+        var annotationView: MKAnnotationView?
+        
+        if let annotation = annotation as? CustomAnnotation {
+             annotationView = setupCustomAnnotations(for: annotation, on: mapView)
         }
+    
         return annotationView
     }
     
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        guard let destination = view.annotation as? CustomAnnotation else { return }
-        let name = destination.title
-        let info = destination.subtitle
-        
-        let ac = UIAlertController(title: name, message: info, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
-    }
-    
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        let center = getCenterLocation(for: mapView)
-
         guard let previousLocation = self.previousLocation else { return }
+        let center = getCenterLocation(for: mapView)
         
         guard center.distance(from: previousLocation) > 50 else { return }
         self.previousLocation = center
@@ -256,5 +222,36 @@ extension MapHomeViewController: MKMapViewDelegate {
         renderer.strokeColor = .cyan
         
         return renderer
+    }
+    
+    private func registerMapAnnotations() {
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: self.identifier)
+    }
+    
+    private func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
+        annotation.title = "Route"
+        
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.identifier, for: annotation)
+        if let markerAnnotationView = view as? MKMarkerAnnotationView {
+            markerAnnotationView.animatesWhenAdded = true
+            markerAnnotationView.canShowCallout = true
+            markerAnnotationView.markerTintColor = UIColor.purple
+            btn.setImage(UIImage(systemName: "location"), for: .normal)
+            markerAnnotationView.leftCalloutAccessoryView = btn
+        }
+        return view
+    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if let customAnnotation = view.annotation, customAnnotation.isKind(of: CustomAnnotation.self) {
+            print("tapped location accessory button")
+            getDirections(annotation: customAnnotation)
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
+        if annotation.isKind(of: CustomAnnotation.self) {
+            self.annotation = (annotation as! CustomAnnotation)
+        }
     }
 } //: MapViewDelegate
