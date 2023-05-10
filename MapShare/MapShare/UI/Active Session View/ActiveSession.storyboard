@@ -53,14 +53,8 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active Members" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JR3-65-Zaq">
-                                <rect key="frame" x="20" y="142.33333333333334" width="353" height="18"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="C8O-20-Xot">
-                                <rect key="frame" x="20" y="168.33333333333331" width="353" height="649.66666666666674"/>
+                                <rect key="frame" x="20" y="119.33333333333331" width="353" height="698.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="activeMemberCell" id="SI3-SA-ukI" customClass="ActiveSessionTableViewCell" customModule="MapShare" customModuleProvider="target">
@@ -196,16 +190,13 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="JR3-65-Zaq" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="0EI-0u-Z46"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="C8O-20-Xot" secondAttribute="bottom" id="6TX-XT-QAF"/>
-                            <constraint firstItem="JR3-65-Zaq" firstAttribute="top" secondItem="lFu-oK-EI6" secondAttribute="bottom" constant="25" id="6iY-2r-lat"/>
                             <constraint firstItem="lFu-oK-EI6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="8Ob-DI-O9P"/>
                             <constraint firstItem="C8O-20-Xot" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="9iM-DG-Vk7"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="JR3-65-Zaq" secondAttribute="trailing" constant="20" id="Cjz-yV-zdC"/>
                             <constraint firstItem="lFu-oK-EI6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="bdG-c3-0ko"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="C8O-20-Xot" secondAttribute="trailing" constant="20" id="bhI-ZR-Kns"/>
+                            <constraint firstItem="C8O-20-Xot" firstAttribute="top" secondItem="lFu-oK-EI6" secondAttribute="bottom" constant="2" id="pe9-5r-uyA"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="lFu-oK-EI6" secondAttribute="trailing" constant="20" id="sDq-Wl-w4E"/>
-                            <constraint firstItem="C8O-20-Xot" firstAttribute="top" secondItem="JR3-65-Zaq" secondAttribute="bottom" constant="8" id="zu9-04-IHG"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hTG-Vy-HR8"/>
