@@ -12,7 +12,11 @@
 		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
 		295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */; };
 		295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */; };
+		297626AF2A09788C00F7BCC4 /* JoinSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */; };
+		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
+		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
+		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
 		29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B308332A02A02900470D52 /* OnboardingViewController.swift */; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
 		29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53B29F81B23008D8834 /* SceneDelegate.swift */; };
@@ -28,6 +32,7 @@
 		29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */; };
 		29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EB7FD82A03DFC600F2242F /* MapHome.storyboard */; };
 		29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB7FDD2A04078500F2242F /* String+Ext.swift */; };
+		29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */; };
 		29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29F859A72A0187BF00A53792 /* GoogleService-Info.plist */; };
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
@@ -40,7 +45,11 @@
 		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
 		295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionTableViewCell.swift; sourceTree = "<group>"; };
 		295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewModel.swift; sourceTree = "<group>"; };
+		297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = JoinSession.storyboard; sourceTree = "<group>"; };
+		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
+		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
+		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
 		29B308332A02A02900470D52 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		29E5A53629F81B23008D8834 /* MapShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5A53929F81B23008D8834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +67,7 @@
 		29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewSession.storyboard; sourceTree = "<group>"; };
 		29EB7FD92A03DFC600F2242F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MapShare/Storyboards/Base.lproj/MapHome.storyboard; sourceTree = "<group>"; };
 		29EB7FDD2A04078500F2242F /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomTableViewCell.swift; sourceTree = "<group>"; };
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
@@ -90,8 +100,19 @@
 			isa = PBXGroup;
 			children = (
 				295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */,
+				29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */,
 			);
 			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		297626AD2A09786C00F7BCC4 /* Join Session View */ = {
+			isa = PBXGroup;
+			children = (
+				297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */,
+				297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */,
+				297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */,
+			);
+			path = "Join Session View";
 			sourceTree = "<group>";
 		};
 		29B308322A028A1700470D52 /* Onboarding View */ = {
@@ -161,6 +182,7 @@
 				29E6A0CD29FADE2000D109B1 /* Constants.swift */,
 				29F859AC2A018A7500A53792 /* FirebaseService.swift */,
 				29883D922A056F6700DB2D96 /* Detents.swift */,
+				29912B622A0BDFDF00EA9995 /* UIElements.swift */,
 			);
 			path = "Helper Files";
 			sourceTree = "<group>";
@@ -171,6 +193,7 @@
 				29B308322A028A1700470D52 /* Onboarding View */,
 				29E6A0D129FADECF00D109B1 /* Map Home */,
 				29E6A0D229FADED800D109B1 /* New Session View */,
+				297626AD2A09786C00F7BCC4 /* Join Session View */,
 				2950792F2A0308FF0059D774 /* Active Session View */,
 			);
 			path = UI;
@@ -268,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29E5A54629F81B24008D8834 /* LaunchScreen.storyboard in Resources */,
+				297626AF2A09788C00F7BCC4 /* JoinSession.storyboard in Resources */,
 				295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */,
 				29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */,
 				29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */,
@@ -295,10 +319,14 @@
 				29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */,
 				295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */,
 				29E6A0CE29FADE2000D109B1 /* Constants.swift in Sources */,
+				297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */,
 				29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */,
 				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
+				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
+				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
 				29B308342A02A02900470D52 /* OnboardingViewController.swift in Sources */,
 				29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */,
+				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
 			);
@@ -458,6 +486,8 @@
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -486,6 +516,8 @@
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to use this app, you must allow access to your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

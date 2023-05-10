@@ -10,6 +10,7 @@ import UIKit
 class NewSessionViewController: UIViewController {
     
     //MARK: - OUTLETS
+    @IBOutlet weak var newMapShareTitleLabel: UILabel!
     @IBOutlet weak var sessionNameTextField: UITextField!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -30,26 +31,26 @@ class NewSessionViewController: UIViewController {
         super.viewDidLoad()
         newSessionViewModel = NewSessionViewModel()
         configureSheetPresentationController()
+        newSessionViewModel.getDummyTESTSession()
     }
     
     
     //MARK: - IB ACTIONS
-    @IBAction func mapSearchButtonTapped(_ sender: Any) {
-        
-    }
-    
     @IBAction func mapShareButtonTapped(_ sender: Any) {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
         }
     }
     
+    @IBAction func mapSearchButtonTapped(_ sender: Any) {
+        
+    }
     
     @IBAction func createSessionButtonTapped(_ sender: Any) {
         guard let sessionName = sessionNameTextField.text,
-              let firstName = firstNameTextField.text,
-              let lastName = lastNameTextField.text,
-              let screenName = screenNameTextField.text else { return }
+              let firstName   = firstNameTextField.text,
+              let lastName    = lastNameTextField.text,
+              let screenName  = screenNameTextField.text else { return }
         let markerColor = "BLUE"
         let highlandVillageLat: Double = 33.08484
         let highlandVillageLon: Double = -97.05305
@@ -128,6 +129,10 @@ class NewSessionViewController: UIViewController {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = newSessionViewModel.session else { return }
             destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
+        } else {
+            guard let destinationVC = segue.destination as? ActiveSessionViewController,
+                  let testSession = newSessionViewModel.testSession else { return }
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: testSession)
         }
     }
 } //: CLASS

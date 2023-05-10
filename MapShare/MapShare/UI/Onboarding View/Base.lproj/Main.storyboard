@@ -35,32 +35,13 @@
                                     <segue destination="adS-De-I48" kind="show" id="588-Up-EQz"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active Session" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sj6-T5-hBo">
-                                <rect key="frame" x="127" y="402" width="139" height="27"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJA-nc-esQ">
-                                <rect key="frame" x="118" y="449" width="157" height="45"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="JOIN">
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="24"/>
-                                </buttonConfiguration>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gv1-mb-ZIg"/>
                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
                         <constraints>
-                            <constraint firstItem="lJA-nc-esQ" firstAttribute="width" secondItem="8OY-b1-jT9" secondAttribute="width" multiplier="0.4" id="02d-53-rf5"/>
                             <constraint firstItem="EU9-rU-xc6" firstAttribute="centerX" secondItem="Gv1-mb-ZIg" secondAttribute="centerX" id="BxF-xw-r5N"/>
-                            <constraint firstItem="lJA-nc-esQ" firstAttribute="centerX" secondItem="Gv1-mb-ZIg" secondAttribute="centerX" id="WjE-g4-4uI"/>
                             <constraint firstItem="EU9-rU-xc6" firstAttribute="top" secondItem="L1Z-C4-YdZ" secondAttribute="bottom" constant="20" id="ZjX-3v-DIH"/>
-                            <constraint firstItem="Sj6-T5-hBo" firstAttribute="centerX" secondItem="EU9-rU-xc6" secondAttribute="centerX" id="eI1-2o-hCA"/>
-                            <constraint firstItem="Sj6-T5-hBo" firstAttribute="top" secondItem="EU9-rU-xc6" secondAttribute="bottom" constant="120" id="gaS-Zp-rGd"/>
                             <constraint firstItem="L1Z-C4-YdZ" firstAttribute="centerX" secondItem="Gv1-mb-ZIg" secondAttribute="centerX" id="hXb-bc-gy9"/>
-                            <constraint firstItem="lJA-nc-esQ" firstAttribute="height" secondItem="EU9-rU-xc6" secondAttribute="height" id="lzf-Eg-8TX"/>
-                            <constraint firstItem="lJA-nc-esQ" firstAttribute="top" secondItem="Sj6-T5-hBo" secondAttribute="bottom" constant="20" id="r7V-OU-CPq"/>
                             <constraint firstItem="L1Z-C4-YdZ" firstAttribute="top" secondItem="Gv1-mb-ZIg" secondAttribute="top" constant="60" id="rpL-RT-T1A"/>
                             <constraint firstItem="EU9-rU-xc6" firstAttribute="width" secondItem="8OY-b1-jT9" secondAttribute="width" multiplier="0.4" id="ttK-uN-D63"/>
                         </constraints>
@@ -97,7 +78,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r3u-uI-fBa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1934" y="18"/>
+            <point key="canvasLocation" x="1955" y="18"/>
         </scene>
     </scenes>
     <resources>
