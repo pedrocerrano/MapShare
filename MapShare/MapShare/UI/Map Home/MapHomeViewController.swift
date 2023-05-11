@@ -18,17 +18,21 @@ class MapHomeViewController: UIViewController {
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
     var currentCoordinate: CLLocationCoordinate2D?
+    
     let routeIdentifier = "Route"
     let memberIdentifier = "Member"
+    
     let btn = UIButton(type: .detailDisclosure)
+    
+    let service = FirebaseService()
     
     var annotation: CustomAnnotation?
     var customAnnotations: [CustomAnnotation] = []
-    
-    var member: Member = Member(firstName: "Scotty", lastName: "Ayers", screenName: "Pedro", mapMarkerColor: "Red", memberUUID: "", isOrganizer: false, isActive: true, currentLocLatitude: 34.235, currentLocLongitude: -84.29)
+
+    var loadedMembers: [Member] = []
     var memberAnnotation: MemberAnnotation?
     var memberAnnotations: [MemberAnnotation] = []
-    
+        
     //MARK: - OUTLETS
     @IBOutlet weak var mapView: MKMapView!
     
@@ -42,7 +46,7 @@ class MapHomeViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
         locationManagerDidChangeAuthorization(locationManager)
-        showMemberLocation()
+        showMembersLocation()
     }
     
     // MARK: - IB Actions
@@ -69,10 +73,21 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    func showMemberLocation() {
-        let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName)
-        memberAnnotations.append(memberLocation)
-        mapView.addAnnotation(memberLocation)
+    func showMembersLocation() {
+        service.forChaseTESTING(completion: { result in
+            switch result {
+            case .success(let session):
+                guard let membersArray = session?.members else { return }
+                let filteredMembers = membersArray.filter { $0.isActive == true }
+                for member in filteredMembers {
+                    let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: member.mapMarkerColor)
+                    self.memberAnnotations.append(memberLocation)
+                    self.mapView.addAnnotation(memberLocation)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
     }
     
     func setupModalHomeSheetController() {
@@ -219,7 +234,7 @@ extension MapHomeViewController: MKMapViewDelegate {
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout = true
-            markerAnnotationView.markerTintColor = UIColor.purple
+            markerAnnotationView.markerTintColor = UIColor.black
             btn.setImage(UIImage(systemName: "location"), for: .normal)
             markerAnnotationView.leftCalloutAccessoryView = btn
         }
