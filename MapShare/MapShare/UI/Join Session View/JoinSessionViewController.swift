@@ -76,10 +76,10 @@ class JoinSessionViewController: UIViewController {
             memberScreenNameTextField.resignFirstResponder()
             memberScreenNameTextField.text?.removeAll()
             waitingStatusLabel.isHidden = false
+            NotificationCenter.default.post(name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
+            
             waitingStatusLabel.text = "Waiting for admission"
             #warning("Setup Activity Indicator")
-            
-            NotificationCenter.default.post(name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
         }
         
     }
@@ -134,8 +134,9 @@ class JoinSessionViewController: UIViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toJoinActiveSessionVC" {
-//            guard let destinationVC = segue.destination as? ActiveSessionViewController,
-//                  let member
+            guard let destinationVC = segue.destination as? ActiveSessionViewController,
+                  let session = joinSessionViewModel.searchedSession else { return }
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
         }
     }
 } //: CLASS

@@ -13,33 +13,38 @@ class NewSessionViewModel {
     var session: Session?
     let service: FirebaseService
     
-    var testSession: Session?
+    var scottTestSession: Session?
+    var chaseTestSession: Session?
     
-    init(session: Session? = nil, service: FirebaseService = FirebaseService(), testSession: Session? = nil) {
+    init(session: Session? = nil, service: FirebaseService = FirebaseService(), scottTestSession: Session? = nil, chaseTestSession: Session? = nil) {
         self.session   = session
         self.service   = service
-        self.testSession = testSession
+        self.scottTestSession = scottTestSession
+        self.chaseTestSession = chaseTestSession
     }
     
     
     //MARK: - FUNCTIONS
     func createNewMapShareSession(sessionName: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
-        let organizerUUID = UUID().uuidString
-        let organizer     = Member(firstName: firstName,
-                                   lastName: lastName,
-                                   screenName: screenName,
-                                   mapMarkerColor: markerColor,
-                                   memberUUID: organizerUUID,
-                                   isOrganizer: true,
-                                   isActive: true,
-                                   currentLocLatitude: organizerLatitude,
-                                   currentLocLongitude: organizerLongitude)
+        let organizerUUID           = UUID().uuidString
+        guard let organizerDeviceID = Constants.Device.deviceID else { return }
+        let organizer               = Member(firstName: firstName,
+                                             lastName: lastName,
+                                             screenName: screenName,
+                                             mapMarkerColor: markerColor,
+                                             memberUUID: organizerUUID,
+                                             memberDeviceID: organizerDeviceID,
+                                             isOrganizer: true,
+                                             isActive: true,
+                                             currentLocLatitude: organizerLatitude,
+                                             currentLocLongitude: organizerLongitude)
         
         let sessionUUID = UUID().uuidString
         let sessionCode = String.generateRandomCode()
         let newSession  = Session(sessionName: sessionName,
                                   sessionUUID: sessionUUID,
                                   sessionCode: sessionCode,
+                                  organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
                                   destination: [],
                                   isActive: true)
@@ -48,12 +53,24 @@ class NewSessionViewModel {
         service.saveNewSessionToFirestore(newSession: newSession)
     }
     
-    func getDummyTESTSession() {
-        service.forTESTING { result in
+    func getScottTESTSession() {
+        service.forScottTESTING { result in
             switch result {
-            case .success(let testSession):
-                guard let testSession else { return }
-                self.testSession = testSession
+            case .success(let scottTestSession):
+                guard let scottTestSession else { return }
+                self.scottTestSession = scottTestSession
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func getChaseTESTSession() {
+        service.forChaseTESTING { result in
+            switch result {
+            case .success(let chaseTestSession):
+                guard let chaseTestSession else { return }
+                self.chaseTestSession = chaseTestSession
             case .failure(let error):
                 print(error.localizedDescription)
             }

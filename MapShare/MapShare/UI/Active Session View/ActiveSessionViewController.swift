@@ -34,14 +34,14 @@ class ActiveSessionViewController: UIViewController {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
         configureUI()
+        setupNotifications()
         activeSessionViewModel.loadSession()
     }
     
     
     //MARK: - IB ACTIONS
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
-        #warning("How do I make it so that the index below is any member?")
-        if activeSessionViewModel.session.members[0].isOrganizer == true {
+        if Constants.Device.deviceID == activeSessionViewModel.session.organizerDeviceID {
             organizerEndedActiveSessionAlert()
         } else {
             memberExitsActiveSessionAlert()
@@ -66,6 +66,15 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
     }
     
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(newMemberWaitingToJoin), name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
+    }
+    
+    @objc func newMemberWaitingToJoin() {
+        activeSessionTableView.reloadData()
+    }
+    
+    
     
     //MARK: - ALERTS
     func organizerEndedActiveSessionAlert() {
@@ -89,6 +98,8 @@ class ActiveSessionViewController: UIViewController {
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             #warning("Add Firestore delete member from session and trigger all views to refresh/reload")
+            guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
+            #warning("The above member is the member to pass into Firestore to delete")
         }
         memberExitsActiveSessionAlertController.addAction(dismissAction)
         memberExitsActiveSessionAlertController.addAction(confirmAction)
@@ -107,9 +118,9 @@ class ActiveSessionViewController: UIViewController {
 
 
 //MARK: - EXT: TableViewDataSource and Delegate
-extension ActiveSessionViewController: UITableViewDataSource,UITableViewDelegate {
+extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return activeSessionViewModel.sectionTitles.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -16,14 +16,14 @@ class JoinSessionViewModel {
     
     //MARK: - PROPERTIES
     var validSessionCode = ""
-    var member: Member?
+    var searchedSession: Session?
     var service: FirebaseService
     private weak var delegate: JoinSessionViewModelDelegate?
     
-    init(member: Member? = nil, service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate) {
-        self.member   = member
-        self.service  = service
-        self.delegate = delegate
+    init(session: Session? = nil, service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate) {
+        self.searchedSession   = session
+        self.service           = service
+        self.delegate          = delegate
     }
     
     
@@ -31,32 +31,32 @@ class JoinSessionViewModel {
     func searchFirebase(with code: String) {
         service.searchFirebaseForActiveSession(withCode: code) { result in
             switch result {
-            case .success(let bool):
-                if bool == true {
-                    self.delegate?.sessionExists()
-                } else {
-                    self.delegate?.noSessionFoundWithCode()
-                }
+            case .success(let searchedSession):
+                self.delegate?.sessionExists()
+                self.searchedSession = searchedSession
             case .failure(let error):
+                self.delegate?.noSessionFoundWithCode()
                 print(error.localizedDescription)
             }
         }
     }
     
     func addNewMemberToActiveSession(withCode validCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, memberLatitude: Double, memberLongitude: Double) {
-        let newMemberUUID = UUID().uuidString
-        let newMember     = Member(firstName: firstName,
-                                   lastName: lastName,
-                                   screenName: screenName,
-                                   mapMarkerColor: markerColor,
-                                   memberUUID: newMemberUUID,
-                                   isOrganizer: false,
-                                   isActive: false,
-                                   currentLocLatitude: memberLatitude,
-                                   currentLocLongitude: memberLongitude)
-        member = newMember
-        service.addMemberToSessionOnFirestore(withCode: validCode, member: newMember) {
-            #warning("Work on the waiting room Activity Indicator")
+        let newMemberUUID        = UUID().uuidString
+        guard let memberDeviceID = Constants.Device.deviceID else { return }
+        let newMember            = Member(firstName: firstName,
+                                          lastName: lastName,
+                                          screenName: screenName,
+                                          mapMarkerColor: markerColor,
+                                          memberUUID: newMemberUUID,
+                                          memberDeviceID: memberDeviceID,
+                                          isOrganizer: false,
+                                          isActive: false,
+                                          currentLocLatitude: memberLatitude,
+                                          currentLocLongitude: memberLongitude)
+        searchedSession?.members.append(newMember)
+        service.appendMemberToSessionOnFirestore(withCode: validCode, member: newMember) {
+        #warning("Work on the waiting room Activity Indicator")
         }
     }
 }
