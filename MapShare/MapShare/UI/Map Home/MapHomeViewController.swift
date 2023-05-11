@@ -18,11 +18,16 @@ class MapHomeViewController: UIViewController {
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
     var currentCoordinate: CLLocationCoordinate2D?
-    let identifier = "Route"
+    let routeIdentifier = "Route"
+    let memberIdentifier = "Member"
     let btn = UIButton(type: .detailDisclosure)
     
     var annotation: CustomAnnotation?
     var customAnnotations: [CustomAnnotation] = []
+    
+    var member: Member = Member(firstName: "Scotty", lastName: "Ayers", screenName: "Pedro", mapMarkerColor: "Red", memberUUID: "", isOrganizer: false, isActive: true, currentLocLatitude: 34.235, currentLocLongitude: -84.29)
+    var memberAnnotation: MemberAnnotation?
+    var memberAnnotations: [MemberAnnotation] = []
     
     //MARK: - OUTLETS
     @IBOutlet weak var mapView: MKMapView!
@@ -37,6 +42,7 @@ class MapHomeViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
         locationManagerDidChangeAuthorization(locationManager)
+        showMemberLocation()
     }
     
     // MARK: - IB Actions
@@ -48,9 +54,11 @@ class MapHomeViewController: UIViewController {
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        let annotation = CustomAnnotation(coordinate: coordinate, title: nil, subtitle: nil)
+        let annotation = CustomAnnotation(coordinate: coordinate, title: nil)
         
         annotation.coordinate = coordinate
+        print(annotation.coordinate)
+        
         customAnnotations.append(annotation)
         
         if customAnnotations.count > 1 {
@@ -59,6 +67,12 @@ class MapHomeViewController: UIViewController {
         } else {
             mapView.addAnnotation(annotation)
         }
+    }
+    
+    func showMemberLocation() {
+        let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName)
+        memberAnnotations.append(memberLocation)
+        mapView.addAnnotation(memberLocation)
     }
     
     func setupModalHomeSheetController() {
@@ -184,7 +198,6 @@ extension MapHomeViewController: MKMapViewDelegate {
         if let annotation = annotation as? CustomAnnotation {
              annotationView = setupCustomAnnotations(for: annotation, on: mapView)
         }
-    
         return annotationView
     }
     
@@ -196,13 +209,13 @@ extension MapHomeViewController: MKMapViewDelegate {
     }
     
     func registerMapAnnotations() {
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: self.identifier)
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: self.routeIdentifier)
     }
     
     func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
         annotation.title = "Route"
         
-        let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.identifier, for: annotation)
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.routeIdentifier, for: annotation)
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout = true
