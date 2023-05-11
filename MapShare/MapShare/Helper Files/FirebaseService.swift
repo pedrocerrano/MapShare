@@ -65,6 +65,21 @@ struct FirebaseService {
         completion()
     }
     
+    func listenForChangesToSession(forSession sessionCode: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document(sessionCode).addSnapshotListener { documentSnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+            
+            guard let documentSnapshot else { completion(.failure(.noDataFound)) ; return }
+            if let updatedData = documentSnapshot.data() {
+                if let updatedSession = Session(fromSessionDictionary: updatedData) {
+                    completion(.success(updatedSession))
+                }
+            }
+        }
+    }
+    
     func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
         
     }

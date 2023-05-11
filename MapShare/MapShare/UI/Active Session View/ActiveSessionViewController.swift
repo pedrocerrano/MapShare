@@ -36,6 +36,7 @@ class ActiveSessionViewController: UIViewController {
         configureUI()
         setupNotifications()
         activeSessionViewModel.loadSession()
+        activeSessionViewModel.updateSession()
     }
     
     
@@ -71,7 +72,7 @@ class ActiveSessionViewController: UIViewController {
     }
     
     @objc func newMemberWaitingToJoin() {
-        activeSessionTableView.reloadData()
+        activeSessionViewModel.loadSession()
     }
     
     
@@ -162,3 +163,15 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         return UITableViewCell()
     }
 } //: TableView
+
+
+//MARK: - EXT: ViewModelDelegate
+extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
+    func sessionLoadedSuccessfully() {
+        activeSessionTableView.reloadData()
+    }
+    
+    func sessionDataUpdated() {
+        activeSessionTableView.reloadData()
+    }
+} //: ViewModelDelegate

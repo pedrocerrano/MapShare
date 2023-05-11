@@ -136,7 +136,7 @@ class JoinSessionViewController: UIViewController {
         if segue.identifier == "toJoinActiveSessionVC" {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = joinSessionViewModel.searchedSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self)
         }
     }
 } //: CLASS
