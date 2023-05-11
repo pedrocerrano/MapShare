@@ -24,7 +24,7 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.collectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
     }
     
-    func loadSessionFromFirestore(forSession session: Session, completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
+    func loadSessionFromFirestore(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
         ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).getDocument { document, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -33,9 +33,11 @@ struct FirebaseService {
             }
             
             guard let document else { completion(.failure(.noDataFound)) ; return }
-            let session = document.data().map { Session(fromSessionDictionary: $0) }
-            guard let session else { return }
-            completion(.success(session))
+            if let newData = document.data() {
+                if let session = Session(fromSessionDictionary: newData) {
+                    completion(.success(session))
+                }
+            }
         }
     }
     
@@ -43,24 +45,28 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).delete()
     }
     
-    func searchFirebaseForActiveSession(withCode codeEntered: String, completion: @escaping(Result<Bool, FirebaseError>) -> Void) {
+    func searchFirebaseForActiveSession(withCode codeEntered: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
         ref.collection(Session.SessionKey.collectionType).document(codeEntered).getDocument { document, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
             
             guard let document else { completion(.failure(.noDataFound)) ; return }
-            let session = document.data().map { Session(fromSessionDictionary: $0) }
-            guard let session else { completion(.success(false)) ; return }
-            if session?.sessionCode == codeEntered {
-                completion(.success(true))
+            if let newData = document.data() {
+                if let session = Session(fromSessionDictionary: newData) {
+                    completion(.success(session))
+                }
             }
         }
     }
     
-    func addMemberToSessionOnFirestore(withCode sessionCode: String, member: Member, completion: @escaping() -> Void) {
+    func appendMemberToSessionOnFirestore(withCode sessionCode: String, member: Member, completion: @escaping() -> Void) {
         ref.collection(Session.SessionKey.collectionType).document(sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayUnion([member.memberDictionaryRepresentation])])
         completion()
+    }
+    
+    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
+        
     }
     
     func deleteMemberFromFirestore() {
@@ -83,8 +89,23 @@ struct FirebaseService {
         
     }
     
-    func forTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document("9486YS").getDocument { document, error in
+    func forScottTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document("HZ5MB0").getDocument { document, error in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(.failure(.firebaseError(error)))
+                return
+            }
+            
+            guard let document else { completion(.failure(.noDataFound)) ; return }
+            let session = document.data().map { Session(fromSessionDictionary: $0) }
+            guard let session else { return }
+            completion(.success(session))
+        }
+    }
+    
+    func forChaseTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.collectionType).document("HZ5MB0").getDocument { document, error in
             if let error = error {
                 print(error.localizedDescription)
                 completion(.failure(.firebaseError(error)))

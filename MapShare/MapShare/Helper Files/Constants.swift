@@ -8,6 +8,10 @@
 import UIKit
 
 struct Constants {
+    
+    struct Device {
+        static let deviceID = UIDevice.current.identifierForVendor?.uuidString
+    }
 
     struct Notifications {
         static let newMemberWaitingToJoin = Notification.Name("newMemberWaitingToJoin")
