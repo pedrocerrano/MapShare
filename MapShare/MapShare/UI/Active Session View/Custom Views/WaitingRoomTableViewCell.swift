@@ -17,21 +17,22 @@ class WaitingRoomTableViewCell: UITableViewCell {
 
     
     //MARK: - IB ACTIONS
-    @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
-        
-    }
-    
     @IBAction func admitNewMemberButtonTapped(_ sender: Any) {
         
     }
     
+    @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
+        
+    }
+        
     
     //MARK: - FUNCTIONS
     func configureWaitingRoomCell(withMember member: Member) {
         waitingRoomMemberNameLabel.text = "\(member.firstName) \(member.lastName)"
         waitingRoomScreenNameLabel.text = member.screenName
         
-        UIElements.configureButton(for: denyNewMemberButton, withColor: UIElements.Color.mapShareRed)
         UIElements.configureButton(for: admitNewMemberButton, withColor: UIElements.Color.mapShareGreen)
+        UIElements.configureButton(for: denyNewMemberButton, withColor: UIElements.Color.mapShareRed)
     }
+    
 } //: CLASS
