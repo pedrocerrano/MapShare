@@ -88,23 +88,16 @@ class ActiveSessionViewController: UIViewController {
         let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            #warning("Add Firestore delete member from session and trigger all views to refresh/reload")
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
-            #warning("The above member is the member to pass into Firestore to delete")
+            self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.sheetPresentationController.animateChanges {
+                self.sheetPresentationController.dismissalTransitionWillBegin()
+            }
         }
         memberExitsActiveSessionAlertController.addAction(dismissAction)
         memberExitsActiveSessionAlertController.addAction(confirmAction)
         present(memberExitsActiveSessionAlertController, animated: true)
     }
-    
-
-    /*
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-    }
-    */
-
 } //: CLASS
 
 
@@ -141,8 +134,9 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         case 1:
             guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
             
-            let member = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
-            waitingRoomCell.configureWaitingRoomCell(withMember: member)
+            let activeSession = activeSessionViewModel.session
+            let member        = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
+            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member)
             
             return waitingRoomCell
         default:

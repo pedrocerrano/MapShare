@@ -84,8 +84,8 @@ struct FirebaseService {
         
     }
     
-    func deleteMemberFromFirestore() {
-        
+    func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
+        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayRemove([member.memberDictionaryRepresentation])])
     }
     
     func saveNewDestinationToFirestore() {

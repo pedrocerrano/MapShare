@@ -14,7 +14,8 @@ struct Constants {
     }
 
     struct Notifications {
-        static let displayActiveSession = Notification.Name("displayActiveSession")
+        static let admitNewMember = Notification.Name("admitNewMember")
+        static let denyNewMember  = Notification.Name("denyNewMember")
     }
     
     struct AdmitDenyButtonUI {
