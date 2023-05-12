@@ -58,4 +58,13 @@ class ActiveSessionViewModel {
     func deleteMemberFromActiveSession(fromSession session: Session, forMember member: Member) {
         service.deleteMemberFromFirestore(fromSession: session, member: member)
     }
+    
+    func admitNewMember(forSession session: Session, withMember member: Member) {
+        service.admitMemberToActiveSessionOnFirestore(forSession: session, forMember: member)
+    }
+    
+    func denyNewMember(forSession session: Session, withMember member: Member) {
+        service.deleteMemberFromFirestore(fromSession: session, member: member)
+        print("Deleted")
+    }
 }

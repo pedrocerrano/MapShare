@@ -82,10 +82,11 @@ struct FirebaseService {
     
     func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
         ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayUnion([member.memberDictionaryRepresentation])])
+        #warning("This CREATES a NEW member and does not update. Need to refactor.")
     }
     
     func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
-        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayRemove([member.isActive])])
+        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayRemove([member.memberDictionaryRepresentation])])
     }
     
     func saveNewDestinationToFirestore() {

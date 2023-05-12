@@ -29,11 +29,11 @@ class ActiveSessionViewController: UIViewController {
         super.viewDidLoad()
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate   = self
+        configureUI()
         configureSheetPresentationController()
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        configureUI()
         activeSessionViewModel.loadSession()
         activeSessionViewModel.updateSession()
     }
@@ -58,13 +58,12 @@ class ActiveSessionViewController: UIViewController {
         sessionControlButton.layer.cornerRadius = sessionControlButton.frame.height / 2
     }
     
-    
     func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
-    }   
+    }
     
     
     //MARK: - ALERTS
@@ -137,6 +136,14 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             let activeSession = activeSessionViewModel.session
             let member        = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
             waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member)
+            
+            waitingRoomCell.admitButtonTapped = {
+                member.isActive = true
+                self.activeSessionViewModel.admitNewMember(forSession: activeSession, withMember: member)
+            }
+            waitingRoomCell.denyButtonTapped = {
+                self.activeSessionViewModel.denyNewMember(forSession: activeSession, withMember: member)
+            }
             
             return waitingRoomCell
         default:

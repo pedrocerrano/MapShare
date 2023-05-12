@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol WaitingRoomTableViewCellDelegate: AnyObject {
-    func admitMember()
-    func denyMember()
-}
-
 class WaitingRoomTableViewCell: UITableViewCell {
 
     //MARK: - OUTLETS
@@ -22,16 +17,17 @@ class WaitingRoomTableViewCell: UITableViewCell {
 
     
     //MARK: - PROPERTIES
-    weak var delegate: WaitingRoomTableViewCellDelegate?
+    var admitButtonTapped: (() -> ()) = {}
+    var denyButtonTapped: (() -> ()) = {}
     
     
     //MARK: - IB ACTIONS
     @IBAction func admitNewMemberButtonTapped(_ sender: Any) {
-        delegate?.admitMember()
+        admitButtonTapped()
     }
     
     @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
-        delegate?.denyMember()
+        denyButtonTapped()
     }
         
     
