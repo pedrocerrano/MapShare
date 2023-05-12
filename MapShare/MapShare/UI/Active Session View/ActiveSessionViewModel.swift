@@ -54,4 +54,8 @@ class ActiveSessionViewModel {
     func deleteSession() {
         service.deleteSessionFromFirestore(session: session)
     }
+    
+    func deleteMemberFromActiveSession(forMember member: Member) {
+        
+    }
 }

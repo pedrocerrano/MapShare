@@ -14,7 +14,7 @@ struct Constants {
     }
 
     struct Notifications {
-        static let newMemberWaitingToJoin = Notification.Name("newMemberWaitingToJoin")
+        static let displayActiveSession = Notification.Name("displayActiveSession")
     }
     
     struct AdmitDenyButtonUI {

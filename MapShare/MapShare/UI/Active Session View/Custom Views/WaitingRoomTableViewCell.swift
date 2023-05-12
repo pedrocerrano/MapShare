@@ -31,8 +31,13 @@ class WaitingRoomTableViewCell: UITableViewCell {
         waitingRoomMemberNameLabel.text = "\(member.firstName) \(member.lastName)"
         waitingRoomScreenNameLabel.text = member.screenName
         
+        
         UIElements.configureButton(for: admitNewMemberButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.configureButton(for: denyNewMemberButton, withColor: UIElements.Color.mapShareRed)
+        if Constants.Device.deviceID == member.memberDeviceID {
+            admitNewMemberButton.isHidden = true
+            denyNewMemberButton.isHidden  = true
+        }
     }
     
 } //: CLASS

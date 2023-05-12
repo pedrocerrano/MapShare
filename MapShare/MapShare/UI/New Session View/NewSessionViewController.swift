@@ -43,6 +43,14 @@ class NewSessionViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func joinSessionButtonTapped(_ sender: Any) {
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
+        }
+    }
+    
+    
     @IBAction func mapSearchButtonTapped(_ sender: Any) {
         
     }
@@ -94,6 +102,7 @@ class NewSessionViewController: UIViewController {
     }
     
     func displayActiveSessionSheetController() {
+        #warning("This function never gets called")
         let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
         sheetController.isModalInPresentation = true

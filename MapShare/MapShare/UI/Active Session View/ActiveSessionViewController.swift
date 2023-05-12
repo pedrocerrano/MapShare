@@ -34,7 +34,6 @@ class ActiveSessionViewController: UIViewController {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
         configureUI()
-        setupNotifications()
         activeSessionViewModel.loadSession()
         activeSessionViewModel.updateSession()
     }
@@ -65,16 +64,7 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
-    }
-    
-    func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(newMemberWaitingToJoin), name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
-    }
-    
-    @objc func newMemberWaitingToJoin() {
-        activeSessionViewModel.loadSession()
-    }
-    
+    }   
     
     
     //MARK: - ALERTS
