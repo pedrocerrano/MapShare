@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol WaitingRoomTableViewCellDelegate: AnyObject {
+    func admitMember()
+    func denyMember()
+}
+
 class WaitingRoomTableViewCell: UITableViewCell {
 
     //MARK: - OUTLETS
@@ -16,17 +21,17 @@ class WaitingRoomTableViewCell: UITableViewCell {
     @IBOutlet weak var admitNewMemberButton: UIButton!
 
     
+    //MARK: - PROPERTIES
+    weak var delegate: WaitingRoomTableViewCellDelegate?
+    
+    
     //MARK: - IB ACTIONS
     @IBAction func admitNewMemberButtonTapped(_ sender: Any) {
-        func admitMember(member: Member) {
-            
-        }
+        delegate?.admitMember()
     }
     
     @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
-        func denyMember(member: Member) {
-            
-        }
+        delegate?.denyMember()
     }
         
     
@@ -42,6 +47,7 @@ class WaitingRoomTableViewCell: UITableViewCell {
             admitNewMemberButton.isHidden = true
             denyNewMemberButton.isHidden  = true
         }
+
     }
     
 } //: CLASS

@@ -12,6 +12,7 @@
 		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
 		295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */; };
 		295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */; };
+		296FC6902A0EA06100667CBF /* WaitingRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296FC68F2A0EA06100667CBF /* WaitingRoomViewModel.swift */; };
 		297626AF2A09788C00F7BCC4 /* JoinSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */; };
 		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
@@ -43,6 +44,7 @@
 		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
 		295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionTableViewCell.swift; sourceTree = "<group>"; };
 		295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewModel.swift; sourceTree = "<group>"; };
+		296FC68F2A0EA06100667CBF /* WaitingRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewModel.swift; sourceTree = "<group>"; };
 		297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = JoinSession.storyboard; sourceTree = "<group>"; };
 		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			children = (
 				295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */,
 				29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */,
+				296FC68F2A0EA06100667CBF /* WaitingRoomViewModel.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */,
 				29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */,
 				295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */,
+				296FC6902A0EA06100667CBF /* WaitingRoomViewModel.swift in Sources */,
 				29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */,
 				29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */,
 				295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */,
