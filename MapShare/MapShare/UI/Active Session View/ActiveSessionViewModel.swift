@@ -32,7 +32,15 @@ class ActiveSessionViewModel {
             switch result {
             case .success(let loadedSession):
                 self.session = loadedSession
-                self.delegate?.sessionLoadedSuccessfully()
+                self.service.loadMembersFromFirestoreForSession(forSession: loadedSession) { result in
+                    switch result {
+                    case .success(let members):
+                        self.session.members.append(contentsOf: members)
+                        self.delegate?.sessionLoadedSuccessfully()
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -40,7 +48,7 @@ class ActiveSessionViewModel {
     }
     
     func updateSession() {
-        service.listenForChangesToSession(forSession: session.sessionCode, forMembers: session.members) { result in
+        service.listenForChangesToSession(forSession: session.sessionCode) { result in
             switch result {
             case .success(let updatedSessionData):
                 self.session = updatedSessionData
