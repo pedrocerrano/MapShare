@@ -32,7 +32,8 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Join"/>
                                         <connections>
-                                            <segue destination="E8S-Vk-tzk" kind="presentation" id="vdn-c1-16w"/>
+                                            <action selector="joinSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="j3f-1c-E1Q"/>
+                                            <segue destination="E8S-Vk-tzk" kind="show" id="vdn-c1-16w"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vr3-nm-jbx">
@@ -189,7 +190,9 @@
         <!--JoinSession-->
         <scene sceneID="XGw-qw-YOg">
             <objects>
-                <viewControllerPlaceholder storyboardName="JoinSession" id="E8S-Vk-tzk" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="JoinSession" id="E8S-Vk-tzk" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="044-b2-c4Q"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22u-ZL-5EY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2592" y="-28"/>

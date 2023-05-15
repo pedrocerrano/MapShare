@@ -11,7 +11,7 @@ struct UIElements {
     
     struct Color {
         static let mapShareGreen = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
-        static let mapShareRed = UIColor(red: 255/255, green: 36/255, blue: 0/255, alpha: 1)
+        static let mapShareRed   = UIColor(red: 255/255, green: 36/255, blue: 0/255, alpha: 1)
     }
     
     static func configureButton(for button: UIButton, withColor color: UIColor) {
