@@ -40,7 +40,7 @@ class ActiveSessionViewModel {
     }
     
     func updateSession() {
-        service.listenForChangesToSession(forSession: session.sessionCode) { result in
+        service.listenForChangesToSession(forSession: session.sessionCode, forMembers: session.members) { result in
             switch result {
             case .success(let updatedSessionData):
                 self.session = updatedSessionData
@@ -53,6 +53,9 @@ class ActiveSessionViewModel {
     
     func deleteSession() {
         service.deleteSessionFromFirestore(session: session)
+        for member in session.members {
+            service.deleteAllMembersFromFirestore(session: session, member: member)
+        }
     }
     
     func deleteMemberFromActiveSession(fromSession session: Session, forMember member: Member) {

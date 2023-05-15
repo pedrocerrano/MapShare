@@ -31,8 +31,6 @@ class NewSessionViewController: UIViewController {
         super.viewDidLoad()
         newSessionViewModel = NewSessionViewModel()
         configureSheetPresentationController()
-        newSessionViewModel.getScottTESTSession()
-        newSessionViewModel.getChaseTESTSession()
     }
     
     
@@ -139,15 +137,6 @@ class NewSessionViewController: UIViewController {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = newSessionViewModel.session else { return }
             destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self)
-            #warning("The segues below are for testing purposes and should be removed for the final project")
-        } else if segue.identifier == "scottTESTsegue" {
-            guard let destinationVC = segue.destination as? ActiveSessionViewController,
-                  let scottTestSession = newSessionViewModel.scottTestSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: scottTestSession, delegate: destinationVC.self)
-        } else {
-            guard let destinationVC = segue.destination as? ActiveSessionViewController,
-                  let chaseTestSession = newSessionViewModel.chaseTestSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: chaseTestSession, delegate: destinationVC.self)
         }
     }
 } //: CLASS

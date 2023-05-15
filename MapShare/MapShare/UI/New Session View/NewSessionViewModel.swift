@@ -50,30 +50,6 @@ class NewSessionViewModel {
                                   isActive: true)
         
         session = newSession
-        service.saveNewSessionToFirestore(newSession: newSession)
-    }
-    
-    func getScottTESTSession() {
-        service.forScottTESTING { result in
-            switch result {
-            case .success(let scottTestSession):
-                guard let scottTestSession else { return }
-                self.scottTestSession = scottTestSession
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    func getChaseTESTSession() {
-        service.forChaseTESTING { result in
-            switch result {
-            case .success(let chaseTestSession):
-                guard let chaseTestSession else { return }
-                self.chaseTestSession = chaseTestSession
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+        service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer)
     }
 }

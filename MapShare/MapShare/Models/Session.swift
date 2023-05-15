@@ -10,15 +10,17 @@ import CoreLocation
 class Session {
     
     enum SessionKey {
-        static let sessionName       = "sessionName"
-        static let sessionUUID       = "sessionUUID"
-        static let sessionCode       = "sessionCode"
-        static let organizerDeviceID = "organizerDeviceID"
-        static let members           = "members"
-        static let destination       = "destination"
-        static let isActive          = "isActive"
+        static let sessionName              = "sessionName"
+        static let sessionUUID              = "sessionUUID"
+        static let sessionCode              = "sessionCode"
+        static let organizerDeviceID        = "organizerDeviceID"
+        static let members                  = "members"
+        static let destination              = "destination"
+        static let isActive                 = "isActive"
         
-        static let collectionType    = "mapShareSession"
+        static let sessionCollectionType    = "mapShareSession"
+        static let membersCollectionType    = "mapShareMembers"
+        static let directionsCollectionType = "mapShareMembers"
     }
     
     var sessionName: String
@@ -35,8 +37,8 @@ class Session {
             SessionKey.sessionUUID       : self.sessionUUID,
             SessionKey.sessionCode       : self.sessionCode,
             SessionKey.organizerDeviceID : self.organizerDeviceID,
-            SessionKey.members           : self.members.map { $0.memberDictionaryRepresentation },
-            SessionKey.destination       : self.destination.map { $0.destinationDictionaryRepresentation },
+//            SessionKey.members           : self.members.map { $0.memberDictionaryRepresentation },
+//            SessionKey.destination       : self.destination.map { $0.destinationDictionaryRepresentation },
             SessionKey.isActive          : self.isActive
         ]
     }
@@ -61,17 +63,17 @@ extension Session {
               let sessionUUID           = sessionDictionary[SessionKey.sessionUUID] as? String,
               let sessionCode           = sessionDictionary[SessionKey.sessionCode] as? String,
               let organizerDeviceID     = sessionDictionary[SessionKey.organizerDeviceID] as? String,
-              let membersDictionary     = sessionDictionary[SessionKey.members] as? [[String : AnyHashable]],
-              let destinationDictionary = sessionDictionary[SessionKey.destination] as? [[String : AnyHashable]],
+//              let membersDictionary     = sessionDictionary[SessionKey.members] as? [[String : AnyHashable]],
+//              let destinationDictionary = sessionDictionary[SessionKey.destination] as? [[String : AnyHashable]],
               let isActive              = sessionDictionary[SessionKey.isActive] as? Bool else {
             print("Failed to initialize Session model object")
             return nil
         }
         
-        let membersArray     = membersDictionary.compactMap { Member(fromMemberDictionary: $0) }
-        let destinationArray = destinationDictionary.compactMap { MSDestination(fromMSDestinationDictionary: $0) }
+//        let membersArray     = membersDictionary.compactMap { Member(fromMemberDictionary: $0) }
+//        let destinationArray = destinationDictionary.compactMap { MSDestination(fromMSDestinationDictionary: $0) }
         
-        self.init(sessionName: sessionName, sessionUUID: sessionUUID, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: membersArray, destination: destinationArray, isActive: isActive)
+        self.init(sessionName: sessionName, sessionUUID: sessionUUID, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], destination: [], isActive: isActive)
     }
 }
 
