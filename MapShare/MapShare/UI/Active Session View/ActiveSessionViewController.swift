@@ -34,8 +34,8 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        activeSessionViewModel.loadSession()
         activeSessionViewModel.updateSession()
+        activeSessionViewModel.updateMembers()
     }
     
     
@@ -81,7 +81,6 @@ class ActiveSessionViewController: UIViewController {
         organizerEndedActiveSessionAlertController.addAction(confirmAction)
         present(organizerEndedActiveSessionAlertController, animated: true)
     }
-    
     
     func memberExitsActiveSessionAlert() {
         let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
@@ -135,15 +134,7 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             
             let activeSession = activeSessionViewModel.session
             let member        = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
-            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member)
-            
-            waitingRoomCell.admitButtonTapped = {
-                member.isActive = true
-                self.activeSessionViewModel.admitNewMember(forSession: activeSession, withMember: member)
-            }
-            waitingRoomCell.denyButtonTapped = {
-                self.activeSessionViewModel.denyNewMember(forSession: activeSession, withMember: member)
-            }
+            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, delegate: self)
             
             return waitingRoomCell
         default:
@@ -157,12 +148,24 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
 
 
 //MARK: - EXT: ViewModelDelegate
-extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
-    func sessionLoadedSuccessfully() {
-        activeSessionTableView.reloadData()
-    }
-    
+extension ActiveSessionViewController: ActiveSessionViewModelDelegate {   
     func sessionDataUpdated() {
         activeSessionTableView.reloadData()
     }
+    
+    func memberDataUpdated() {
+        activeSessionTableView.reloadData()
+    }
 } //: ViewModelDelegate
+
+
+//MARK: - EXT: WaitingRoomCellDelegate
+extension ActiveSessionViewController: WaitingRoomTableViewCellDelegate {
+    func admitMember(forSession session: Session, forMember member: Member) {
+        self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member)
+    }
+    
+    func denyMember(fromSession session: Session, forMember member: Member) {
+        self.activeSessionViewModel.denyNewMember(forSession: session, withMember: member)
+    }
+} //: WaitingRoomCellDelegate
