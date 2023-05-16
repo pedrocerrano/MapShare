@@ -8,8 +8,8 @@
 import Foundation
 
 protocol ActiveSessionViewModelDelegate: AnyObject {
-    func sessionLoadedSuccessfully()
     func sessionDataUpdated()
+    func memberDataUpdated()
 }
 
 class ActiveSessionViewModel {
@@ -27,26 +27,6 @@ class ActiveSessionViewModel {
     }
     
     //MARK: - FUNCTIONS
-    func loadSession() {
-        service.loadSessionFromFirestore(forSession: session) { result in
-            switch result {
-            case .success(let loadedSession):
-                self.session = loadedSession
-                self.service.loadMembersFromFirestoreForSession(forSession: loadedSession) { result in
-                    switch result {
-                    case .success(let members):
-                        self.session.members.append(contentsOf: members)
-                        self.delegate?.sessionLoadedSuccessfully()
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
     func updateSession() {
         service.listenForChangesToSession(forSession: session.sessionCode) { result in
             switch result {
@@ -64,7 +44,7 @@ class ActiveSessionViewModel {
             switch result {
             case .success(let updatedMembers):
                 self.session.members = updatedMembers
-                self.delegate?.sessionDataUpdated()
+                self.delegate?.memberDataUpdated()
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -88,6 +68,5 @@ class ActiveSessionViewModel {
     
     func denyNewMember(forSession session: Session, withMember member: Member) {
         service.deleteMemberFromFirestore(fromSession: session, member: member)
-        print("Deleted")
     }
 }

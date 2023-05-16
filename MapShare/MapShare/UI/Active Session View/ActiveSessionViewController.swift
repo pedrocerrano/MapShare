@@ -34,7 +34,6 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        activeSessionViewModel.loadSession()
         activeSessionViewModel.updateSession()
         activeSessionViewModel.updateMembers()
     }
@@ -149,12 +148,12 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
 
 
 //MARK: - EXT: ViewModelDelegate
-extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
-    func sessionLoadedSuccessfully() {
+extension ActiveSessionViewController: ActiveSessionViewModelDelegate {   
+    func sessionDataUpdated() {
         activeSessionTableView.reloadData()
     }
     
-    func sessionDataUpdated() {
+    func memberDataUpdated() {
         activeSessionTableView.reloadData()
     }
 } //: ViewModelDelegate

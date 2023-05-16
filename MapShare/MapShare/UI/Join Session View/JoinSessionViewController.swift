@@ -132,7 +132,7 @@ class JoinSessionViewController: UIViewController {
         self.view.isUserInteractionEnabled = false
         activityIndicator.startAnimating()
     }
-    
+
     func stopAnimatingOnceNewMemberIsAdmitted() {
         DispatchQueue.main.async {
             self.activityIndicator.stopAnimating()
