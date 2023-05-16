@@ -36,6 +36,7 @@ class ActiveSessionViewController: UIViewController {
         }
         activeSessionViewModel.loadSession()
         activeSessionViewModel.updateSession()
+        activeSessionViewModel.updateMembers()
     }
     
     
@@ -81,7 +82,6 @@ class ActiveSessionViewController: UIViewController {
         organizerEndedActiveSessionAlertController.addAction(confirmAction)
         present(organizerEndedActiveSessionAlertController, animated: true)
     }
-    
     
     func memberExitsActiveSessionAlert() {
         let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
@@ -163,7 +163,7 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
 //MARK: - EXT: WaitingRoomCellDelegate
 extension ActiveSessionViewController: WaitingRoomTableViewCellDelegate {
     func admitMember(forSession session: Session, forMember member: Member) {
-        member.isActive = true
+//        member.isActive = true
         self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member)
     }
     

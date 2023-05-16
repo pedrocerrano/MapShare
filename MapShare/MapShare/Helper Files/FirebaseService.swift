@@ -49,9 +49,9 @@ struct FirebaseService {
                 completion(.failure(.firebaseError(error)))
             }
             
-            guard let memberData = snapshot?.documents else { completion(.failure(.noDataFound)) ; return }
-            let memberDictArray  = memberData.compactMap { $0.data() }
-            let members          = memberDictArray.compactMap { Member(fromMemberDictionary: $0) }
+            guard let documentsData = snapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let memberDictArray     = documentsData.compactMap { $0.data() }
+            let members             = memberDictArray.compactMap { Member(fromMemberDictionary: $0) }
             completion(.success(members))
         }
     }
@@ -99,8 +99,21 @@ struct FirebaseService {
         }
     }
     
+    func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+         
+            guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let memberDictArray     = documentsData.compactMap { $0.data() }
+            let members             = memberDictArray.compactMap { Member(fromMemberDictionary: $0) }
+            completion(.success(members))
+        }
+    }
+    
     func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Session.SessionKey.members : FieldValue.arrayUnion([member.memberDictionaryRepresentation])])
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.isActive : true])
     }
     
     func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
@@ -121,35 +134,5 @@ struct FirebaseService {
     
     func updateLocationOfMemberToFirestore() {
         
-    }
-    
-    func forScottTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document("HZ5MB0").getDocument { document, error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(.failure(.firebaseError(error)))
-                return
-            }
-            
-            guard let document else { completion(.failure(.noDataFound)) ; return }
-            let session = document.data().map { Session(fromSessionDictionary: $0) }
-            guard let session else { return }
-            completion(.success(session))
-        }
-    }
-    
-    func forChaseTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document("HZ5MB0").getDocument { document, error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(.failure(.firebaseError(error)))
-                return
-            }
-            
-            guard let document else { completion(.failure(.noDataFound)) ; return }
-            let session = document.data().map { Session(fromSessionDictionary: $0) }
-            guard let session else { return }
-            completion(.success(session))
-        }
     }
 }

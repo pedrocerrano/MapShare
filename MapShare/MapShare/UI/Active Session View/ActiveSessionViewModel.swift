@@ -50,8 +50,20 @@ class ActiveSessionViewModel {
     func updateSession() {
         service.listenForChangesToSession(forSession: session.sessionCode) { result in
             switch result {
-            case .success(let updatedSessionData):
-                self.session = updatedSessionData
+            case .success(let updatedSession):
+                self.session = updatedSession
+                self.delegate?.sessionDataUpdated()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func updateMembers() {
+        self.service.listenForChangesToMembers(forSession: session) { result in
+            switch result {
+            case .success(let updatedMembers):
+                self.session.members = updatedMembers
                 self.delegate?.sessionDataUpdated()
             case .failure(let error):
                 print(error.localizedDescription)
