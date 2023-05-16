@@ -44,13 +44,11 @@ class JoinSessionViewModel {
     }
     
     func addNewMemberToActiveSession(withCode validCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, memberLatitude: Double, memberLongitude: Double) {
-        let newMemberUUID        = UUID().uuidString
         guard let memberDeviceID = Constants.Device.deviceID else { return }
         let newMember            = Member(firstName: firstName,
                                           lastName: lastName,
                                           screenName: screenName,
                                           mapMarkerColor: markerColor,
-                                          memberUUID: newMemberUUID,
                                           memberDeviceID: memberDeviceID,
                                           isOrganizer: false,
                                           isActive: false,
