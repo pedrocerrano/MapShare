@@ -80,7 +80,7 @@ class MapHomeViewController: UIViewController {
                 guard let membersArray = session?.members else { return }
                 let filteredMembers = membersArray.filter { $0.isActive == true }
                 for member in filteredMembers {
-                    let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: member.mapMarkerColor)
+                    let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
                     self.memberAnnotations.append(memberLocation)
                     self.mapView.addAnnotation(memberLocation)
                 }
@@ -88,6 +88,18 @@ class MapHomeViewController: UIViewController {
                 print(error.localizedDescription)
             }
         })
+    }
+    
+    func setUpMemberAnnotations(for annotation: MemberAnnotation, with member: Member, on mapView: MKMapView) -> MKAnnotationView? {
+        annotation.title = member.screenName
+        
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.memberIdentifier, for: annotation)
+        if let markerAnnotationView = view as? MKMarkerAnnotationView {
+            markerAnnotationView.animatesWhenAdded = true
+            markerAnnotationView.canShowCallout = false
+            markerAnnotationView.markerTintColor = UIColor.convertToColorFromString(string: member.mapMarkerColor)
+        }
+        return view
     }
     
     func setupModalHomeSheetController() {
@@ -184,6 +196,20 @@ class MapHomeViewController: UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
+    
+    func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
+        annotation.title = "Route"
+        
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.routeIdentifier, for: annotation)
+        if let markerAnnotationView = view as? MKMarkerAnnotationView {
+            markerAnnotationView.animatesWhenAdded = true
+            markerAnnotationView.canShowCallout = true
+            markerAnnotationView.markerTintColor = UIColor.black
+            btn.setImage(UIImage(systemName: "location"), for: .normal)
+            markerAnnotationView.leftCalloutAccessoryView = btn
+        }
+        return view
+    }
 } //: CLASS
 
 extension MapHomeViewController: CLLocationManagerDelegate {
@@ -225,20 +251,6 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func registerMapAnnotations() {
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: self.routeIdentifier)
-    }
-    
-    func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
-        annotation.title = "Route"
-        
-        let view = mapView.dequeueReusableAnnotationView(withIdentifier: self.routeIdentifier, for: annotation)
-        if let markerAnnotationView = view as? MKMarkerAnnotationView {
-            markerAnnotationView.animatesWhenAdded = true
-            markerAnnotationView.canShowCallout = true
-            markerAnnotationView.markerTintColor = UIColor.black
-            btn.setImage(UIImage(systemName: "location"), for: .normal)
-            markerAnnotationView.leftCalloutAccessoryView = btn
-        }
-        return view
     }
 
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {

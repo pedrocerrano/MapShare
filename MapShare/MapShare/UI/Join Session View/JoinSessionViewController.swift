@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
+import CoreLocationUI
 
 class JoinSessionViewController: UIViewController {
 
@@ -53,8 +56,8 @@ class JoinSessionViewController: UIViewController {
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
         guard let firstName = memberfirstNameTextField.text,
               let lastName = memberLastNameTextField.text,
-              let screenName = memberScreenNameTextField.text else { return }
-        let markerColor = "RED"
+              let screenName = memberScreenNameTextField.text,
+              let markerColor = userColorPopUpButton.titleLabel?.textColor.convertColorToString() else { return }
         let dallasLat: Double = 32.779167
         let dallasLon: Double = -96.808891
         var optionalScreenName = ""
@@ -68,6 +71,8 @@ class JoinSessionViewController: UIViewController {
             presentNeedsFirstNameAlert()
         } else if lastName.isEmpty {
             presentNeedsLastNameAlert()
+        } else if userColorPopUpButton.titleLabel?.text == "↓" {
+            presentChooseColorAlert()
         } else {
             joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: dallasLat, memberLongitude: dallasLon)
             memberfirstNameTextField.resignFirstResponder()
@@ -82,7 +87,6 @@ class JoinSessionViewController: UIViewController {
             waitingStatusLabel.text = "Waiting for admission"
             #warning("Setup Activity Indicator")
         }
-        
     }
     
     
@@ -109,97 +113,52 @@ class JoinSessionViewController: UIViewController {
     }
     
     func setUpPopUpButton() {
-//        let closure = { (action: UIAction) in
-//            print(action.title)
-//            guard let titleLabel = self.userColorPopUpButton.titleLabel?.text else { return }
-//            if titleLabel == "Red" {
-//                self.userColorPopUpButton.tintColor = .red
-//            } else if titleLabel == "Blue" {
-//                self.userColorPopUpButton.tintColor = .blue
-//            } else if titleLabel == "Green" {
-//                self.userColorPopUpButton.tintColor = .green
-//            } else if titleLabel == "Purple" {
-//                self.userColorPopUpButton.tintColor = .purple
-//            } else if titleLabel == "Pink" {
-//                self.userColorPopUpButton.tintColor = .systemPink
-//            } else if titleLabel == "Cyan" {
-//                self.userColorPopUpButton.tintColor = .cyan
-//            } else if titleLabel == "Yellow" {
-//                self.userColorPopUpButton.tintColor = .yellow
-//            } else if titleLabel == "Brown" {
-//                self.userColorPopUpButton.tintColor = .brown
-//            }
-//        }
         let closure = { (action: UIAction) in
             print(action.title)
         }
         
         let redClosure = { (action: UIAction) in
-            let red = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1)
-            let redTint = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0.6)
-            self.userColorPopUpButton.setTitleColor(red, for: .normal)
-            self.userColorPopUpButton.tintColor = redTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareRed, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.redTint
         }
         
         let blueClosure = { (action: UIAction) in
-            let blue = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1)
-            let blueTint = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 0.6)
-            self.userColorPopUpButton.setTitleColor(blue, for: .normal)
-            self.userColorPopUpButton.tintColor = blueTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareBlue, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.blueTint
         }
         
         let greenClosure = { (action: UIAction) in
-            let green = UIColor(red: 30/255, green: 180/255, blue: 35/255, alpha: 1)
-            let greenTint = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 0.6)
-            self.userColorPopUpButton.setTitleColor(green, for: .normal)
-            self.userColorPopUpButton.tintColor = greenTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareGreen, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.greenTint
         }
         
         let purpleClosure = { (action: UIAction) in
-            let purple = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 1)
-            let purpleTint = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 0.6)
-            self.userColorPopUpButton.setTitleColor(purple, for: .normal)
-            self.userColorPopUpButton.tintColor = purpleTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapSharePurple, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.purpleTint
         }
         
         let pinkClosure = { (action: UIAction) in
-            let pink = UIColor(red: 255/255, green: 20/255, blue: 147/255, alpha: 1)
-            let pinkTint = UIColor(red: 255/255, green: 192/255, blue: 203/255, alpha: 0.9)
-            self.userColorPopUpButton.setTitleColor(pink, for: .normal)
-            self.userColorPopUpButton.tintColor = pinkTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapSharePink, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.pinkTint
         }
         
         let cyanClosure = { (action: UIAction) in
-            let cyan = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
-            let cyanTint = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 0.8)
-            self.userColorPopUpButton.setTitleColor(cyan, for: .normal)
-            self.userColorPopUpButton.tintColor = cyanTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareCyan, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.cyanTint
         }
         
         let yellowClosure = { (action: UIAction) in
-            let yellow = UIColor(red: 215/255, green: 180/255, blue: 0/255, alpha: 1)
-            let yellowTint = UIColor(red: 210/255, green: 180/255, blue: 40/255, alpha: 1)
-            self.userColorPopUpButton.setTitleColor(yellow, for: .normal)
-            self.userColorPopUpButton.tintColor = yellowTint
-        }
-        
-        let brownClosure = { (action: UIAction) in
-            let brown = UIColor(red: 139/255, green: 69/255, blue: 19/255, alpha: 1)
-            let brownTint = UIColor(red: 139/255, green: 69/255, blue: 19/255, alpha: 0.6)
-            self.userColorPopUpButton.setTitleColor(brown, for: .normal)
-            self.userColorPopUpButton.tintColor = brownTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareYellow, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.yellowTint
         }
         
         let orangeClosure = { (action: UIAction) in
-            let orange = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
-            let orangeTint = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 0.8)
-            self.userColorPopUpButton.setTitleColor(orange, for: .normal)
-            self.userColorPopUpButton.tintColor = orangeTint
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareOrange, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.orangeTint
         }
         
         userColorPopUpButton.menu = UIMenu(children: [
             UIAction(title: "↓", attributes: .hidden, state: .on, handler: closure),
-            UIAction(title: "● Brown", handler: brownClosure),
             UIAction(title: "● Red", handler: redClosure),
             UIAction(title: "● Orange", handler: orangeClosure),
             UIAction(title: "● Yellow", handler: yellowClosure),
@@ -233,6 +192,13 @@ class JoinSessionViewController: UIViewController {
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyLastNameAlertController.addAction(dismissAction)
         present(emptyLastNameAlertController, animated: true)
+    }
+    
+    func presentChooseColorAlert() {
+        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color to join.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        noColorSelectedAlertController.addAction(dismissAction)
+        present(noColorSelectedAlertController, animated: true)
     }
     
 

@@ -13,9 +13,9 @@ class MemberAnnotation: NSObject, MKAnnotation {
     var member: Member
     var coordinate: CLLocationCoordinate2D
     var title: String?
-    var annotationColor: String
+    var annotationColor: UIColor
     
-    init(member: Member, coordinate: CLLocationCoordinate2D, title: String?, annotationColor: String) {
+    init(member: Member, coordinate: CLLocationCoordinate2D, title: String?, annotationColor: UIColor) {
         self.member = member
         self.coordinate = coordinate
         self.title = title

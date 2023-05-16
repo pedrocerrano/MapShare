@@ -35,6 +35,7 @@
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
 		AF72D7F02A0D56980080C9AD /* MemberAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */; };
+		AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */; };
 		AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberAnnotation.swift; sourceTree = "<group>"; };
+		AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -211,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				29EB7FDD2A04078500F2242F /* String+Ext.swift */,
+				AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */,
 				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
+				AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */,
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
 				29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */,
 				AF72D7F02A0D56980080C9AD /* MemberAnnotation.swift in Sources */,
