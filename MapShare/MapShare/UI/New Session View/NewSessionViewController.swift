@@ -15,9 +15,8 @@ class NewSessionViewController: UIViewController {
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var screenNameTextField: UITextField!
-    @IBOutlet weak var iconColorButton: UIButton!
+    @IBOutlet weak var userColorPopUpButton: UIButton!
     @IBOutlet weak var createSessionButton: UIButton!
-    
     
     //MARK: - PROPERTIES
     override var sheetPresentationController: UISheetPresentationController {
@@ -31,6 +30,7 @@ class NewSessionViewController: UIViewController {
         super.viewDidLoad()
         newSessionViewModel = NewSessionViewModel()
         configureSheetPresentationController()
+        configureUI()
     }
     
     
@@ -49,16 +49,12 @@ class NewSessionViewController: UIViewController {
     }
     
     
-    @IBAction func mapSearchButtonTapped(_ sender: Any) {
-        
-    }
-    
     @IBAction func createSessionButtonTapped(_ sender: Any) {
         guard let sessionName = sessionNameTextField.text,
               let firstName   = firstNameTextField.text,
               let lastName    = lastNameTextField.text,
-              let screenName  = screenNameTextField.text else { return }
-        let markerColor = "BLUE"
+              let screenName  = screenNameTextField.text,
+              let markerColor = userColorPopUpButton.titleLabel?.textColor.convertColorToString() else { return }
         let highlandVillageLat: Double = 33.08484
         let highlandVillageLon: Double = -97.05305
         var optionalScreenName = ""
@@ -97,6 +93,10 @@ class NewSessionViewController: UIViewController {
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+    }
+    
+    func configureUI() {
+        PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
     }
     
     func displayActiveSessionSheetController() {

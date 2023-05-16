@@ -46,7 +46,6 @@ class MapHomeViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
         locationManagerDidChangeAuthorization(locationManager)
-        showMembersLocation()
     }
     
     // MARK: - IB Actions
@@ -73,22 +72,22 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    func showMembersLocation() {
-        service.forChaseTESTING(completion: { result in
-            switch result {
-            case .success(let session):
-                guard let membersArray = session?.members else { return }
-                let filteredMembers = membersArray.filter { $0.isActive == true }
-                for member in filteredMembers {
-                    let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
-                    self.memberAnnotations.append(memberLocation)
-                    self.mapView.addAnnotation(memberLocation)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
-    }
+//    func showMembersLocation() {
+//        service.forChaseTESTING(completion: { result in
+//            switch result {
+//            case .success(let session):
+//                guard let membersArray = session?.members else { return }
+//                let filteredMembers = membersArray.filter { $0.isActive == true }
+//                for member in filteredMembers {
+//                    let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
+//                    self.memberAnnotations.append(memberLocation)
+//                    self.mapView.addAnnotation(memberLocation)
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        })
+//    }
     
     func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
         annotation.title = annotation.member.screenName
