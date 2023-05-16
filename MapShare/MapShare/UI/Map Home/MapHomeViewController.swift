@@ -97,10 +97,8 @@ class MapHomeViewController: UIViewController {
         guard let markerColor = String.convertToColorFromString(string: annotation.member.mapMarkerColor) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
-            markerAnnotationView.canShowCallout = true
+            markerAnnotationView.canShowCallout = false
             markerAnnotationView.markerTintColor = markerColor
-            btn.setImage(UIImage(systemName: "location"), for: .normal)
-            markerAnnotationView.leftCalloutAccessoryView = btn
         }
         return view
     }

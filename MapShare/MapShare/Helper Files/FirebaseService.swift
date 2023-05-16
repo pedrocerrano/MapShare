@@ -105,7 +105,7 @@ struct FirebaseService {
     }
     
     func forChaseTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document("HZ5MB0").getDocument { document, error in
+        ref.collection(Session.SessionKey.collectionType).document("FUN8EM").getDocument { document, error in
             if let error = error {
                 print(error.localizedDescription)
                 completion(.failure(.firebaseError(error)))
