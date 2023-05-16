@@ -162,7 +162,6 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
 //MARK: - EXT: WaitingRoomCellDelegate
 extension ActiveSessionViewController: WaitingRoomTableViewCellDelegate {
     func admitMember(forSession session: Session, forMember member: Member) {
-//        member.isActive = true
         self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member)
     }
     
