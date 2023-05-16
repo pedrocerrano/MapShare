@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
+import CoreLocationUI
 
 class JoinSessionViewController: UIViewController {
 
@@ -17,7 +20,7 @@ class JoinSessionViewController: UIViewController {
     @IBOutlet weak var memberLastNameTextField: UITextField!
     @IBOutlet weak var memberScreenNameTextField: UITextField!
     @IBOutlet weak var iconColorLabel: UILabel!
-    @IBOutlet weak var memberIconColorButton: UIButton!
+    @IBOutlet weak var userColorPopUpButton: UIButton!
     @IBOutlet weak var joinSessionButton: UIButton!
     @IBOutlet weak var waitingStatusLabel: UILabel!
     
@@ -41,6 +44,7 @@ class JoinSessionViewController: UIViewController {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
         }
         hideJoinSessionTextFields()
+        setUpPopUpButton()
     }
     
     
@@ -60,8 +64,8 @@ class JoinSessionViewController: UIViewController {
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
         guard let firstName = memberfirstNameTextField.text,
               let lastName = memberLastNameTextField.text,
-              let screenName = memberScreenNameTextField.text else { return }
-        let markerColor = "RED"
+              let screenName = memberScreenNameTextField.text,
+              let markerColor = userColorPopUpButton.titleLabel?.textColor.convertColorToString() else { return }
         let dallasLat: Double = 32.779167
         let dallasLon: Double = -96.808891
         var optionalScreenName = ""
@@ -75,6 +79,8 @@ class JoinSessionViewController: UIViewController {
             presentNeedsFirstNameAlert()
         } else if lastName.isEmpty {
             presentNeedsLastNameAlert()
+        } else if userColorPopUpButton.titleLabel?.text == "↓" {
+            presentChooseColorAlert()
         } else {
             joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: dallasLat, memberLongitude: dallasLon)
             memberfirstNameTextField.resignFirstResponder()
@@ -91,7 +97,6 @@ class JoinSessionViewController: UIViewController {
             #warning("Need to dismiss modal and rethink navigation")
             sheetPresentationController.dismissalTransitionWillBegin()
         }
-        
     }
     
     
@@ -109,7 +114,7 @@ class JoinSessionViewController: UIViewController {
         memberLastNameTextField.isHidden = true
         memberScreenNameTextField.isHidden = true
         iconColorLabel.isHidden = true
-        memberIconColorButton.isHidden = true
+        userColorPopUpButton.isHidden = true
         joinSessionButton.isHidden = true
         waitingStatusLabel.isHidden = true
     }
@@ -120,10 +125,70 @@ class JoinSessionViewController: UIViewController {
         memberLastNameTextField.isHidden = false
         memberScreenNameTextField.isHidden = false
         iconColorLabel.isHidden = false
-        memberIconColorButton.isHidden = false
+        userColorPopUpButton.isHidden = false
         joinSessionButton.isHidden = false
     }
     
+    func setUpPopUpButton() {
+        let closure = { (action: UIAction) in
+            print(action.title)
+        }
+        
+        let redClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareRed, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.redTint
+        }
+        
+        let blueClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareBlue, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.blueTint
+        }
+        
+        let greenClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareGreen, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.greenTint
+        }
+        
+        let purpleClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapSharePurple, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.purpleTint
+        }
+        
+        let pinkClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapSharePink, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.pinkTint
+        }
+        
+        let cyanClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareCyan, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.cyanTint
+        }
+        
+        let yellowClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareYellow, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.yellowTint
+        }
+        
+        let orangeClosure = { (action: UIAction) in
+            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareOrange, for: .normal)
+            self.userColorPopUpButton.tintColor = UIElements.Tint.orangeTint
+        }
+        
+        userColorPopUpButton.menu = UIMenu(children: [
+            UIAction(title: "↓", attributes: .hidden, state: .on, handler: closure),
+            UIAction(title: "● Red", handler: redClosure),
+            UIAction(title: "● Orange", handler: orangeClosure),
+            UIAction(title: "● Yellow", handler: yellowClosure),
+            UIAction(title: "● Green", handler: greenClosure),
+            UIAction(title: "● Blue", handler: blueClosure),
+            UIAction(title: "● Purple", handler: purpleClosure),
+            UIAction(title: "● Pink", handler: pinkClosure),
+            UIAction(title: "● Cyan", handler: cyanClosure)
+        ])
+        userColorPopUpButton.showsMenuAsPrimaryAction = true
+        userColorPopUpButton.changesSelectionAsPrimaryAction = true
+    }
+  
     func setupActivityIndicator() {
         activityIndicator.center           = self.view.center
         activityIndicator.hidesWhenStopped = true
@@ -146,8 +211,7 @@ class JoinSessionViewController: UIViewController {
         sheetController.isModalInPresentation = true
         self.present(sheetController, animated: true, completion: nil)
     }
-    
-    
+        
     //MARK: - ALERTS
     func presentNeedsSixDigitsAlert() {
         let needsSixDigitsAlertController = UIAlertController(title: "Invalid Session Code", message: "Please retype a six-digit session code.", preferredStyle: .alert)
@@ -168,6 +232,13 @@ class JoinSessionViewController: UIViewController {
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyLastNameAlertController.addAction(dismissAction)
         present(emptyLastNameAlertController, animated: true)
+    }
+    
+    func presentChooseColorAlert() {
+        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color to join.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        noColorSelectedAlertController.addAction(dismissAction)
+        present(noColorSelectedAlertController, animated: true)
     }
     
 

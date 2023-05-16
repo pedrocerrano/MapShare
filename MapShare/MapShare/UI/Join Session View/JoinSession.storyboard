@@ -64,17 +64,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="join" smartInsertDeleteType="no"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Wr-V3-Xfk">
-                                <rect key="frame" x="254.66666666666663" y="448.33333333333331" width="40" height="40"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="4Sf-XX-htS"/>
-                                    <constraint firstAttribute="width" secondItem="7Wr-V3-Xfk" secondAttribute="height" multiplier="1:1" id="cbf-ZZ-3UD"/>
-                                </constraints>
-                                <color key="tintColor" systemColor="systemPurpleColor"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="circle.inset.filled" catalog="system"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVY-Mc-89R">
                                 <rect key="frame" x="137.66666666666666" y="510.33333333333326" width="117.66666666666666" height="40"/>
                                 <constraints>
@@ -102,35 +91,40 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2e2-W9-OHV">
+                                <rect key="frame" x="261" y="451.33333333333331" width="75" height="34.333333333333314"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="Button"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="nJI-FY-X14" firstAttribute="top" secondItem="S48-Eg-dbo" secondAttribute="bottom" constant="12" id="0xc-ko-BMJ"/>
                             <constraint firstItem="v5A-g1-3SS" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="4sB-3X-AaG"/>
+                            <constraint firstItem="bZG-16-Q88" firstAttribute="top" secondItem="CYe-tn-TtU" secondAttribute="bottom" constant="20" id="9Sj-9m-qSK"/>
                             <constraint firstItem="CYe-tn-TtU" firstAttribute="top" secondItem="v5A-g1-3SS" secondAttribute="bottom" constant="12" id="AFE-ux-rVT"/>
                             <constraint firstItem="nJI-FY-X14" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.3" id="DSG-Bb-aIi"/>
                             <constraint firstItem="nJI-FY-X14" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Dnq-nK-fw1"/>
                             <constraint firstItem="v5A-g1-3SS" firstAttribute="top" secondItem="RtC-JV-4mm" secondAttribute="bottom" constant="12" id="FKb-IG-cPf"/>
                             <constraint firstItem="RtC-JV-4mm" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.5" id="GZw-dY-sKV"/>
-                            <constraint firstItem="bZG-16-Q88" firstAttribute="centerY" secondItem="7Wr-V3-Xfk" secondAttribute="centerY" id="Hah-Px-KI1"/>
                             <constraint firstItem="1Dn-Nr-lEn" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Ky9-fN-IjF"/>
                             <constraint firstItem="OVY-Mc-89R" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.3" id="Lmy-oe-bjX"/>
                             <constraint firstItem="RtC-JV-4mm" firstAttribute="top" secondItem="Dff-5l-drj" secondAttribute="bottom" constant="12" id="O4G-na-YeH"/>
                             <constraint firstItem="CYe-tn-TtU" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.5" id="PQ8-K8-mWQ"/>
                             <constraint firstItem="pfz-uo-Fle" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.3" id="QFd-LT-YQ1"/>
                             <constraint firstItem="1Dn-Nr-lEn" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.5" id="SOc-HY-KYR"/>
+                            <constraint firstItem="bZG-16-Q88" firstAttribute="centerY" secondItem="2e2-W9-OHV" secondAttribute="centerY" id="Tfm-BJ-Pc2"/>
                             <constraint firstItem="1Dn-Nr-lEn" firstAttribute="top" secondItem="OVY-Mc-89R" secondAttribute="bottom" constant="30" id="YwQ-O5-9Hx"/>
-                            <constraint firstItem="7Wr-V3-Xfk" firstAttribute="trailing" secondItem="CYe-tn-TtU" secondAttribute="trailing" id="cTg-d9-gcz"/>
+                            <constraint firstItem="2e2-W9-OHV" firstAttribute="leading" secondItem="bZG-16-Q88" secondAttribute="trailing" constant="14.333333333333343" id="dh0-EV-4J5"/>
                             <constraint firstItem="OVY-Mc-89R" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="e6g-NW-WdE"/>
                             <constraint firstItem="OVY-Mc-89R" firstAttribute="top" secondItem="bZG-16-Q88" secondAttribute="bottom" constant="30" id="f3h-i5-xS0"/>
+                            <constraint firstItem="bZG-16-Q88" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="152.33333333333331" id="heH-dl-zZA"/>
                             <constraint firstItem="S48-Eg-dbo" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="40" id="iO2-48-QFh"/>
-                            <constraint firstItem="7Wr-V3-Xfk" firstAttribute="leading" secondItem="bZG-16-Q88" secondAttribute="trailing" constant="8" id="iV8-0U-Ior"/>
                             <constraint firstItem="Dff-5l-drj" firstAttribute="top" secondItem="pfz-uo-Fle" secondAttribute="bottom" constant="30" id="iYZ-NO-i5U"/>
                             <constraint firstItem="Dff-5l-drj" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="j7l-al-Nyi"/>
                             <constraint firstItem="CYe-tn-TtU" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="jjM-9K-Fen"/>
                             <constraint firstItem="S48-Eg-dbo" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="m6v-p6-val"/>
-                            <constraint firstItem="7Wr-V3-Xfk" firstAttribute="top" secondItem="CYe-tn-TtU" secondAttribute="bottom" constant="12" id="mov-hr-NY6"/>
                             <constraint firstItem="pfz-uo-Fle" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="mxV-4Z-NGI"/>
                             <constraint firstItem="v5A-g1-3SS" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.5" id="n6l-Ti-9ag"/>
                             <constraint firstItem="RtC-JV-4mm" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="pN5-4A-Ozc"/>
@@ -141,12 +135,12 @@
                         <outlet property="codeEntryTextField" destination="nJI-FY-X14" id="4Ud-m5-kQ8"/>
                         <outlet property="iconColorLabel" destination="bZG-16-Q88" id="7rW-CW-RNn"/>
                         <outlet property="joinSessionButton" destination="OVY-Mc-89R" id="tmT-wQ-Pk2"/>
-                        <outlet property="memberIconColorButton" destination="7Wr-V3-Xfk" id="Dhw-QH-x7k"/>
                         <outlet property="memberLastNameTextField" destination="v5A-g1-3SS" id="toW-qi-vea"/>
                         <outlet property="memberScreenNameTextField" destination="CYe-tn-TtU" id="0ja-Do-jDz"/>
                         <outlet property="memberfirstNameTextField" destination="RtC-JV-4mm" id="Nzc-kP-ZT4"/>
                         <outlet property="searchSessionButton" destination="pfz-uo-Fle" id="Kbx-7Z-QBi"/>
                         <outlet property="tellTheGroupLabel" destination="Dff-5l-drj" id="WJk-zu-Uzu"/>
+                        <outlet property="userColorPopUpButton" destination="2e2-W9-OHV" id="E4r-HS-bia"/>
                         <outlet property="waitingStatusLabel" destination="1Dn-Nr-lEn" id="UIu-A4-QC0"/>
                     </connections>
                 </viewController>
@@ -166,12 +160,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="circle.inset.filled" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemPurpleColor">
-            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

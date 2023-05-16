@@ -10,8 +10,25 @@ import UIKit
 struct UIElements {
     
     struct Color {
-        static let mapShareGreen = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
-        static let mapShareRed   = UIColor(red: 255/255, green: 36/255, blue: 0/255, alpha: 1)
+        static let mapShareGreen  = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
+        static let mapShareRed    = UIColor(red: 255/255, green: 36/255, blue: 0/255, alpha: 1)
+        static let mapShareBlue   = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1)
+        static let mapSharePurple = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 1)
+        static let mapSharePink   = UIColor(red: 255/255, green: 20/255, blue: 147/255, alpha: 1)
+        static let mapShareCyan   = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
+        static let mapShareYellow = UIColor(red: 215/255, green: 180/255, blue: 0/255, alpha: 1)
+        static let mapShareOrange = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)        
+    }
+    
+    struct Tint {
+        static let orangeTint     = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 0.8)
+        static let yellowTint     = UIColor(red: 210/255, green: 180/255, blue: 40/255, alpha: 0.9)
+        static let cyanTint       = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 0.8)
+        static let pinkTint       = UIColor(red: 255/255, green: 192/255, blue: 203/255, alpha: 0.9)
+        static let purpleTint     = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 0.6)
+        static let greenTint      = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 0.6)
+        static let blueTint       = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 0.6)
+        static let redTint        = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0.6)
     }
     
     static func configureButton(for button: UIButton, withColor color: UIColor) {
