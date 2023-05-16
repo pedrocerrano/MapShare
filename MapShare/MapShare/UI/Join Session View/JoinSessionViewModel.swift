@@ -10,6 +10,7 @@ import Foundation
 protocol JoinSessionViewModelDelegate: AnyObject {
     func sessionExists()
     func noSessionFoundWithCode()
+    func waitingForAdmission()
 }
 
 class JoinSessionViewModel {
@@ -36,19 +37,18 @@ class JoinSessionViewModel {
                 self.searchedSession = searchedSession
             case .failure(let error):
                 self.delegate?.noSessionFoundWithCode()
+                #warning("Need to troubleshoot noSessionFoundWithCode")
                 print(error.localizedDescription)
             }
         }
     }
     
     func addNewMemberToActiveSession(withCode validCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, memberLatitude: Double, memberLongitude: Double) {
-        let newMemberUUID        = UUID().uuidString
         guard let memberDeviceID = Constants.Device.deviceID else { return }
         let newMember            = Member(firstName: firstName,
                                           lastName: lastName,
                                           screenName: screenName,
                                           mapMarkerColor: markerColor,
-                                          memberUUID: newMemberUUID,
                                           memberDeviceID: memberDeviceID,
                                           isOrganizer: false,
                                           isActive: false,
@@ -56,7 +56,7 @@ class JoinSessionViewModel {
                                           currentLocLongitude: memberLongitude)
         searchedSession?.members.append(newMember)
         service.appendMemberToSessionOnFirestore(withCode: validCode, member: newMember) {
-        #warning("Work on the waiting room Activity Indicator")
+            self.delegate?.waitingForAdmission()
         }
     }
 }

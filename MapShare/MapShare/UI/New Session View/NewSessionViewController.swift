@@ -31,8 +31,6 @@ class NewSessionViewController: UIViewController {
         super.viewDidLoad()
         newSessionViewModel = NewSessionViewModel()
         configureSheetPresentationController()
-        newSessionViewModel.getScottTESTSession()
-        newSessionViewModel.getChaseTESTSession()
     }
     
     
@@ -42,6 +40,14 @@ class NewSessionViewController: UIViewController {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
         }
     }
+    
+    
+    @IBAction func joinSessionButtonTapped(_ sender: Any) {
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
+        }
+    }
+    
     
     @IBAction func mapSearchButtonTapped(_ sender: Any) {
         
@@ -94,6 +100,7 @@ class NewSessionViewController: UIViewController {
     }
     
     func displayActiveSessionSheetController() {
+        #warning("This function never gets called")
         let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
         sheetController.isModalInPresentation = true
@@ -129,16 +136,7 @@ class NewSessionViewController: UIViewController {
         if segue.identifier == "toActiveSessionVC" {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = newSessionViewModel.session else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
-            #warning("The segues below are for testing purposes and should be removed for the final project")
-        } else if segue.identifier == "scottTESTsegue" {
-            guard let destinationVC = segue.destination as? ActiveSessionViewController,
-                  let scottTestSession = newSessionViewModel.scottTestSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: scottTestSession)
-        } else {
-            guard let destinationVC = segue.destination as? ActiveSessionViewController,
-                  let chaseTestSession = newSessionViewModel.chaseTestSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: chaseTestSession)
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self)
         }
     }
 } //: CLASS

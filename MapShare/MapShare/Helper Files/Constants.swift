@@ -12,10 +12,6 @@ struct Constants {
     struct Device {
         static let deviceID = UIDevice.current.identifierForVendor?.uuidString
     }
-
-    struct Notifications {
-        static let newMemberWaitingToJoin = Notification.Name("newMemberWaitingToJoin")
-    }
     
     struct AdmitDenyButtonUI {
         static let cornerRadius: CGFloat      = 6

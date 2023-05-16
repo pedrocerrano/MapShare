@@ -26,7 +26,12 @@ class JoinSessionViewController: UIViewController {
     
     
     //MARK: - PROPERTIES
+    override var sheetPresentationController: UISheetPresentationController {
+        presentationController as! UISheetPresentationController
+    }
+    
     var joinSessionViewModel: JoinSessionViewModel!
+    var activityIndicator = UIActivityIndicatorView()
     
     
     //MARK: - LIFECYCLE
@@ -34,7 +39,10 @@ class JoinSessionViewController: UIViewController {
         super.viewDidLoad()
         joinSessionViewModel = JoinSessionViewModel(delegate: self)
         codeEntryTextField.delegate = self
-        
+        configureSheetPresentationController()
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
+        }
         hideJoinSessionTextFields()
         setUpPopUpButton()
     }
@@ -82,15 +90,24 @@ class JoinSessionViewController: UIViewController {
             memberScreenNameTextField.resignFirstResponder()
             memberScreenNameTextField.text?.removeAll()
             waitingStatusLabel.isHidden = false
-            NotificationCenter.default.post(name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
             
             waitingStatusLabel.text = "Waiting for admission"
-            #warning("Setup Activity Indicator")
+            #warning("Setup Activity Indicator correctly")
+            stopAnimatingOnceNewMemberIsAdmitted()
+            #warning("Need to dismiss modal and rethink navigation")
+            sheetPresentationController.dismissalTransitionWillBegin()
         }
     }
     
     
     //MARK: - FUNCTIONS
+    func configureSheetPresentationController() {
+        let screenHeight = view.frame.height
+        sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
+        sheetPresentationController.prefersGrabberVisible = true
+        sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+    }
+    
     func hideJoinSessionTextFields() {
         tellTheGroupLabel.isHidden = true
         memberfirstNameTextField.isHidden = true
@@ -171,7 +188,30 @@ class JoinSessionViewController: UIViewController {
         userColorPopUpButton.showsMenuAsPrimaryAction = true
         userColorPopUpButton.changesSelectionAsPrimaryAction = true
     }
+  
+    func setupActivityIndicator() {
+        activityIndicator.center           = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.style            = .large
+        self.view.addSubview(activityIndicator)
+        self.view.isUserInteractionEnabled = false
+        activityIndicator.startAnimating()
+    }
+
+    func stopAnimatingOnceNewMemberIsAdmitted() {
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+            self.view.isUserInteractionEnabled = true
+        }
+    }
     
+    func displayActiveSessionSheetController() {
+        let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
+        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
+        sheetController.isModalInPresentation = true
+        self.present(sheetController, animated: true, completion: nil)
+    }
+        
     //MARK: - ALERTS
     func presentNeedsSixDigitsAlert() {
         let needsSixDigitsAlertController = UIAlertController(title: "Invalid Session Code", message: "Please retype a six-digit session code.", preferredStyle: .alert)
@@ -207,7 +247,7 @@ class JoinSessionViewController: UIViewController {
         if segue.identifier == "toJoinActiveSessionVC" {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = joinSessionViewModel.searchedSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session)
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self)
         }
     }
 } //: CLASS
@@ -231,6 +271,10 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
                                         No session found.
                                         Please try another code.
                                      """
+    }
+    
+    func waitingForAdmission() {
+        setupActivityIndicator()
     }
 } //: ViewModelDelegate
 

@@ -20,33 +20,22 @@ struct FirebaseService {
     let ref = Firestore.firestore()
     
     //MARK: - FUNCTIONS
-    func saveNewSessionToFirestore(newSession: Session) {
-        ref.collection(Session.SessionKey.collectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
-    }
-    
-    func loadSessionFromFirestore(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).getDocument { document, error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(.failure(.firebaseError(error)))
-                return
-            }
-            
-            guard let document else { completion(.failure(.noDataFound)) ; return }
-            if let newData = document.data() {
-                if let session = Session(fromSessionDictionary: newData) {
-                    completion(.success(session))
-                }
-            }
-        }
+    func saveNewSessionToFirestore(newSession: Session, withMember: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
+        ref.collection(Session.SessionKey.sessionCollectionType).document(newSession.sessionCode).collection(Session.SessionKey.membersCollectionType).document(withMember.memberDeviceID).setData(withMember.memberDictionaryRepresentation)
     }
     
     func deleteSessionFromFirestore(session: Session) {
-        ref.collection(Session.SessionKey.collectionType).document(session.sessionCode).delete()
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).delete()
+    }
+    
+    func deleteAllMembersFromFirestore(session: Session, member: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
+        #warning("This doesn't do what I want it to do.")
     }
     
     func searchFirebaseForActiveSession(withCode codeEntered: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document(codeEntered).getDocument { document, error in
+        ref.collection(Session.SessionKey.sessionCollectionType).document(codeEntered).getDocument { document, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
@@ -61,16 +50,44 @@ struct FirebaseService {
     }
     
     func appendMemberToSessionOnFirestore(withCode sessionCode: String, member: Member, completion: @escaping() -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document(sessionCode).updateData([Session.SessionKey.members : FieldValue.arrayUnion([member.memberDictionaryRepresentation])])
+        ref.collection(Session.SessionKey.sessionCollectionType).document(sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).setData(member.memberDictionaryRepresentation)
         completion()
     }
     
-    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
-        
+    func listenForChangesToSession(forSession sessionCode: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(sessionCode).addSnapshotListener { documentSnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+            
+            guard let documentSnapshot else { completion(.failure(.noDataFound)) ; return }
+            if let updatedData = documentSnapshot.data() {
+                if let updatedSession = Session(fromSessionDictionary: updatedData) {
+                    completion(.success(updatedSession))
+                }
+            }
+        }
     }
     
-    func deleteMemberFromFirestore() {
-        
+    func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+         
+            guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let memberDictArray     = documentsData.compactMap { $0.data() }
+            let members             = memberDictArray.compactMap { Member(fromMemberDictionary: $0) }
+            completion(.success(members))
+        }
+    }
+    
+    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.isActive : true])
+    }
+    
+    func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
     }
     
     func saveNewDestinationToFirestore() {
@@ -87,35 +104,5 @@ struct FirebaseService {
     
     func updateLocationOfMemberToFirestore() {
         
-    }
-    
-    func forScottTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document("HZ5MB0").getDocument { document, error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(.failure(.firebaseError(error)))
-                return
-            }
-            
-            guard let document else { completion(.failure(.noDataFound)) ; return }
-            let session = document.data().map { Session(fromSessionDictionary: $0) }
-            guard let session else { return }
-            completion(.success(session))
-        }
-    }
-    
-    func forChaseTESTING(completion: @escaping(Result<Session?, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.collectionType).document("FUN8EM").getDocument { document, error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(.failure(.firebaseError(error)))
-                return
-            }
-            
-            guard let document else { completion(.failure(.noDataFound)) ; return }
-            let session = document.data().map { Session(fromSessionDictionary: $0) }
-            guard let session else { return }
-            completion(.success(session))
-        }
     }
 }

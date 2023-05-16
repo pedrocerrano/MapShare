@@ -29,13 +29,13 @@ class ActiveSessionViewController: UIViewController {
         super.viewDidLoad()
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate   = self
+        configureUI()
         configureSheetPresentationController()
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        configureUI()
-        setupNotifications()
-        activeSessionViewModel.loadSession()
+        activeSessionViewModel.updateSession()
+        activeSessionViewModel.updateMembers()
     }
     
     
@@ -58,22 +58,12 @@ class ActiveSessionViewController: UIViewController {
         sessionControlButton.layer.cornerRadius = sessionControlButton.frame.height / 2
     }
     
-    
     func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
     }
-    
-    func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(newMemberWaitingToJoin), name: Constants.Notifications.newMemberWaitingToJoin, object: nil)
-    }
-    
-    @objc func newMemberWaitingToJoin() {
-        activeSessionTableView.reloadData()
-    }
-    
     
     
     //MARK: - ALERTS
@@ -92,28 +82,20 @@ class ActiveSessionViewController: UIViewController {
         present(organizerEndedActiveSessionAlertController, animated: true)
     }
     
-    
     func memberExitsActiveSessionAlert() {
         let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            #warning("Add Firestore delete member from session and trigger all views to refresh/reload")
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
-            #warning("The above member is the member to pass into Firestore to delete")
+            self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.sheetPresentationController.animateChanges {
+                self.sheetPresentationController.dismissalTransitionWillBegin()
+            }
         }
         memberExitsActiveSessionAlertController.addAction(dismissAction)
         memberExitsActiveSessionAlertController.addAction(confirmAction)
         present(memberExitsActiveSessionAlertController, animated: true)
     }
-    
-
-    /*
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-    }
-    */
-
 } //: CLASS
 
 
@@ -150,8 +132,9 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         case 1:
             guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
             
-            let member = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
-            waitingRoomCell.configureWaitingRoomCell(withMember: member)
+            let activeSession = activeSessionViewModel.session
+            let member        = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
+            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, delegate: self)
             
             return waitingRoomCell
         default:
@@ -162,3 +145,27 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         return UITableViewCell()
     }
 } //: TableView
+
+
+//MARK: - EXT: ViewModelDelegate
+extension ActiveSessionViewController: ActiveSessionViewModelDelegate {   
+    func sessionDataUpdated() {
+        activeSessionTableView.reloadData()
+    }
+    
+    func memberDataUpdated() {
+        activeSessionTableView.reloadData()
+    }
+} //: ViewModelDelegate
+
+
+//MARK: - EXT: WaitingRoomCellDelegate
+extension ActiveSessionViewController: WaitingRoomTableViewCellDelegate {
+    func admitMember(forSession session: Session, forMember member: Member) {
+        self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member)
+    }
+    
+    func denyMember(fromSession session: Session, forMember member: Member) {
+        self.activeSessionViewModel.denyNewMember(forSession: session, withMember: member)
+    }
+} //: WaitingRoomCellDelegate
