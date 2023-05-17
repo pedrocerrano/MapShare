@@ -9,14 +9,6 @@ import UIKit
 
 struct Constants {
     
-    struct MockData {
-        static let dummySession = Session(sessionName: "Do Not Use", sessionCode: "ABCDEF", organizerDeviceID: "1", members: [], destination: [], isActive: false)
-    }
-    
-    struct Notifications {
-        static let newSessionActive = Notification.Name("newSessionActive")
-    }
-    
     struct Device {
         static let deviceID = UIDevice.current.identifierForVendor?.uuidString
     }
