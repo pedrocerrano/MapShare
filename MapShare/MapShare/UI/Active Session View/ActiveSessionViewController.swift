@@ -63,6 +63,7 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+        sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
     
     

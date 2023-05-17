@@ -83,6 +83,7 @@ class NewSessionViewController: UIViewController {
             screenNameTextField.text?.removeAll()
             sheetPresentationController.animateChanges {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
+                
             }
         }
     }

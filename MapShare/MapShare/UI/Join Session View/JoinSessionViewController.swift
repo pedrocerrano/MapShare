@@ -13,6 +13,7 @@ import CoreLocationUI
 class JoinSessionViewController: UIViewController {
 
     //MARK: - OUTLETS
+    @IBOutlet weak var closeJoinSessionSheetButton: UIButton!
     @IBOutlet weak var codeEntryTextField: UITextField!
     @IBOutlet weak var searchSessionButton: UIButton!
     @IBOutlet weak var tellTheGroupLabel: UILabel!
@@ -48,6 +49,13 @@ class JoinSessionViewController: UIViewController {
     }
     
     //MARK: - IB ACTIONS
+    @IBAction func closeJoinSessionSheetButtonTapped(_ sender: Any) {
+        sheetPresentationController.presentedViewController.isModalInPresentation = false
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.dismissalTransitionWillBegin()
+        }
+    }
+    
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
         tellTheGroupLabel.isHidden = true
         guard let codeEntry = codeEntryTextField.text else { return }
@@ -105,9 +113,11 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+        sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
     
     func configureUI() {
+        closeJoinSessionSheetButton.layer.cornerRadius = closeJoinSessionSheetButton.frame.height / 2
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
     }
     
@@ -148,12 +158,12 @@ class JoinSessionViewController: UIViewController {
         }
     }
     
-    func displayActiveSessionSheetController() {
-        let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
-        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
-        sheetController.isModalInPresentation = true
-        self.present(sheetController, animated: true, completion: nil)
-    }
+//    func displayActiveSessionSheetController() {
+//        let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
+//        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
+//        sheetController.isModalInPresentation = true
+//        self.present(sheetController, animated: true, completion: nil)
+//    }
         
     //MARK: - ALERTS
     func presentNeedsSixDigitsAlert() {
