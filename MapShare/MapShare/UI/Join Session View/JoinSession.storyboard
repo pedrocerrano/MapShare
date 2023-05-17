@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search MapShare:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S48-Eg-dbo">
-                                <rect key="frame" x="105.66666666666667" y="79" width="181.66666666666663" height="27.666666666666671"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find a MapShare:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S48-Eg-dbo">
+                                <rect key="frame" x="110.66666666666669" y="79" width="172" height="27.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -76,16 +76,11 @@
                                     <segue destination="Kms-U8-SMw" kind="show" identifier="toJoinActiveSessionVC" id="ddg-DO-qqG"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(waiting)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Dn-Nr-lEn">
-                                <rect key="frame" x="98.333333333333329" y="556.33333333333337" width="196.33333333333337" height="20.333333333333371"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Qcb-eT-dRi">
                                 <rect key="frame" x="59" y="432" width="275" height="34.333333333333314"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Icon Color:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZG-16-Q88">
-                                        <rect key="frame" x="0.0" y="0.0" width="82.333333333333329" height="34.333333333333336"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Color:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZG-16-Q88">
+                                        <rect key="frame" x="0.0" y="0.0" width="97.666666666666671" height="34.333333333333336"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -100,16 +95,16 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell the group about yourself:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dff-5l-drj">
-                                <rect key="frame" x="20" y="240.66666666666666" width="211.66666666666666" height="19.333333333333343"/>
+                                <rect key="frame" x="78.666666666666671" y="240.66666666666666" width="235.66666666666663" height="19.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uz4-cg-Kqv">
-                                <rect key="frame" x="348" y="80.333333333333329" width="25" height="25"/>
-                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <rect key="frame" x="345" y="79" width="28" height="28"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Uz4-cg-Kqv" secondAttribute="height" multiplier="1:1" id="Y5J-ti-vKU"/>
-                                    <constraint firstAttribute="width" constant="25" id="gRu-ym-fGN"/>
+                                    <constraint firstAttribute="width" constant="28" id="gRu-ym-fGN"/>
                                 </constraints>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <state key="normal" title="Button"/>
@@ -130,16 +125,14 @@
                             <constraint firstItem="nJI-FY-X14" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.3" id="DSG-Bb-aIi"/>
                             <constraint firstItem="nJI-FY-X14" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Dnq-nK-fw1"/>
                             <constraint firstItem="v5A-g1-3SS" firstAttribute="top" secondItem="RtC-JV-4mm" secondAttribute="bottom" constant="10" id="FKb-IG-cPf"/>
-                            <constraint firstItem="1Dn-Nr-lEn" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Ky9-fN-IjF"/>
                             <constraint firstItem="Qcb-eT-dRi" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="LTV-Jt-rWj"/>
                             <constraint firstItem="OVY-Mc-89R" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.3" id="Lmy-oe-bjX"/>
                             <constraint firstItem="RtC-JV-4mm" firstAttribute="top" secondItem="Dff-5l-drj" secondAttribute="bottom" constant="12" id="O4G-na-YeH"/>
-                            <constraint firstItem="Dff-5l-drj" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="OdM-qj-Wkm"/>
+                            <constraint firstItem="Dff-5l-drj" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Oo8-yI-1Yn"/>
                             <constraint firstItem="pfz-uo-Fle" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.3" id="QFd-LT-YQ1"/>
-                            <constraint firstItem="1Dn-Nr-lEn" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.5" id="SOc-HY-KYR"/>
                             <constraint firstItem="RtC-JV-4mm" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="Vho-PS-SbS"/>
                             <constraint firstItem="Qcb-eT-dRi" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.7" id="Vye-tU-vxf"/>
-                            <constraint firstItem="1Dn-Nr-lEn" firstAttribute="top" secondItem="OVY-Mc-89R" secondAttribute="bottom" constant="30" id="YwQ-O5-9Hx"/>
+                            <constraint firstItem="Dff-5l-drj" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.6" id="ZH2-LJ-DuV"/>
                             <constraint firstItem="CYe-tn-TtU" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="aiy-Wv-SKN"/>
                             <constraint firstItem="OVY-Mc-89R" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="e6g-NW-WdE"/>
                             <constraint firstItem="S48-Eg-dbo" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="iO2-48-QFh"/>
@@ -165,7 +158,6 @@
                         <outlet property="searchSessionButton" destination="pfz-uo-Fle" id="Kbx-7Z-QBi"/>
                         <outlet property="tellTheGroupLabel" destination="Dff-5l-drj" id="WJk-zu-Uzu"/>
                         <outlet property="userColorPopUpButton" destination="2e2-W9-OHV" id="E4r-HS-bia"/>
-                        <outlet property="waitingStatusLabel" destination="1Dn-Nr-lEn" id="UIu-A4-QC0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -187,9 +179,6 @@
         <image name="xmark.circle" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -10,7 +10,6 @@ import Foundation
 protocol JoinSessionViewModelDelegate: AnyObject {
     func sessionExists()
     func noSessionFoundWithCode()
-    func waitingForAdmission()
 }
 
 class JoinSessionViewModel {
@@ -20,10 +19,12 @@ class JoinSessionViewModel {
     var searchedSession: Session?
     var service: FirebaseService
     private weak var delegate: JoinSessionViewModelDelegate?
+    weak var joinSessionDelegate: MapHomeViewController?
     
-    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate) {
-        self.service     = service
-        self.delegate    = delegate
+    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, joinSessionDelegate: MapHomeViewController) {
+        self.service             = service
+        self.delegate            = delegate
+        self.joinSessionDelegate = joinSessionDelegate
     }
     
     
@@ -54,8 +55,9 @@ class JoinSessionViewModel {
                                           currentLocLatitude: memberLatitude,
                                           currentLocLongitude: memberLongitude)
         searchedSession?.members.append(newMember)
+        guard let searchedSession else { return }
         service.appendMemberToSessionOnFirestore(withCode: validCode, member: newMember) {
-            self.delegate?.waitingForAdmission()
+            self.joinSessionDelegate?.updateWithSession(session: searchedSession)
         }
     }
 }

@@ -146,6 +146,10 @@ class NewSessionViewController: UIViewController {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
                   let session = newSessionViewModel.session else { return }
             destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self)
+        } else if segue.identifier == "toJoinSessionVC" {
+            guard let destinationVC = segue.destination as? JoinSessionViewController,
+                  let delegate = newSessionViewModel.delegate else { return }
+            destinationVC.joinSessionViewModel = JoinSessionViewModel(delegate: destinationVC, joinSessionDelegate: delegate)
         }
     }
 } //: CLASS

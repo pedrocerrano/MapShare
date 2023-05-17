@@ -76,7 +76,7 @@ class ActiveSessionViewController: UIViewController {
                 self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             }
             self.activeSessionViewModel.deleteSession()
-            #warning("Add Alert for other members that the organizer ended the session, and consider a completion handler to do so")
+            #warning("Force other members ActiveSessionView to dismiss")
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
