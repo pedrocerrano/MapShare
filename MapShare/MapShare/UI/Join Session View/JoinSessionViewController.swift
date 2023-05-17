@@ -44,9 +44,8 @@ class JoinSessionViewController: UIViewController {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
         }
         hideJoinSessionTextFields()
-        setUpPopUpButton()
+        configureUI()
     }
-    
     
     //MARK: - IB ACTIONS
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
@@ -108,6 +107,10 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
     }
     
+    func configureUI() {
+        PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+    }
+    
     func hideJoinSessionTextFields() {
         tellTheGroupLabel.isHidden = true
         memberfirstNameTextField.isHidden = true
@@ -127,66 +130,6 @@ class JoinSessionViewController: UIViewController {
         iconColorLabel.isHidden = false
         userColorPopUpButton.isHidden = false
         joinSessionButton.isHidden = false
-    }
-    
-    func setUpPopUpButton() {
-        let closure = { (action: UIAction) in
-            print(action.title)
-        }
-        
-        let redClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareRed, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.redTint
-        }
-        
-        let blueClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareBlue, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.blueTint
-        }
-        
-        let greenClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareGreen, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.greenTint
-        }
-        
-        let purpleClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapSharePurple, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.purpleTint
-        }
-        
-        let pinkClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapSharePink, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.pinkTint
-        }
-        
-        let cyanClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareCyan, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.cyanTint
-        }
-        
-        let yellowClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareYellow, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.yellowTint
-        }
-        
-        let orangeClosure = { (action: UIAction) in
-            self.userColorPopUpButton.setTitleColor(UIElements.Color.mapShareOrange, for: .normal)
-            self.userColorPopUpButton.tintColor = UIElements.Tint.orangeTint
-        }
-        
-        userColorPopUpButton.menu = UIMenu(children: [
-            UIAction(title: "↓", attributes: .hidden, state: .on, handler: closure),
-            UIAction(title: "● Red", handler: redClosure),
-            UIAction(title: "● Orange", handler: orangeClosure),
-            UIAction(title: "● Yellow", handler: yellowClosure),
-            UIAction(title: "● Green", handler: greenClosure),
-            UIAction(title: "● Blue", handler: blueClosure),
-            UIAction(title: "● Purple", handler: purpleClosure),
-            UIAction(title: "● Pink", handler: pinkClosure),
-            UIAction(title: "● Cyan", handler: cyanClosure)
-        ])
-        userColorPopUpButton.showsMenuAsPrimaryAction = true
-        userColorPopUpButton.changesSelectionAsPrimaryAction = true
     }
   
     func setupActivityIndicator() {

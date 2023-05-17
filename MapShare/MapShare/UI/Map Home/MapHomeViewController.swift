@@ -23,15 +23,11 @@ class MapHomeViewController: UIViewController {
     let memberIdentifier = "Member"
     
     let btn = UIButton(type: .detailDisclosure)
-    
-    let service = FirebaseService()
-    
+        
     var annotation: CustomAnnotation?
     var customAnnotations: [CustomAnnotation] = []
     
-    var loadedMembers: [Member] = []
-    var memberAnnotation: MemberAnnotation?
-    var memberAnnotations: [MemberAnnotation] = []
+    var mapHomeViewModel: MapHomeViewModel!
     
     //MARK: - OUTLETS
     @IBOutlet weak var mapView: MKMapView!
@@ -39,6 +35,7 @@ class MapHomeViewController: UIViewController {
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapHomeViewModel = MapHomeViewModel(delegate: self)
         navigationItem.hidesBackButton = true
         registerMapAnnotations()
         setupModalHomeSheetController()
@@ -46,7 +43,6 @@ class MapHomeViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
         locationManagerDidChangeAuthorization(locationManager)
-        showMembersLocation()
     }
     
     // MARK: - IB Actions
@@ -55,6 +51,12 @@ class MapHomeViewController: UIViewController {
     }
     
     //MARK: - FUNCTIONS
+    func loadAnnotations() {
+        for annotation in mapHomeViewModel.memberAnnotations {
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
@@ -71,23 +73,6 @@ class MapHomeViewController: UIViewController {
         } else {
             mapView.addAnnotation(annotation)
         }
-    }
-    
-    func showMembersLocation() {
-        service.forChaseTESTING(completion: { result in
-            switch result {
-            case .success(let session):
-                guard let membersArray = session?.members else { return }
-                let filteredMembers = membersArray.filter { $0.isActive == true }
-                for member in filteredMembers {
-                    let memberLocation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
-                    self.memberAnnotations.append(memberLocation)
-                    self.mapView.addAnnotation(memberLocation)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
     }
     
     func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
@@ -121,7 +106,14 @@ class MapHomeViewController: UIViewController {
         let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
         sheetController.isModalInPresentation = true
+        sheetController.newSessionViewModel = NewSessionViewModel(delegate: self)
         self.parent?.present(sheetController, animated: true, completion: nil)
+    }
+    
+    func updateWithSession(session: Session) {
+        mapHomeViewModel.session = session
+        mapHomeViewModel.listenForSessionChanges()
+        mapHomeViewModel.listenForMemberChanges()
     }
     
     func centerViewOnUser() {
@@ -272,3 +264,13 @@ extension MapHomeViewController: MKMapViewDelegate {
         }
     }
 } //: MapViewDelegate
+
+extension MapHomeViewController: MapHomeViewModelDelegate {
+    func changesInSession() {
+        return
+    }
+    
+    func changesInMembers() {
+        loadAnnotations()
+    }
+}

@@ -21,10 +21,9 @@ class JoinSessionViewModel {
     var service: FirebaseService
     private weak var delegate: JoinSessionViewModelDelegate?
     
-    init(session: Session? = nil, service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate) {
-        self.searchedSession   = session
-        self.service           = service
-        self.delegate          = delegate
+    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate) {
+        self.service     = service
+        self.delegate    = delegate
     }
     
     

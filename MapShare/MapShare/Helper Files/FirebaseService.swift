@@ -31,7 +31,6 @@ struct FirebaseService {
     
     func deleteAllMembersFromFirestore(session: Session, member: Member) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
-        #warning("This doesn't do what I want it to do.")
     }
     
     func searchFirebaseForActiveSession(withCode codeEntered: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
