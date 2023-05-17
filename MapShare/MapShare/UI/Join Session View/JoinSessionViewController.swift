@@ -13,6 +13,7 @@ import CoreLocationUI
 class JoinSessionViewController: UIViewController {
 
     //MARK: - OUTLETS
+    @IBOutlet weak var closeJoinSessionSheetButton: UIButton!
     @IBOutlet weak var codeEntryTextField: UITextField!
     @IBOutlet weak var searchSessionButton: UIButton!
     @IBOutlet weak var tellTheGroupLabel: UILabel!
@@ -22,7 +23,6 @@ class JoinSessionViewController: UIViewController {
     @IBOutlet weak var iconColorLabel: UILabel!
     @IBOutlet weak var userColorPopUpButton: UIButton!
     @IBOutlet weak var joinSessionButton: UIButton!
-    @IBOutlet weak var waitingStatusLabel: UILabel!
     
     
     //MARK: - PROPERTIES
@@ -37,7 +37,6 @@ class JoinSessionViewController: UIViewController {
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        joinSessionViewModel = JoinSessionViewModel(delegate: self)
         codeEntryTextField.delegate = self
         configureSheetPresentationController()
         sheetPresentationController.animateChanges {
@@ -48,6 +47,13 @@ class JoinSessionViewController: UIViewController {
     }
     
     //MARK: - IB ACTIONS
+    @IBAction func closeJoinSessionSheetButtonTapped(_ sender: Any) {
+        sheetPresentationController.presentedViewController.isModalInPresentation = false
+        sheetPresentationController.animateChanges {
+            sheetPresentationController.dismissalTransitionWillBegin()
+        }
+    }
+    
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
         tellTheGroupLabel.isHidden = true
         guard let codeEntry = codeEntryTextField.text else { return }
@@ -88,12 +94,6 @@ class JoinSessionViewController: UIViewController {
             memberLastNameTextField.text?.removeAll()
             memberScreenNameTextField.resignFirstResponder()
             memberScreenNameTextField.text?.removeAll()
-            waitingStatusLabel.isHidden = false
-            
-            waitingStatusLabel.text = "Waiting for admission"
-            #warning("Setup Activity Indicator correctly")
-            stopAnimatingOnceNewMemberIsAdmitted()
-            #warning("Need to dismiss modal and rethink navigation")
             sheetPresentationController.dismissalTransitionWillBegin()
         }
     }
@@ -105,9 +105,11 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
+        sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
     
     func configureUI() {
+        closeJoinSessionSheetButton.layer.cornerRadius = closeJoinSessionSheetButton.frame.height / 2
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
     }
     
@@ -119,7 +121,6 @@ class JoinSessionViewController: UIViewController {
         iconColorLabel.isHidden = true
         userColorPopUpButton.isHidden = true
         joinSessionButton.isHidden = true
-        waitingStatusLabel.isHidden = true
     }
     
     func revealJoinSessionTextFields() {
@@ -131,29 +132,7 @@ class JoinSessionViewController: UIViewController {
         userColorPopUpButton.isHidden = false
         joinSessionButton.isHidden = false
     }
-  
-    func setupActivityIndicator() {
-        activityIndicator.center           = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.style            = .large
-        self.view.addSubview(activityIndicator)
-        self.view.isUserInteractionEnabled = false
-        activityIndicator.startAnimating()
-    }
 
-    func stopAnimatingOnceNewMemberIsAdmitted() {
-        DispatchQueue.main.async {
-            self.activityIndicator.stopAnimating()
-            self.view.isUserInteractionEnabled = true
-        }
-    }
-    
-    func displayActiveSessionSheetController() {
-        let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
-        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
-        sheetController.isModalInPresentation = true
-        self.present(sheetController, animated: true, completion: nil)
-    }
         
     //MARK: - ALERTS
     func presentNeedsSixDigitsAlert() {
@@ -214,10 +193,6 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
                                         No session found.
                                         Please try another code.
                                      """
-    }
-    
-    func waitingForAdmission() {
-        setupActivityIndicator()
     }
 } //: ViewModelDelegate
 

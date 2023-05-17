@@ -33,7 +33,7 @@
                                         <buttonConfiguration key="configuration" style="filled" title="Join"/>
                                         <connections>
                                             <action selector="joinSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="j3f-1c-E1Q"/>
-                                            <segue destination="E8S-Vk-tzk" kind="show" id="vdn-c1-16w"/>
+                                            <segue destination="E8S-Vk-tzk" kind="show" identifier="toJoinSessionVC" id="vdn-c1-16w"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -159,7 +159,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22u-ZL-5EY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2592" y="8"/>
+            <point key="canvasLocation" x="2592" y="6"/>
         </scene>
         <!--ActiveSession-->
         <scene sceneID="xwJ-9b-qei">
