@@ -12,15 +12,11 @@ class NewSessionViewModel {
     //MARK: - PROPERTIES
     var session: Session?
     let service: FirebaseService
+    weak var delegate: MapHomeViewController?
     
-    var scottTestSession: Session?
-    var chaseTestSession: Session?
-    
-    init(session: Session? = nil, service: FirebaseService = FirebaseService(), scottTestSession: Session? = nil, chaseTestSession: Session? = nil) {
-        self.session   = session
-        self.service   = service
-        self.scottTestSession = scottTestSession
-        self.chaseTestSession = chaseTestSession
+    init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewController) {
+        self.service  = service
+        self.delegate = delegate
     }
     
     
@@ -46,6 +42,7 @@ class NewSessionViewModel {
                                   isActive: true)
         
         session = newSession
+        delegate?.updateWithSession(session: newSession)
         service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer)
     }
 }

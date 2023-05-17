@@ -37,6 +37,7 @@
 		AF72D7F02A0D56980080C9AD /* MemberAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */; };
 		AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */; };
 		AF72D7F62A1407980080C9AD /* PopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F52A1407980080C9AD /* PopUpButton.swift */; };
+		AF72D7F82A14113A0080C9AD /* MapHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */; };
 		AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberAnnotation.swift; sourceTree = "<group>"; };
 		AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		AF72D7F52A1407980080C9AD /* PopUpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpButton.swift; sourceTree = "<group>"; };
+		AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHomeViewModel.swift; sourceTree = "<group>"; };
 		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,6 +200,7 @@
 			children = (
 				29EB7FD82A03DFC600F2242F /* MapHome.storyboard */,
 				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
+				AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */,
 			);
 			path = "Map Home";
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
+				AF72D7F82A14113A0080C9AD /* MapHomeViewModel.swift in Sources */,
 				29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */,
 				29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */,
 				AF72D7F62A1407980080C9AD /* PopUpButton.swift in Sources */,

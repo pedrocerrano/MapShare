@@ -28,7 +28,6 @@ class NewSessionViewController: UIViewController {
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        newSessionViewModel = NewSessionViewModel()
         configureSheetPresentationController()
         configureUI()
     }
@@ -70,6 +69,8 @@ class NewSessionViewController: UIViewController {
             presentNeedsFirstNameAlert()
         } else if lastName.isEmpty {
             presentNeedsLastNameAlert()
+        } else if userColorPopUpButton.titleLabel?.text == "↓" {
+            presentChooseColorAlert()
         } else {
             newSessionViewModel.createNewMapShareSession(sessionName: sessionName, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: highlandVillageLat, organizerLongitude: highlandVillageLon)
             sessionNameTextField.resignFirstResponder()
@@ -128,6 +129,13 @@ class NewSessionViewController: UIViewController {
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyLastNameAlertController.addAction(dismissAction)
         present(emptyLastNameAlertController, animated: true)
+    }
+    
+    func presentChooseColorAlert() {
+        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color to join.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        noColorSelectedAlertController.addAction(dismissAction)
+        present(noColorSelectedAlertController, animated: true)
     }
     
     

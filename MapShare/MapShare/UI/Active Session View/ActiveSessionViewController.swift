@@ -71,6 +71,9 @@ class ActiveSessionViewController: UIViewController {
         let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
+            for member in self.activeSessionViewModel.session.members {
+                self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            }
             self.activeSessionViewModel.deleteSession()
             #warning("Add Alert for other members that the organizer ended the session, and consider a completion handler to do so")
             self.sheetPresentationController.animateChanges {
