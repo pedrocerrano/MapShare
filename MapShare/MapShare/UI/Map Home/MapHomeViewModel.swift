@@ -51,7 +51,7 @@ class MapHomeViewModel {
                 self.delegate?.changesInSession()
             case .failure(let error):
                 self.delegate?.noSessionActive()
-                print(error.localizedDescription)
+                print(error.localizedDescription, "MapHomeViewModel: Session is nil")
             }
         }
     }

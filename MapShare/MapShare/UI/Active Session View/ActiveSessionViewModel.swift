@@ -10,6 +10,7 @@ import Foundation
 protocol ActiveSessionViewModelDelegate: AnyObject {
     func sessionDataUpdated()
     func memberDataUpdated()
+    func sessionReturnedNil()
 }
 
 class ActiveSessionViewModel {
@@ -34,7 +35,8 @@ class ActiveSessionViewModel {
                 self.session = updatedSession
                 self.delegate?.sessionDataUpdated()
             case .failure(let error):
-                print(error.localizedDescription)
+                self.delegate?.sessionReturnedNil()
+                print(error.localizedDescription, "ActionSessionViewModel: Session returned nil")
             }
         }
     }
@@ -46,7 +48,7 @@ class ActiveSessionViewModel {
                 self.session.members = updatedMembers
                 self.delegate?.memberDataUpdated()
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error.localizedDescription, "ActionSessionViewModel: Members returned nil")
             }
         }
     }

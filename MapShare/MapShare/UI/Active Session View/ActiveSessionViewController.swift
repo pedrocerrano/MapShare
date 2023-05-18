@@ -76,7 +76,6 @@ class ActiveSessionViewController: UIViewController {
                 self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             }
             self.activeSessionViewModel.deleteSession()
-            #warning("Force other members ActiveSessionView to dismiss")
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
@@ -159,6 +158,10 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
     
     func memberDataUpdated() {
         activeSessionTableView.reloadData()
+    }
+    
+    func sessionReturnedNil() {
+        sheetPresentationController.dismissalTransitionWillBegin()
     }
 } //: ViewModelDelegate
 
