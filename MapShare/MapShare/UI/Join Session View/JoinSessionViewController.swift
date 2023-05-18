@@ -67,13 +67,13 @@ class JoinSessionViewController: UIViewController {
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
-        guard let firstName = memberfirstNameTextField.text,
-              let lastName = memberLastNameTextField.text,
-              let screenName = memberScreenNameTextField.text,
-              let markerColor = userColorPopUpButton.titleLabel?.textColor.convertColorToString() else { return }
-        let dallasLat: Double = 32.779167
-        let dallasLon: Double = -96.808891
-        var optionalScreenName = ""
+        guard let firstName       = memberfirstNameTextField.text,
+              let lastName        = memberLastNameTextField.text,
+              let screenName      = memberScreenNameTextField.text,
+              let markerColor     = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
+              let memberLatitude  = joinSessionViewModel.locationManager.location?.coordinate.latitude,
+              let memberLongitude = joinSessionViewModel.locationManager.location?.coordinate.longitude else { return }
+        var optionalScreenName    = ""
         if screenName.isEmpty {
             optionalScreenName = firstName
         } else {
@@ -87,7 +87,7 @@ class JoinSessionViewController: UIViewController {
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
             presentChooseColorAlert()
         } else {
-            joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: dallasLat, memberLongitude: dallasLon)
+            joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: memberLatitude, memberLongitude: memberLongitude)
             memberfirstNameTextField.resignFirstResponder()
             memberfirstNameTextField.text?.removeAll()
             memberLastNameTextField.resignFirstResponder()

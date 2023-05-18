@@ -25,11 +25,17 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="VwX-2m-tSV"/>
                                 </connections>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18j-ye-pGs">
-                                <rect key="frame" x="16" y="103" width="96" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j5F-SU-roa">
+                                <rect key="frame" x="20" y="95" width="40" height="35"/>
+                                <color key="tintColor" red="0.21626689700000001" green="0.64705884459999996" blue="0.1418456011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Center">
-                                    <imageReference key="image" image="location" catalog="system" symbolScale="medium"/>
+                                <buttonConfiguration key="configuration" style="plain" image="circle.fill" catalog="system"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18j-ye-pGs">
+                                <rect key="frame" x="20" y="137" width="39" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled">
+                                    <imageReference key="image" image="location.north.line" catalog="system" symbolScale="medium"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aAf-IX-X4G"/>
@@ -39,30 +45,19 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="18j-ye-pGs" firstAttribute="centerX" secondItem="j5F-SU-roa" secondAttribute="centerX" id="1U6-fu-1tX"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DrH-Fw-j6D" secondAttribute="trailing" id="7K1-EA-BFt"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="18j-ye-pGs" secondAttribute="trailing" symbolic="YES" id="Bg9-cE-dCP"/>
                             <constraint firstAttribute="bottom" secondItem="DrH-Fw-j6D" secondAttribute="bottom" id="D8a-rU-G9T"/>
-                            <constraint firstItem="18j-ye-pGs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="NHJ-YO-97P"/>
-                            <constraint firstItem="18j-ye-pGs" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="UeS-bf-jgs"/>
+                            <constraint firstItem="18j-ye-pGs" firstAttribute="top" secondItem="j5F-SU-roa" secondAttribute="bottom" constant="7" id="Juc-4q-hr3"/>
+                            <constraint firstItem="18j-ye-pGs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="NHJ-YO-97P"/>
+                            <constraint firstItem="j5F-SU-roa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="YZi-Nb-Hjf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="18j-ye-pGs" secondAttribute="trailing" constant="334" id="c0D-v2-Zev"/>
                             <constraint firstItem="DrH-Fw-j6D" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="cCy-65-MNH"/>
                             <constraint firstItem="DrH-Fw-j6D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fmQ-AZ-EUb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="18j-ye-pGs" secondAttribute="bottom" constant="646" id="ynr-6E-nxX"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Vl0-7c-V40">
-                        <barButtonItem key="leftBarButtonItem" title="Item" style="plain" id="ywZ-uv-TrB">
-                            <button key="customView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="ISi-Sj-bRC">
-                                <rect key="frame" x="16" y="5" width="87" height="34.333333333333336"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
-                                </accessibility>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="circle.fill" catalog="system">
-                                    <color key="baseForegroundColor" red="0.21626689700000001" green="0.64705884459999996" blue="0.1418456011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </buttonConfiguration>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="Vl0-7c-V40"/>
                     <connections>
                         <outlet property="mapView" destination="DrH-Fw-j6D" id="u7B-Ep-uAj"/>
                     </connections>
@@ -92,7 +87,7 @@
     </scenes>
     <resources>
         <image name="circle.fill" catalog="system" width="128" height="123"/>
-        <image name="location" catalog="system" width="128" height="121"/>
+        <image name="location.north.line" catalog="system" width="84" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

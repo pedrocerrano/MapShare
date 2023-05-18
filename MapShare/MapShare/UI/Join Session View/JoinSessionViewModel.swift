@@ -5,7 +5,7 @@
 //  Created by iMac Pro on 5/8/23.
 //
 
-import Foundation
+import MapKit
 
 protocol JoinSessionViewModelDelegate: AnyObject {
     func sessionExists()
@@ -15,6 +15,7 @@ protocol JoinSessionViewModelDelegate: AnyObject {
 class JoinSessionViewModel {
     
     //MARK: - PROPERTIES
+    var locationManager = CLLocationManager()
     var validSessionCode = ""
     var searchedSession: Session?
     var service: FirebaseService
