@@ -12,6 +12,7 @@ import CoreLocation
 protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
+    func noSessionActive()
 }
 
 class MapHomeViewModel {
@@ -49,6 +50,7 @@ class MapHomeViewModel {
                 self.session = loadedSession
                 self.delegate?.changesInSession()
             case .failure(let error):
+                self.delegate?.noSessionActive()
                 print(error.localizedDescription)
             }
         }

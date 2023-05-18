@@ -38,8 +38,7 @@ class JoinSessionViewModel {
                 self.searchedSession = searchedSession
             case .failure(let error):
                 self.delegate?.noSessionFoundWithCode()
-                #warning("Need to troubleshoot noSessionFoundWithCode")
-                print(error.localizedDescription)
+                print(error.localizedDescription, "No session found")
             }
         }
     }

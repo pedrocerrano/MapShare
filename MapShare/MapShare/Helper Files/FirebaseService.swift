@@ -12,6 +12,7 @@ enum FirebaseError: Error {
     case firebaseError(Error)
     case unableToDecode
     case noDataFound
+    case sessionReturnedNil
 }
 
 struct FirebaseService {
@@ -44,6 +45,8 @@ struct FirebaseService {
                 if let session = Session(fromSessionDictionary: newData) {
                     completion(.success(session))
                 }
+            } else {
+                completion(.failure(.sessionReturnedNil))
             }
         }
     }
@@ -64,8 +67,11 @@ struct FirebaseService {
                 if let updatedSession = Session(fromSessionDictionary: updatedData) {
                     completion(.success(updatedSession))
                 }
+            } else {
+                completion(.failure(.sessionReturnedNil))
             }
         }
+        #warning(".remove()")
     }
     
     func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) {

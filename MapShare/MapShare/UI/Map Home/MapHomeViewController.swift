@@ -169,8 +169,6 @@ extension MapHomeViewController: CLLocationManagerDelegate {
 
 extension MapHomeViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        //        guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
-        #warning("CHASE: Can we delete this line?")
         var annotationView: MKAnnotationView?
         if let annotation = annotation as? CustomAnnotation {
             annotationView = mapHomeViewModel.setupCustomAnnotations(for: annotation, on: mapView)
@@ -199,7 +197,6 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let customAnnotation = view.annotation, customAnnotation.isKind(of: CustomAnnotation.self) {
-            print("tapped location accessory button")
             getDirections(annotation: customAnnotation)
         }
     }
@@ -224,4 +221,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         updateMemberCounts()
         mapView.reloadInputViews()
     }
-}
+    
+    func noSessionActive() {
+        sessionActivityIndicatorLabel.textColor = .systemGray
+        mapView.removeAnnotations(mapView.annotations)
+    }
+} //: ViewModelDelegate

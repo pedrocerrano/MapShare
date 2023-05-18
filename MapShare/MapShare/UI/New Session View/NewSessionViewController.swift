@@ -101,14 +101,6 @@ class NewSessionViewController: UIViewController {
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
     }
     
-    func displayActiveSessionSheetController() {
-        #warning("This function never gets called")
-        let storyboard = UIStoryboard(name: "ActiveSession", bundle: nil)
-        guard let sheetController = storyboard.instantiateViewController(withIdentifier: "ActiveSessionVC") as? ActiveSessionViewController else { return }
-        sheetController.isModalInPresentation = true
-        self.present(sheetController, animated: true, completion: nil)
-    }
-    
     
     //MARK: - ALERTS
     func presentSessionNeedsNameAlert() {
