@@ -5,11 +5,12 @@
 //  Created by iMac Pro on 5/1/23.
 //
 
-import Foundation
+import MapKit
 
 class NewSessionViewModel {
     
     //MARK: - PROPERTIES
+    var locationManager = CLLocationManager()
     var session: Session?
     let service: FirebaseService
     weak var delegate: MapHomeViewController?

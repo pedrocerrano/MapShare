@@ -49,14 +49,14 @@ class NewSessionViewController: UIViewController {
     
     
     @IBAction func createSessionButtonTapped(_ sender: Any) {
-        guard let sessionName = sessionNameTextField.text,
-              let firstName   = firstNameTextField.text,
-              let lastName    = lastNameTextField.text,
-              let screenName  = screenNameTextField.text,
-              let markerColor = userColorPopUpButton.titleLabel?.textColor.convertColorToString() else { return }
-        let highlandVillageLat: Double = 33.08484
-        let highlandVillageLon: Double = -97.05305
-        var optionalScreenName = ""
+        guard let sessionName   = sessionNameTextField.text,
+              let firstName     = firstNameTextField.text,
+              let lastName      = lastNameTextField.text,
+              let screenName    = screenNameTextField.text,
+              let markerColor   = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
+              let organizerLatitude  = newSessionViewModel.locationManager.location?.coordinate.latitude,
+              let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude else { return }
+        var optionalScreenName  = ""
         if screenName.isEmpty {
             optionalScreenName = firstName
         } else {
@@ -72,7 +72,7 @@ class NewSessionViewController: UIViewController {
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
             presentChooseColorAlert()
         } else {
-            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: highlandVillageLat, organizerLongitude: highlandVillageLon)
+            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
             sessionNameTextField.resignFirstResponder()
             sessionNameTextField.text?.removeAll()
             firstNameTextField.resignFirstResponder()

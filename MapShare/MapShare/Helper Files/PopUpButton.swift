@@ -56,14 +56,14 @@ struct PopUpButton {
         
         button.menu = UIMenu(children: [
             UIAction(title: "↓", attributes: .hidden, state: .on, handler: closure),
-            UIAction(title: "Red", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareRed, renderingMode: .alwaysOriginal), handler: redClosure),
+            UIAction(title: "Red",    image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareRed, renderingMode: .alwaysOriginal), handler: redClosure),
             UIAction(title: "Orange", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareOrange, renderingMode: .alwaysOriginal), handler: orangeClosure),
             UIAction(title: "Yellow", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareYellow, renderingMode: .alwaysOriginal), handler: yellowClosure),
-            UIAction(title: "Green", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareGreen, renderingMode: .alwaysOriginal), handler: greenClosure),
-            UIAction(title: "Blue", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareBlue, renderingMode: .alwaysOriginal), handler: blueClosure),
+            UIAction(title: "Green",  image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareGreen, renderingMode: .alwaysOriginal), handler: greenClosure),
+            UIAction(title: "Blue",   image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareBlue, renderingMode: .alwaysOriginal), handler: blueClosure),
             UIAction(title: "Purple", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapSharePurple, renderingMode: .alwaysOriginal), handler: purpleClosure),
-            UIAction(title: "Pink", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapSharePink, renderingMode: .alwaysOriginal), handler: pinkClosure),
-            UIAction(title: "Cyan", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareCyan, renderingMode: .alwaysOriginal), handler: cyanClosure)
+            UIAction(title: "Pink",   image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapSharePink, renderingMode: .alwaysOriginal), handler: pinkClosure),
+            UIAction(title: "Cyan",   image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareCyan, renderingMode: .alwaysOriginal), handler: cyanClosure)
         ])
         
         button.showsMenuAsPrimaryAction = true
