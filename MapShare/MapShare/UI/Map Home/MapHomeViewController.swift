@@ -32,7 +32,6 @@ class MapHomeViewController: UIViewController {
         setupModalHomeSheetController()
         navigationItem.hidesBackButton = true
         mapHomeViewModel = MapHomeViewModel(delegate: self)
-        print("viewDidLoad: has \(mapHomeViewModel.mapShareSession?.members.count ?? 99999) members in session.members")
         mapHomeViewModel.centerViewOnUser(mapView: mapView)
         locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
     }
@@ -44,7 +43,7 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-        print("There are \(mapHomeViewModel.mapShareSession?.members.count ?? 555555) members in session.members")
+
     }
     
     
@@ -102,10 +101,6 @@ class MapHomeViewController: UIViewController {
         let waitingRoomMembers           = members.filter { !$0.isActive }.count
         membersInActiveSessionLabel.text = "\(activeMembers)"
         membersInWaitingRoomLabel.text   = "\(waitingRoomMembers)"
-        print("ChangesInMembers has \(activeMembers) in the Active Session")
-        print("ChangesInMembers has \(waitingRoomMembers) in the Waiting Room")
-        
-        print("ChangesInMembers has \(mapHomeViewModel.mapShareSession?.uuid) in the UUID")
     }
     
     func checkLocationServices() {
@@ -227,8 +222,6 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         if session.isActive == true {
             sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
         }
-        print("Active Session Bool: \(session.isActive)")
-        print("ChangesInMembers has \(mapHomeViewModel.mapShareSession?.uuid) in the UUID")
     }
     
     func changesInMembers() {

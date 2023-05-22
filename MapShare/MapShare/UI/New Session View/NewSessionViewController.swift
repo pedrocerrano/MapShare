@@ -73,14 +73,12 @@ class NewSessionViewController: UIViewController {
             presentChooseColorAlert()
         } else {
             newSessionViewModel.createNewMapShareSession(sessionName: sessionName, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
-            sessionNameTextField.resignFirstResponder()
-            sessionNameTextField.text?.removeAll()
-            firstNameTextField.resignFirstResponder()
-            firstNameTextField.text?.removeAll()
-            lastNameTextField.resignFirstResponder()
-            lastNameTextField.text?.removeAll()
-            screenNameTextField.resignFirstResponder()
-            screenNameTextField.text?.removeAll()
+            [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
+                if let textField {
+                    textField.resignFirstResponder()
+                    textField.text = ""
+                }
+            }
             sheetPresentationController.animateChanges {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
                 
