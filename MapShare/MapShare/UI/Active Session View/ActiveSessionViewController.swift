@@ -91,6 +91,7 @@ class ActiveSessionViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.activeSessionViewModel.mapHomeDelegate?.delegateRemoveAnnotations()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
@@ -162,6 +163,7 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
     
     func sessionReturnedNil() {
         sheetPresentationController.dismissalTransitionWillBegin()
+        activeSessionViewModel.mapHomeDelegate?.delegateRemoveAnnotations()
     }
 } //: ViewModelDelegate
 

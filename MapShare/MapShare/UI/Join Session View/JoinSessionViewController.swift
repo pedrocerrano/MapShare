@@ -168,8 +168,9 @@ class JoinSessionViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toJoinActiveSessionVC" {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
+                  let mapHomeDelegate = joinSessionViewModel.mapHomeDelegate,
                   let session = joinSessionViewModel.searchedSession else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self)
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self, mapHomeDelegate: mapHomeDelegate)
         }
     }
 } //: CLASS

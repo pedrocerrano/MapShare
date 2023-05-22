@@ -20,12 +20,12 @@ class JoinSessionViewModel {
     var searchedSession: Session?
     var service: FirebaseService
     private weak var delegate: JoinSessionViewModelDelegate?
-    weak var joinSessionDelegate: MapHomeViewController?
+    weak var mapHomeDelegate: MapHomeViewController?
     
-    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, joinSessionDelegate: MapHomeViewController) {
-        self.service             = service
-        self.delegate            = delegate
-        self.joinSessionDelegate = joinSessionDelegate
+    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, mapHomeDelegate: MapHomeViewController) {
+        self.service         = service
+        self.delegate        = delegate
+        self.mapHomeDelegate = mapHomeDelegate
     }
     
     
@@ -57,7 +57,7 @@ class JoinSessionViewModel {
         searchedSession?.members.append(newMember)
         guard let searchedSession else { return }
         service.appendMemberToSessionOnFirestore(withCode: validCode, member: newMember) {
-            self.joinSessionDelegate?.updateWithSession(session: searchedSession)
+            self.mapHomeDelegate?.delegateUpdateWithSession(session: searchedSession)
         }
     }
 }
