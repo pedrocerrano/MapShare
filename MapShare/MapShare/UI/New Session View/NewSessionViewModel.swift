@@ -13,11 +13,11 @@ class NewSessionViewModel {
     var locationManager = CLLocationManager()
     var session: Session?
     let service: FirebaseService
-    weak var delegate: MapHomeViewController?
+    weak var mapHomeDelegate: MapHomeViewController?
     
-    init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewController) {
-        self.service  = service
-        self.delegate = delegate
+    init(service: FirebaseService = FirebaseService(), mapHomeDelegate: MapHomeViewController) {
+        self.service         = service
+        self.mapHomeDelegate = mapHomeDelegate
     }
     
     
@@ -43,7 +43,7 @@ class NewSessionViewModel {
                                   isActive: true)
         
         session = newSession
-        delegate?.updateWithSession(session: newSession)
+        mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
         service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer)
     }
 }

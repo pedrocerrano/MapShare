@@ -10,6 +10,7 @@ import Foundation
 protocol ActiveSessionViewModelDelegate: AnyObject {
     func sessionDataUpdated()
     func memberDataUpdated()
+    func sessionReturnedNil()
 }
 
 class ActiveSessionViewModel {
@@ -19,11 +20,13 @@ class ActiveSessionViewModel {
     var service: FirebaseService
     let sectionTitles = ["Active Members", "Waiting Room"]
     private weak var delegate: ActiveSessionViewModelDelegate?
+    weak var mapHomeDelegate: MapHomeViewController?
     
-    init(session: Session, service: FirebaseService = FirebaseService(), delegate: ActiveSessionViewModelDelegate) {
-        self.session  = session
-        self.service  = service
-        self.delegate = delegate
+    init(session: Session, service: FirebaseService = FirebaseService(), delegate: ActiveSessionViewModelDelegate, mapHomeDelegate: MapHomeViewController) {
+        self.session         = session
+        self.service         = service
+        self.delegate        = delegate
+        self.mapHomeDelegate = mapHomeDelegate
     }
     
     //MARK: - FUNCTIONS
@@ -34,7 +37,8 @@ class ActiveSessionViewModel {
                 self.session = updatedSession
                 self.delegate?.sessionDataUpdated()
             case .failure(let error):
-                print(error.localizedDescription)
+                self.delegate?.sessionReturnedNil()
+                print(error.localizedDescription, "ActionSessionViewModel: Session returned nil")
             }
         }
     }
@@ -46,7 +50,7 @@ class ActiveSessionViewModel {
                 self.session.members = updatedMembers
                 self.delegate?.memberDataUpdated()
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error.localizedDescription, "ActionSessionViewModel: Members returned nil")
             }
         }
     }

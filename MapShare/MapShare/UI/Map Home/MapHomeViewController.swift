@@ -79,14 +79,20 @@ class MapHomeViewController: UIViewController {
         let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
         sheetController.isModalInPresentation = true
-        sheetController.newSessionViewModel = NewSessionViewModel(delegate: self)
+        sheetController.newSessionViewModel = NewSessionViewModel(mapHomeDelegate: self)
         self.parent?.present(sheetController, animated: true, completion: nil)
     }
     
-    func updateWithSession(session: Session) {
+    func delegateUpdateWithSession(session: Session) {
         mapHomeViewModel.session = session
         mapHomeViewModel.listenForSessionChanges()
         mapHomeViewModel.listenForMemberChanges()
+    }
+    
+    func delegateRemoveAnnotations() {
+        sessionActivityIndicatorLabel.textColor = .systemGray
+        mapView.removeAnnotations(mapView.annotations)
+        mapHomeViewModel.customAnnotations = []
     }
     
     func updateMemberCounts() {
@@ -225,5 +231,6 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     func noSessionActive() {
         sessionActivityIndicatorLabel.textColor = .systemGray
         mapView.removeAnnotations(mapView.annotations)
+        mapHomeViewModel.customAnnotations = []
     }
 } //: ViewModelDelegate

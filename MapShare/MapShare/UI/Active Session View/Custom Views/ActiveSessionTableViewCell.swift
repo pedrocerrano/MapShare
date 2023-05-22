@@ -18,9 +18,10 @@ class ActiveSessionTableViewCell: UITableViewCell {
     
     //MARK: - FUNCTIONS
     func configureCell(with member: Member) {
-        memberNameLabel.text       = "\(member.firstName) \(member.lastName)"
-        memberScreenNameLabel.text = member.screenName
-        dotColorImageView.tintColor = String.convertToColorFromString(string: member.mapMarkerColor)
+        memberNameLabel.text           = "\(member.firstName) \(member.lastName)"
+        memberScreenNameLabel.text     = member.screenName
+        isOrganizerImageView.tintColor = UIElements.Color.mapShareYellow
+        dotColorImageView.tintColor    = String.convertToColorFromString(string: member.mapMarkerColor)
         if member.isOrganizer == false {
             isOrganizerImageView.isHidden = true
         }
