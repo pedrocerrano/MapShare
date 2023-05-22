@@ -24,6 +24,8 @@ class ActiveSessionTableViewCell: UITableViewCell {
         dotColorImageView.tintColor    = String.convertToColorFromString(string: member.mapMarkerColor)
         if member.isOrganizer == false {
             isOrganizerImageView.isHidden = true
+        } else {
+            isOrganizerImageView.isHidden = false
         }
     }
 } //: CLASS

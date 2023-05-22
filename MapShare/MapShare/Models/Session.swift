@@ -28,6 +28,7 @@ class Session {
     var members: [Member]
     var destination: [MSDestination]
     var isActive: Bool
+    let uuid = UUID().uuidString
     
     var sessionDictionaryRepresentation: [String : AnyHashable] {
         [

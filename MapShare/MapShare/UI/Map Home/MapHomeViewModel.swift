@@ -18,7 +18,11 @@ protocol MapHomeViewModelDelegate: AnyObject {
 class MapHomeViewModel {
     
     //MARK: - PROPERTIES
-    var session: Session?
+    var mapShareSession: Session? {
+        didSet {
+            print("Changed")
+        }
+    }
     var service: FirebaseService
     
     var annotation: CustomAnnotation?
@@ -42,12 +46,12 @@ class MapHomeViewModel {
     }
     
     //MARK: - FUNCTIONS
-    func listenForSessionChanges() {
-        guard let session else { return }
-        service.listenForChangesToSession(forSession: session.sessionCode) { result in
+    func updateMapWithSessionChanges() {
+        guard let mapShareSession else { return }
+        service.listenForChangesToSession(forSession: mapShareSession.sessionCode) { result in
             switch result {
             case .success(let loadedSession):
-                self.session = loadedSession
+                self.mapShareSession = loadedSession
                 self.delegate?.changesInSession()
             case .failure(let error):
                 self.delegate?.noSessionActive()
@@ -55,15 +59,15 @@ class MapHomeViewModel {
             }
         }
     }
-    
-    func listenForMemberChanges() {
-        guard let session else { return }
-        service.listenForChangesToMembers(forSession: session) { result in
+       
+    func updateMapWithMemberChanges() {
+        guard let mapShareSession else { return }
+        service.listenForChangesToMembers(forSession: mapShareSession) { result in
             switch result {
             case .success(let members):
-                session.members = members
-                let filteredMembers = members.filter { $0.isActive == true }
-                for member in filteredMembers {
+                let filteredMembers = members.filter { $0.isActive }
+                mapShareSession.members = filteredMembers
+                for member in mapShareSession.members {
                     let memberLocation = MemberAnnotation(member: member,
                                                           coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude),
                                                           title: member.screenName,
@@ -71,6 +75,8 @@ class MapHomeViewModel {
                     self.memberAnnotations.append(memberLocation)
                 }
                 self.delegate?.changesInMembers()
+                print("Your MapHomeViewModel has \(mapShareSession.members.count) members.")
+                print("ViewModel UUID: \(mapShareSession.uuid)")
             case .failure(let error):
                 print(error.localizedDescription)
             }

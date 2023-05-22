@@ -32,6 +32,7 @@ class MapHomeViewController: UIViewController {
         setupModalHomeSheetController()
         navigationItem.hidesBackButton = true
         mapHomeViewModel = MapHomeViewModel(delegate: self)
+        print("viewDidLoad: has \(mapHomeViewModel.mapShareSession?.members.count ?? 99999) members in session.members")
         mapHomeViewModel.centerViewOnUser(mapView: mapView)
         locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
     }
@@ -43,7 +44,7 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-        
+        print("There are \(mapHomeViewModel.mapShareSession?.members.count ?? 555555) members in session.members")
     }
     
     
@@ -84,24 +85,27 @@ class MapHomeViewController: UIViewController {
     }
     
     func delegateUpdateWithSession(session: Session) {
-        mapHomeViewModel.session = session
-        mapHomeViewModel.listenForSessionChanges()
-        mapHomeViewModel.listenForMemberChanges()
+        mapHomeViewModel.mapShareSession = session
+        mapHomeViewModel.updateMapWithSessionChanges()
+        mapHomeViewModel.updateMapWithMemberChanges()
     }
     
     func delegateRemoveAnnotations() {
         sessionActivityIndicatorLabel.textColor = .systemGray
         mapView.removeAnnotations(mapView.annotations)
-        mapHomeViewModel.customAnnotations = []
+        mapHomeViewModel.memberAnnotations = []
     }
     
     func updateMemberCounts() {
-        guard let members                = mapHomeViewModel.session?.members else { return }
-        let activeMembers                = members.filter { $0.isActive == true }.count
-        let waitingRoomMembers           = members.filter { $0.isActive == false }.count
+        guard let members                = mapHomeViewModel.mapShareSession?.members else { return }
+        let activeMembers                = members.filter { $0.isActive }.count
+        let waitingRoomMembers           = members.filter { !$0.isActive }.count
         membersInActiveSessionLabel.text = "\(activeMembers)"
         membersInWaitingRoomLabel.text   = "\(waitingRoomMembers)"
-        #warning("Troubleshoot why this doesn't change")
+        print("ChangesInMembers has \(activeMembers) in the Active Session")
+        print("ChangesInMembers has \(waitingRoomMembers) in the Waiting Room")
+        
+        print("ChangesInMembers has \(mapHomeViewModel.mapShareSession?.uuid) in the UUID")
     }
     
     func checkLocationServices() {
@@ -188,10 +192,13 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        guard let members = mapHomeViewModel.session?.members else { return MKOverlayRenderer(overlay: renderer as! MKOverlay)}
-        for member in members {
-            let renderColor = String.convertToColorFromString(string: member.mapMarkerColor)
-            renderer.strokeColor = renderColor
+        if let members = mapHomeViewModel.mapShareSession?.members {
+            for member in members {
+                let renderColor = String.convertToColorFromString(string: member.mapMarkerColor)
+                renderer.strokeColor = renderColor
+            }
+        } else {
+            renderer.strokeColor = UIElements.Color.mapSharePink
         }
         return renderer
     }
@@ -216,21 +223,22 @@ extension MapHomeViewController: MKMapViewDelegate {
 
 extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInSession() {
-        guard let session = mapHomeViewModel.session else { return }
+        guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.isActive == true {
             sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
         }
+        print("Active Session Bool: \(session.isActive)")
+        print("ChangesInMembers has \(mapHomeViewModel.mapShareSession?.uuid) in the UUID")
     }
     
     func changesInMembers() {
         loadAnnotations()
         updateMemberCounts()
-        mapView.reloadInputViews()
     }
     
     func noSessionActive() {
         sessionActivityIndicatorLabel.textColor = .systemGray
         mapView.removeAnnotations(mapView.annotations)
-        mapHomeViewModel.customAnnotations = []
+        mapHomeViewModel.memberAnnotations = []
     }
 } //: ViewModelDelegate
