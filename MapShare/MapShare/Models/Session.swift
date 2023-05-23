@@ -14,19 +14,19 @@ class Session {
         static let sessionCode              = "sessionCode"
         static let organizerDeviceID        = "organizerDeviceID"
         static let members                  = "members"
-        static let destination              = "destination"
+        static let routes                   = "routes"
         static let isActive                 = "isActive"
         
-        static let sessionCollectionType    = "mapShareSession"
-        static let membersCollectionType    = "mapShareMembers"
-        static let directionsCollectionType = "mapShareDirections"
+        static let sessionCollectionType = "mapShareSession"
+        static let membersCollectionType = "mapShareMembers"
+        static let routesCollectionType  = "mapShareRoutes"
     }
     
     var sessionName: String
     var sessionCode: String
     var organizerDeviceID: String
     var members: [Member]
-    var destination: [MSRoute]
+    var routes: [MSRoute]
     var isActive: Bool
     
     var sessionDictionaryRepresentation: [String : AnyHashable] {
@@ -38,12 +38,12 @@ class Session {
         ]
     }
     
-    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], destination: [MSRoute], isActive: Bool) {
+    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], routes: [MSRoute], isActive: Bool) {
         self.sessionName       = sessionName
         self.sessionCode       = sessionCode
         self.organizerDeviceID = organizerDeviceID
         self.members           = members
-        self.destination       = destination
+        self.routes            = routes
         self.isActive          = isActive
     }
     
@@ -61,7 +61,7 @@ extension Session {
             return nil
         }
         
-        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], destination: [], isActive: isActive)
+        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], routes: [], isActive: isActive)
     }
 }
 

@@ -83,10 +83,10 @@ class MapHomeViewModel {
     
     //MARK: - MAPKIT FUNCTIONS
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
-        let destinationCoordinate = annotation.coordinate
-        let startingLocation      = MKPlacemark(coordinate: coordinate)
-        let destination           = MKPlacemark(coordinate: destinationCoordinate)
-        let request               = MKDirections.Request()
+        let routeCoordinate  = annotation.coordinate
+        let startingLocation = MKPlacemark(coordinate: coordinate)
+        let destination      = MKPlacemark(coordinate: routeCoordinate)
+        let request          = MKDirections.Request()
         
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
