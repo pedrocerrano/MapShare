@@ -71,16 +71,12 @@ struct FirebaseService {
     
     
     //MARK: - ROUTE CRUD FUNCTIONS
-    func saveNewRouteToFirestore(forSession session: Session, newRoute route: MSRoute) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routesCollectionType).document(route.routeUUID).setData(route.routeDictionaryRepresentation)
+    func saveNewRouteToFirestore(forSession session: Session, routeAnnotation: RouteAnnotation) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).setData(routeAnnotation.routeAnnotationDictionaryRepresentation)
     }
     
-    func updateRouteOnFirestore() {
-        #warning("Do we need to be able to update a Route?")
-    }
-    
-    func deleteRouteOnFirestore(fromSession session: Session, route: MSRoute) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routesCollectionType).document(route.routeUUID).delete()
+    func deleteRouteOnFirestore(fromSession session: Session) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).delete()
     }
     
     
@@ -116,16 +112,16 @@ struct FirebaseService {
         }
     }
     
-    func listenToChangesForRoutes(forSession session: Session, completion: @escaping(Result<[MSRoute], FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routesCollectionType).addSnapshotListener { querySnapshot, error in
+    func listenToChangesForRoutes(forSession session: Session, completion: @escaping(Result<[RouteAnnotation], FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
             
             guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
             let routeDictArray      = documentsData.compactMap { $0.data() }
-            let routes              = routeDictArray.compactMap { MSRoute(fromMSRouteDictionary: $0) }
-            completion(.success(routes))
+            let routeAnnotations    = routeDictArray.compactMap { RouteAnnotation(fromRouteAnnotationDictionary: $0) }
+            completion(.success(routeAnnotations))
         }
     }
 }

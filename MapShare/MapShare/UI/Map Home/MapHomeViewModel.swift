@@ -21,7 +21,7 @@ class MapHomeViewModel {
     var service: FirebaseService
     var mapShareSession: Session?
     var routeAnnotation: RouteAnnotation?
-    var routeAnnotations: [RouteAnnotation] = []
+//    var routeAnnotations: [RouteAnnotation] = []
     var memberAnnotation: MemberAnnotation?
     var memberAnnotations: [MemberAnnotation]
     private weak var delegate: MapHomeViewModelDelegate?
@@ -84,24 +84,24 @@ class MapHomeViewModel {
         guard let mapShareSession else { return }
         service.listenToChangesForRoutes(forSession: mapShareSession) { result in
             switch result {
-            case .success(let loadedRoutes):
-                mapShareSession.routes = loadedRoutes
+            case .success(let loadedRouteAnnotations):
+                mapShareSession.routeAnnotations = loadedRouteAnnotations
             case .failure(let error):
-                print(error.localizedDescription, "MapHomeViewModel: Routes are nil")
+                print(error.localizedDescription, "MapHomeViewModel: RouteAnnotations are nil")
             }
         }
     }
     
     
     //MARK: - FIREBASE ROUTE CRUD FUNCTIONS
-    func saveRouteToFirestore(newRoute: MSRoute) {
+    func saveRouteToFirestore(newRouteAnnotation: RouteAnnotation) {
         guard let mapShareSession else { return }
-        service.saveNewRouteToFirestore(forSession: mapShareSession, newRoute: newRoute)
+        service.saveNewRouteToFirestore(forSession: mapShareSession, routeAnnotation: newRouteAnnotation)
     }
     
-    func deleteRouteFromFirestore(routeToDelete route: MSRoute) {
+    func deleteRouteFromFirestore() {
         guard let mapShareSession else { return }
-        service.deleteRouteOnFirestore(fromSession: mapShareSession, route: route)
+        service.deleteRouteOnFirestore(fromSession: mapShareSession)
     }
     
     
@@ -158,6 +158,8 @@ class MapHomeViewModel {
         centerViewOnMember(mapView: mapView)
         locationManager.startUpdatingLocation()
         previousLocation = getCenterLocation(for: mapView)
+        locationManager.allowsBackgroundLocationUpdates = false
+        locationManager.startMonitoringSignificantLocationChanges()
     }
     
     func centerViewOnMember(mapView: MKMapView) {
