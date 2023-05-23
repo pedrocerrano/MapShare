@@ -13,7 +13,7 @@ class RouteAnnotation: NSObject, MKAnnotation {
     enum RouteAnnotationKey {
         static let routeLatitude  = "routeLatitude"
         static let routeLongitude = "routeLongitude"
-        static let title      = "title"
+        static let title          = "title"
     }
     
     var coordinate: CLLocationCoordinate2D
