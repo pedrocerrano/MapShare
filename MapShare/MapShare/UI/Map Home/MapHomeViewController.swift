@@ -225,12 +225,6 @@ extension MapHomeViewController: MKMapViewDelegate {
             getDirections(annotation: customAnnotation)
         }
     }
-    
-//    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
-//        if annotation.isKind(of: RouteAnnotation.self) {
-//            mapHomeViewModel.routeAnnotation = (annotation as! RouteAnnotation)
-//        }
-//    }
 } //: MapViewDelegate
 
 
