@@ -18,7 +18,7 @@ protocol MapHomeViewModelDelegate: AnyObject {
 class MapHomeViewModel {
     
     //MARK: - PROPERTIES
-    var session: Session?
+    var mapShareSession: Session?
     var service: FirebaseService
     
     var annotation: CustomAnnotation?
@@ -42,12 +42,15 @@ class MapHomeViewModel {
     }
     
     //MARK: - FUNCTIONS
-    func listenForSessionChanges() {
-        guard let session else { return }
-        service.listenForChangesToSession(forSession: session.sessionCode) { result in
+    func updateMapWithSessionChanges() {
+        guard let mapShareSession else { return }
+        service.listenForChangesToSession(forSession: mapShareSession.sessionCode) { result in
             switch result {
             case .success(let loadedSession):
-                self.session = loadedSession
+                mapShareSession.isActive = loadedSession.isActive
+                mapShareSession.sessionCode = loadedSession.sessionCode
+                mapShareSession.sessionName = loadedSession.sessionName
+                mapShareSession.organizerDeviceID = loadedSession.organizerDeviceID
                 self.delegate?.changesInSession()
             case .failure(let error):
                 self.delegate?.noSessionActive()
@@ -56,13 +59,13 @@ class MapHomeViewModel {
         }
     }
     
-    func listenForMemberChanges() {
-        guard let session else { return }
-        service.listenForChangesToMembers(forSession: session) { result in
+    func updateMapWithMemberChanges() {
+        guard let mapShareSession else { return }
+        service.listenForChangesToMembers(forSession: mapShareSession) { result in
             switch result {
-            case .success(let members):
-                session.members = members
-                let filteredMembers = members.filter { $0.isActive == true }
+            case .success(let loadedMembers):
+                mapShareSession.members = loadedMembers
+                let filteredMembers = loadedMembers.filter { $0.isActive }
                 for member in filteredMembers {
                     let memberLocation = MemberAnnotation(member: member,
                                                           coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude),

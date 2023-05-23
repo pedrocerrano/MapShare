@@ -88,12 +88,12 @@ class JoinSessionViewController: UIViewController {
             presentChooseColorAlert()
         } else {
             joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: memberLatitude, memberLongitude: memberLongitude)
-            memberfirstNameTextField.resignFirstResponder()
-            memberfirstNameTextField.text?.removeAll()
-            memberLastNameTextField.resignFirstResponder()
-            memberLastNameTextField.text?.removeAll()
-            memberScreenNameTextField.resignFirstResponder()
-            memberScreenNameTextField.text?.removeAll()
+            [memberfirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
+                if let textField {
+                    textField.resignFirstResponder()
+                    textField.text = ""
+                }
+            }
             sheetPresentationController.dismissalTransitionWillBegin()
         }
     }

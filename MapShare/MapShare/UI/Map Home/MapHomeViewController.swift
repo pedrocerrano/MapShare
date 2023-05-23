@@ -43,7 +43,7 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-        
+
     }
     
     
@@ -84,24 +84,23 @@ class MapHomeViewController: UIViewController {
     }
     
     func delegateUpdateWithSession(session: Session) {
-        mapHomeViewModel.session = session
-        mapHomeViewModel.listenForSessionChanges()
-        mapHomeViewModel.listenForMemberChanges()
+        mapHomeViewModel.mapShareSession = session
+        mapHomeViewModel.updateMapWithSessionChanges()
+        mapHomeViewModel.updateMapWithMemberChanges()
     }
     
     func delegateRemoveAnnotations() {
         sessionActivityIndicatorLabel.textColor = .systemGray
         mapView.removeAnnotations(mapView.annotations)
-        mapHomeViewModel.customAnnotations = []
+        mapHomeViewModel.memberAnnotations = []
     }
     
     func updateMemberCounts() {
-        guard let members                = mapHomeViewModel.session?.members else { return }
-        let activeMembers                = members.filter { $0.isActive == true }.count
-        let waitingRoomMembers           = members.filter { $0.isActive == false }.count
+        guard let members                = mapHomeViewModel.mapShareSession?.members else { return }
+        let activeMembers                = members.filter { $0.isActive }.count
+        let waitingRoomMembers           = members.filter { !$0.isActive }.count
         membersInActiveSessionLabel.text = "\(activeMembers)"
         membersInWaitingRoomLabel.text   = "\(waitingRoomMembers)"
-        #warning("Troubleshoot why this doesn't change")
     }
     
     func checkLocationServices() {
@@ -188,10 +187,13 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        guard let members = mapHomeViewModel.session?.members else { return MKOverlayRenderer(overlay: renderer as! MKOverlay)}
-        for member in members {
-            let renderColor = String.convertToColorFromString(string: member.mapMarkerColor)
-            renderer.strokeColor = renderColor
+        if let members = mapHomeViewModel.mapShareSession?.members {
+            for member in members {
+                let renderColor = String.convertToColorFromString(string: member.mapMarkerColor)
+                renderer.strokeColor = renderColor
+            }
+        } else {
+            renderer.strokeColor = UIElements.Color.mapSharePink
         }
         return renderer
     }
@@ -216,7 +218,7 @@ extension MapHomeViewController: MKMapViewDelegate {
 
 extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInSession() {
-        guard let session = mapHomeViewModel.session else { return }
+        guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.isActive == true {
             sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
         }
@@ -225,12 +227,11 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInMembers() {
         loadAnnotations()
         updateMemberCounts()
-        mapView.reloadInputViews()
     }
     
     func noSessionActive() {
         sessionActivityIndicatorLabel.textColor = .systemGray
         mapView.removeAnnotations(mapView.annotations)
-        mapHomeViewModel.customAnnotations = []
+        mapHomeViewModel.memberAnnotations = []
     }
 } //: ViewModelDelegate
