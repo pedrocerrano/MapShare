@@ -75,7 +75,19 @@ class MapHomeViewModel {
                 }
                 self.delegate?.changesInMembers()
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error.localizedDescription, "MapHomeViewModel: Members are nil")
+            }
+        }
+    }
+    
+    func updateMapWithRouteChanges() {
+        guard let mapShareSession else { return }
+        service.listenToChangesForRoutes(forSession: mapShareSession) { result in
+            switch result {
+            case .success(let loadedRoutes):
+                mapShareSession.routes = loadedRoutes
+            case .failure(let error):
+                print(error.localizedDescription, "MapHomeViewModel: Routes are nil")
             }
         }
     }

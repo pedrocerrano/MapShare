@@ -115,4 +115,17 @@ struct FirebaseService {
             completion(.success(members))
         }
     }
+    
+    func listenToChangesForRoutes(forSession session: Session, completion: @escaping(Result<[MSRoute], FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routesCollectionType).addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+            
+            guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let routeDictArray      = documentsData.compactMap { $0.data() }
+            let routes              = routeDictArray.compactMap { MSRoute(fromMSRouteDictionary: $0) }
+            completion(.success(routes))
+        }
+    }
 }
