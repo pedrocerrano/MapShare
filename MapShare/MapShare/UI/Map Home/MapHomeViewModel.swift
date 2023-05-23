@@ -40,7 +40,7 @@ class MapHomeViewModel {
         self.delegate          = delegate
     }
     
-    //MARK: - FIREBASE FUNCTIONS
+    //MARK: - FIREBASE LISTENER FUNCTIONS
     func updateMapWithSessionChanges() {
         guard let mapShareSession else { return }
         service.listenForChangesToSession(forSession: mapShareSession.sessionCode) { result in
@@ -78,6 +78,18 @@ class MapHomeViewModel {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    
+    //MARK: - FIREBASE ROUTE CRUD FUNCTIONS
+    func saveRouteToFirestore(newRoute: MSRoute) {
+        guard let mapShareSession else { return }
+        service.saveNewRouteToFirestore(forSession: mapShareSession, newRoute: newRoute)
+    }
+    
+    func deleteRouteFromFirestore(routeToDelete route: MSRoute) {
+        guard let mapShareSession else { return }
+        service.deleteRouteOnFirestore(fromSession: mapShareSession, route: route)
     }
     
     

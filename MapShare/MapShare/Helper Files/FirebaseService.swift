@@ -66,7 +66,21 @@ struct FirebaseService {
     }
     
     func updateLocationOfMemberToFirestore() {
-        
+        #warning("This is where the Push Location code will go")
+    }
+    
+    
+    //MARK: - ROUTE CRUD FUNCTIONS
+    func saveNewRouteToFirestore(forSession session: Session, newRoute route: MSRoute) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routesCollectionType).document(route.routeUUID).setData(route.routeDictionaryRepresentation)
+    }
+    
+    func updateRouteOnFirestore() {
+        #warning("Do we need to be able to update a Route?")
+    }
+    
+    func deleteRouteOnFirestore(fromSession session: Session, route: MSRoute) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routesCollectionType).document(route.routeUUID).delete()
     }
     
     
@@ -100,19 +114,5 @@ struct FirebaseService {
             let members             = memberDictArray.compactMap { Member(fromMemberDictionary: $0) }
             completion(.success(members))
         }
-    }
-    
-    
-    //MARK: - ROUTE CRUD FUNCTIONS
-    func saveNewRouteToFirestore() {
-        
-    }
-    
-    func updateRouteOnFirestore() {
-        
-    }
-    
-    func deleteRouteOnFirestore() {
-        
     }
 }
