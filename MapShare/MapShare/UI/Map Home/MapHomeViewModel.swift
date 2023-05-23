@@ -20,8 +20,6 @@ class MapHomeViewModel {
     //MARK: - PROPERTIES
     var service: FirebaseService
     var mapShareSession: Session?
-    var routeAnnotation: RouteAnnotation?
-//    var routeAnnotations: [RouteAnnotation] = []
     var memberAnnotation: MemberAnnotation?
     var memberAnnotations: [MemberAnnotation]
     private weak var delegate: MapHomeViewModelDelegate?
