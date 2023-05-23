@@ -24,7 +24,6 @@
 		29E5A54629F81B24008D8834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E5A54429F81B24008D8834 /* LaunchScreen.storyboard */; };
 		29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0C629FADE0C00D109B1 /* Session.swift */; };
 		29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0C729FADE0C00D109B1 /* Member.swift */; };
-		29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0C829FADE0C00D109B1 /* MSDestination.swift */; };
 		29E6A0CE29FADE2000D109B1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0CD29FADE2000D109B1 /* Constants.swift */; };
 		29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */; };
 		29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */; };
@@ -38,7 +37,7 @@
 		AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */; };
 		AF72D7F62A1407980080C9AD /* PopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F52A1407980080C9AD /* PopUpButton.swift */; };
 		AF72D7F82A14113A0080C9AD /* MapHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */; };
-		AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */; };
+		AF86025E2A02F7A800A6519D /* RouteAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +60,6 @@
 		29E5A54729F81B24008D8834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29E6A0C629FADE0C00D109B1 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		29E6A0C729FADE0C00D109B1 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
-		29E6A0C829FADE0C00D109B1 /* MSDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSDestination.swift; sourceTree = "<group>"; };
 		29E6A0CD29FADE2000D109B1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewController.swift; sourceTree = "<group>"; };
 		29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewSession.storyboard; sourceTree = "<group>"; };
@@ -74,7 +72,7 @@
 		AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		AF72D7F52A1407980080C9AD /* PopUpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpButton.swift; sourceTree = "<group>"; };
 		AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHomeViewModel.swift; sourceTree = "<group>"; };
-		AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,8 +163,7 @@
 			children = (
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
-				29E6A0C829FADE0C00D109B1 /* MSDestination.swift */,
-				AF86025D2A02F7A800A6519D /* CustomAnnotation.swift */,
+				AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */,
 				AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */,
 			);
 			path = Models;
@@ -305,7 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF86025E2A02F7A800A6519D /* CustomAnnotation.swift in Sources */,
+				AF86025E2A02F7A800A6519D /* RouteAnnotation.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
@@ -324,7 +321,6 @@
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
 				AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */,
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
-				29E6A0CB29FADE0C00D109B1 /* MSDestination.swift in Sources */,
 				AF72D7F02A0D56980080C9AD /* MemberAnnotation.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,

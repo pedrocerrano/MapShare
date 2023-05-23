@@ -32,49 +32,24 @@ class MapHomeViewController: UIViewController {
         setupModalHomeSheetController()
         navigationItem.hidesBackButton = true
         mapHomeViewModel = MapHomeViewModel(delegate: self)
-        mapHomeViewModel.centerViewOnUser(mapView: mapView)
+        mapHomeViewModel.centerViewOnMember(mapView: mapView)
         locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
     }
     
     
     // MARK: - IB Actions
     @IBAction func currentLocationButtonTapped(_ sender: Any) {
-        mapHomeViewModel.centerViewOnUser(mapView: mapView)
+        mapHomeViewModel.centerViewOnMember(mapView: mapView)
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-
+        guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
+        mapView.removeAnnotations(routeAnnotations)
+        mapView.removeOverlays(mapView.overlays)
     }
     
     
-    //MARK: - FUNCTIONS
-    func loadAnnotations() {
-        for annotation in mapHomeViewModel.memberAnnotations {
-            mapView.addAnnotation(annotation)
-        }
-    }
-    
-    func addGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        mapView.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
-        let location = gestureRecognizer.location(in: mapView)
-        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        let annotation = CustomAnnotation(coordinate: coordinate, title: nil)
-        annotation.coordinate = coordinate
-        mapHomeViewModel.customAnnotations.append(annotation)
-        
-        if mapHomeViewModel.customAnnotations.count > 1 {
-            mapView.removeAnnotations(mapHomeViewModel.customAnnotations)
-            mapView.removeOverlays(mapView.overlays)
-            mapView.addAnnotation(annotation)
-        } else {
-            mapView.addAnnotation(annotation)
-        }
-    }
-    
+    //MARK: - UI and MODEL FUNCTIONS
     func setupModalHomeSheetController() {
         let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
@@ -103,11 +78,46 @@ class MapHomeViewController: UIViewController {
         membersInWaitingRoomLabel.text   = "\(waitingRoomMembers)"
     }
     
+    
+    //MARK: - MAPKIT FUNCTIONS
+    func loadAnnotations() {
+        for annotation in mapHomeViewModel.memberAnnotations {
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
+    func addGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        mapView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+        guard let session = mapHomeViewModel.mapShareSession else { return }
+        if session.organizerDeviceID == Constants.Device.deviceID {
+            let tappedLocation     = gestureRecognizer.location(in: mapView)
+            let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
+            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil)
+            newRouteAnnotation.coordinate = tappedCoordinate
+            session.routeAnnotations.append(newRouteAnnotation)
+            
+            if session.routeAnnotations.count > 1 {
+                mapView.removeAnnotations(session.routeAnnotations)
+                mapView.removeOverlays(mapView.overlays)
+                mapView.addAnnotation(newRouteAnnotation)
+            } else {
+                mapView.addAnnotation(newRouteAnnotation)
+            }
+        } else {
+            return
+        }
+    }
+    
     func checkLocationServices() {
         DispatchQueue.global().async {
             if CLLocationManager.locationServicesEnabled() {
                 self.mapHomeViewModel.locationManager.delegate = self
                 self.mapHomeViewModel.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                self.mapHomeViewModel.locationManager.startUpdatingLocation()
             } else {
                 self.alertLocationAccessNeeded()
             }
@@ -115,23 +125,22 @@ class MapHomeViewController: UIViewController {
     }
     
     @objc func getDirections(annotation: MKAnnotation) {
-        guard let location = mapHomeViewModel.locationManager.location?.coordinate else {
-            alertLocationAccessNeeded()
-            return
-        }
-        
-        let request = mapHomeViewModel.createDirectionsRequest(from: location, annotation: annotation)
-        let directions = MKDirections(request: request)
-        resetMapView(withNew: directions)
-        directions.calculate { response, error in
-            if let error = error {
-                print(error.localizedDescription) ; return
-            }
-            
-            guard let response = response else { return }
-            for route in response.routes {
-                self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+        guard let members = mapHomeViewModel.mapShareSession?.members else { return }
+        for member in members {
+            let location   = CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude)
+            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: annotation)
+            let directions = MKDirections(request: request)
+            resetMapView(withNew: directions)
+            directions.calculate { response, error in
+                if let error = error {
+                    print(error.localizedDescription) ; return
+                }
+                
+                guard let response = response else { return }
+                for route in response.routes {
+                    self.mapView.addOverlay(route.polyline)
+                    self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 70, bottom: 200, right: 70), animated: true)
+                }
             }
         }
     }
@@ -153,6 +162,8 @@ class MapHomeViewController: UIViewController {
     }
 } //: CLASS
 
+
+//MARK: - EXT: LocationManagerDelegate
 extension MapHomeViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationServices()
@@ -172,11 +183,17 @@ extension MapHomeViewController: CLLocationManagerDelegate {
     }
 } //: LocationManagerDelegate
 
+
+//MARK: - EXT: MapViewDelegate
 extension MapHomeViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        mapHomeViewModel.memberAnnotation?.coordinate = userLocation.coordinate
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var annotationView: MKAnnotationView?
-        if let annotation = annotation as? CustomAnnotation {
-            annotationView = mapHomeViewModel.setupCustomAnnotations(for: annotation, on: mapView)
+        if let annotation = annotation as? RouteAnnotation {
+            annotationView = mapHomeViewModel.setupRouteAnnotations(for: annotation, on: mapView)
             return annotationView
         } else if let annotation = annotation as? MemberAnnotation {
             annotationView = mapHomeViewModel.setupMemberAnnotations(for: annotation, on: mapView)
@@ -204,18 +221,14 @@ extension MapHomeViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if let customAnnotation = view.annotation, customAnnotation.isKind(of: CustomAnnotation.self) {
+        if let customAnnotation = view.annotation, customAnnotation.isKind(of: RouteAnnotation.self) {
             getDirections(annotation: customAnnotation)
-        }
-    }
-    
-    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
-        if annotation.isKind(of: CustomAnnotation.self) {
-            mapHomeViewModel.annotation = (annotation as! CustomAnnotation)
         }
     }
 } //: MapViewDelegate
 
+
+//MARK: - EXT: ViewModelDelegate
 extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInSession() {
         guard let session = mapHomeViewModel.mapShareSession else { return }

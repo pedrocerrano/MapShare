@@ -20,7 +20,8 @@ struct FirebaseService {
     //MARK: - PROPERTIES
     let ref = Firestore.firestore()
     
-    //MARK: - FUNCTIONS
+    
+    //MARK: - SESSION and MEMBER CRUD FUNCTIONS
     func saveNewSessionToFirestore(newSession: Session, withMember: Member) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
         ref.collection(Session.SessionKey.sessionCollectionType).document(newSession.sessionCode).collection(Session.SessionKey.membersCollectionType).document(withMember.memberDeviceID).setData(withMember.memberDictionaryRepresentation)
@@ -56,6 +57,30 @@ struct FirebaseService {
         completion()
     }
     
+    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.isActive : true])
+    }
+    
+    func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
+    }
+    
+    func updateLocationOfMemberToFirestore() {
+        #warning("This is where the Push Location code will go")
+    }
+    
+    
+    //MARK: - ROUTE CRUD FUNCTIONS
+    func saveNewRouteToFirestore(forSession session: Session, routeAnnotation: RouteAnnotation) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).setData(routeAnnotation.routeAnnotationDictionaryRepresentation)
+    }
+    
+    func deleteRouteOnFirestore(fromSession session: Session) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).delete()
+    }
+    
+    
+    //MARK: - LISTENERS
     func listenForChangesToSession(forSession sessionCode: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(sessionCode).addSnapshotListener { documentSnapshot, error in
             if let error = error {
@@ -71,7 +96,7 @@ struct FirebaseService {
                 completion(.failure(.sessionReturnedNil))
             }
         }
-        #warning(".remove()")
+        #warning(".remove() ?")
     }
     
     func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) {
@@ -87,27 +112,16 @@ struct FirebaseService {
         }
     }
     
-    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.isActive : true])
-    }
-    
-    func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
-    }
-    
-    func saveNewDestinationToFirestore() {
-        
-    }
-    
-    func updateDestinationOnFirestore() {
-        
-    }
-    
-    func deleteDestinationOnFirestore() {
-        
-    }
-    
-    func updateLocationOfMemberToFirestore() {
-        
+    func listenToChangesForRoutes(forSession session: Session, completion: @escaping(Result<[RouteAnnotation], FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+            
+            guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let routeDictArray      = documentsData.compactMap { $0.data() }
+            let routeAnnotations    = routeDictArray.compactMap { RouteAnnotation(fromRouteAnnotationDictionary: $0) }
+            completion(.success(routeAnnotations))
+        }
     }
 }
