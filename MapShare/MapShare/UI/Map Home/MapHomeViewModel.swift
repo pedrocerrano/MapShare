@@ -18,13 +18,12 @@ protocol MapHomeViewModelDelegate: AnyObject {
 class MapHomeViewModel {
     
     //MARK: - PROPERTIES
-    var mapShareSession: Session?
     var service: FirebaseService
-    
-    var annotation: CustomAnnotation?
+    var mapShareSession: Session?
+    var routeAnnotation: RouteAnnotation?
+    var routeAnnotations: [RouteAnnotation] = []
     var memberAnnotation: MemberAnnotation?
     var memberAnnotations: [MemberAnnotation]
-    var customAnnotations: [CustomAnnotation] = []
     private weak var delegate: MapHomeViewModelDelegate?
     
     var user: MKUserLocation?
@@ -41,15 +40,15 @@ class MapHomeViewModel {
         self.delegate          = delegate
     }
     
-    //MARK: - FUNCTIONS
+    //MARK: - FIREBASE FUNCTIONS
     func updateMapWithSessionChanges() {
         guard let mapShareSession else { return }
         service.listenForChangesToSession(forSession: mapShareSession.sessionCode) { result in
             switch result {
             case .success(let loadedSession):
-                mapShareSession.isActive = loadedSession.isActive
-                mapShareSession.sessionCode = loadedSession.sessionCode
-                mapShareSession.sessionName = loadedSession.sessionName
+                mapShareSession.isActive          = loadedSession.isActive
+                mapShareSession.sessionCode       = loadedSession.sessionCode
+                mapShareSession.sessionName       = loadedSession.sessionName
                 mapShareSession.organizerDeviceID = loadedSession.organizerDeviceID
                 self.delegate?.changesInSession()
             case .failure(let error):
@@ -68,7 +67,8 @@ class MapHomeViewModel {
                 let filteredMembers = loadedMembers.filter { $0.isActive }
                 for member in filteredMembers {
                     let memberLocation = MemberAnnotation(member: member,
-                                                          coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude),
+                                                          coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
+                                                                                             longitude: member.currentLocLongitude),
                                                           title: member.screenName,
                                                           annotationColor: .blue)
                     self.memberAnnotations.append(memberLocation)
@@ -80,21 +80,23 @@ class MapHomeViewModel {
         }
     }
     
+    
+    //MARK: - MAPKIT FUNCTIONS
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
         let destinationCoordinate = annotation.coordinate
-        let startingLocation = MKPlacemark(coordinate: coordinate)
-        let destination = MKPlacemark(coordinate: destinationCoordinate)
-        let request = MKDirections.Request()
+        let startingLocation      = MKPlacemark(coordinate: coordinate)
+        let destination           = MKPlacemark(coordinate: destinationCoordinate)
+        let request               = MKDirections.Request()
         
-        request.source = MKMapItem(placemark: startingLocation)
-        request.destination = MKMapItem(placemark: destination)
+        request.source        = MKMapItem(placemark: startingLocation)
+        request.destination   = MKMapItem(placemark: destination)
         request.transportType = .automobile
         
         return request
     }
     
     func getCenterLocation(for mapView: MKMapView) -> CLLocation {
-        let latitude = mapView.centerCoordinate.latitude
+        let latitude  = mapView.centerCoordinate.latitude
         let longitude = mapView.centerCoordinate.longitude
         
         return CLLocation(latitude: latitude, longitude: longitude)
@@ -107,20 +109,20 @@ class MapHomeViewModel {
         guard let markerColor = String.convertToColorFromString(string: annotation.member.mapMarkerColor) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
-            markerAnnotationView.canShowCallout = false
-            markerAnnotationView.markerTintColor = markerColor
+            markerAnnotationView.canShowCallout    = false
+            markerAnnotationView.markerTintColor   = markerColor
         }
         return view
     }
     
-    func setupCustomAnnotations(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
+    func setupRouteAnnotations(for annotation: RouteAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
         annotation.title = "Route"
         
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Route", for: annotation)
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
-            markerAnnotationView.canShowCallout = true
-            markerAnnotationView.markerTintColor = UIColor.black
+            markerAnnotationView.canShowCallout    = true
+            markerAnnotationView.markerTintColor   = UIColor.black
             btn.setImage(UIImage(systemName: "location"), for: .normal)
             markerAnnotationView.leftCalloutAccessoryView = btn
         }
@@ -129,12 +131,12 @@ class MapHomeViewModel {
     
     func startTrackingLocation(mapView: MKMapView) {
         mapView.showsUserLocation = true
-        centerViewOnUser(mapView: mapView)
+        centerViewOnMember(mapView: mapView)
         locationManager.startUpdatingLocation()
         previousLocation = getCenterLocation(for: mapView)
     }
     
-    func centerViewOnUser(mapView: MKMapView) {
+    func centerViewOnMember(mapView: MKMapView) {
         guard let location = locationManager.location?.coordinate else { return }
         let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 1000.0, longitudinalMeters: 1000.0)
         mapView.setRegion(region, animated: true)

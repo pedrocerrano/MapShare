@@ -19,14 +19,14 @@ class Session {
         
         static let sessionCollectionType    = "mapShareSession"
         static let membersCollectionType    = "mapShareMembers"
-        static let directionsCollectionType = "mapShareMembers"
+        static let directionsCollectionType = "mapShareDirections"
     }
     
     var sessionName: String
     var sessionCode: String
     var organizerDeviceID: String
     var members: [Member]
-    var destination: [MSDestination]
+    var destination: [MSRoute]
     var isActive: Bool
     
     var sessionDictionaryRepresentation: [String : AnyHashable] {
@@ -38,7 +38,7 @@ class Session {
         ]
     }
     
-    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], destination: [MSDestination], isActive: Bool) {
+    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], destination: [MSRoute], isActive: Bool) {
         self.sessionName       = sessionName
         self.sessionCode       = sessionCode
         self.organizerDeviceID = organizerDeviceID
