@@ -62,15 +62,6 @@ class MapHomeViewModel {
             switch result {
             case .success(let loadedMembers):
                 mapShareSession.members = loadedMembers
-                let filteredMembers = loadedMembers.filter { $0.isActive }
-                for member in filteredMembers {
-                    let memberLocation = MemberAnnotation(member: member,
-                                                          coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
-                                                                                             longitude: member.currentLocLongitude),
-                                                          title: member.screenName,
-                                                          annotationColor: .blue)
-                    self.memberAnnotations.append(memberLocation)
-                }
                 self.delegate?.changesInMembers()
             case .failure(let error):
                 print(error.localizedDescription, "MapHomeViewModel: Members are nil")

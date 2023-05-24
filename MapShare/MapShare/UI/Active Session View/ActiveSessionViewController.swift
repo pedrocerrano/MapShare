@@ -79,6 +79,7 @@ class ActiveSessionViewController: UIViewController {
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
+            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
         }
         organizerEndedActiveSessionAlertController.addAction(dismissAction)
         organizerEndedActiveSessionAlertController.addAction(confirmAction)
@@ -92,6 +93,7 @@ class ActiveSessionViewController: UIViewController {
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             self.activeSessionViewModel.mapHomeDelegate?.delegateRemoveAnnotations()
+            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }

@@ -80,9 +80,21 @@ class MapHomeViewController: UIViewController {
     
     
     //MARK: - MAPKIT FUNCTIONS
-    func loadAnnotations() {
-        for annotation in mapHomeViewModel.memberAnnotations {
-            mapView.addAnnotation(annotation)
+    func createMemberAnnotations() {
+        guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter({ $0.isActive }) else { return }
+        for member in activeMembers {
+            let memberAnnotation = MemberAnnotation(member: member,
+                                                    coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
+                                                                                       longitude: member.currentLocLongitude),
+                                                    title: member.screenName,
+                                                    annotationColor: .blue)
+            mapHomeViewModel.memberAnnotations.append(memberAnnotation)
+        }
+    }
+    
+    func loadMemberAnnotations() {
+        for memberAnnotation in mapHomeViewModel.memberAnnotations {
+            mapView.addAnnotation(memberAnnotation)
         }
     }
     
@@ -238,8 +250,14 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMembers() {
-        loadAnnotations()
+        createMemberAnnotations()
         updateMemberCounts()
+        guard let session = mapHomeViewModel.mapShareSession else { return }
+        for member in session.members {
+            if Constants.Device.deviceID == member.memberDeviceID && member.isActive {
+                loadMemberAnnotations()
+            }
+        }
     }
     
     func noSessionActive() {
