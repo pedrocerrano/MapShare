@@ -34,6 +34,7 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel = MapHomeViewModel(delegate: self)
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
         locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
+        configureUI()
     }
     
     
@@ -46,10 +47,15 @@ class MapHomeViewController: UIViewController {
         guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
+        UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
     }
     
     
     //MARK: - UI and MODEL FUNCTIONS
+    func configureUI() {
+        UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
+    }
+    
     func setupModalHomeSheetController() {
         let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
@@ -80,22 +86,21 @@ class MapHomeViewController: UIViewController {
     
     
     //MARK: - MAPKIT FUNCTIONS
-    func createMemberAnnotations() {
-        guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter({ $0.isActive }) else { return }
-        for member in activeMembers {
-            let memberAnnotation = MemberAnnotation(member: member,
-                                                    coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
-                                                                                       longitude: member.currentLocLongitude),
-                                                    title: member.screenName,
-                                                    annotationColor: .blue)
-            mapHomeViewModel.memberAnnotations.append(memberAnnotation)
-        }
-    }
-    
     func loadMemberAnnotations() {
         for memberAnnotation in mapHomeViewModel.memberAnnotations {
             mapView.addAnnotation(memberAnnotation)
         }
+    }
+    
+    func removeMemberAnnotation(_ member: Member) {
+        let memberAnnotations = mapHomeViewModel.memberAnnotations
+        for memberAnnotation in memberAnnotations {
+            if member.memberDeviceID == memberAnnotation.member.memberDeviceID {
+                guard let index = mapHomeViewModel.memberAnnotations.firstIndex(of: memberAnnotation) else { return }
+                mapHomeViewModel.memberAnnotations.remove(at: index)
+            }
+        }
+        #warning("This doesn't do what I want")
     }
     
     func addGesture() {
@@ -109,7 +114,9 @@ class MapHomeViewController: UIViewController {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil)
-            newRouteAnnotation.coordinate = tappedCoordinate
+//            newRouteAnnotation.coordinate = tappedCoordinate
+            #warning("Don't think we need this line above")
+            UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
             session.routeAnnotations.append(newRouteAnnotation)
             
             if session.routeAnnotations.count > 1 {
@@ -204,11 +211,11 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var annotationView: MKAnnotationView?
-        if let annotation = annotation as? RouteAnnotation {
-            annotationView = mapHomeViewModel.setupRouteAnnotations(for: annotation, on: mapView)
+        if let routeAnnotation = annotation as? RouteAnnotation {
+            annotationView = mapHomeViewModel.setupRouteAnnotations(for: routeAnnotation, on: mapView)
             return annotationView
-        } else if let annotation = annotation as? MemberAnnotation {
-            annotationView = mapHomeViewModel.setupMemberAnnotations(for: annotation, on: mapView)
+        } else if let memberAnnotation = annotation as? MemberAnnotation {
+            annotationView = mapHomeViewModel.setupMemberAnnotations(for: memberAnnotation, on: mapView)
             return annotationView
         }
         return nil
@@ -250,7 +257,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMembers() {
-        createMemberAnnotations()
+        mapHomeViewModel.createMemberAnnotations()
         updateMemberCounts()
         guard let session = mapHomeViewModel.mapShareSession else { return }
         for member in session.members {
@@ -258,11 +265,16 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
                 loadMemberAnnotations()
             }
         }
+//        for member in session.members {
+//            removeMemberAnnotation(member)
+//        }
     }
     
     func noSessionActive() {
         sessionActivityIndicatorLabel.textColor = .systemGray
         mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.memberAnnotations = []
+        mapHomeViewModel.centerViewOnMember(mapView: mapView)
     }
 } //: ViewModelDelegate

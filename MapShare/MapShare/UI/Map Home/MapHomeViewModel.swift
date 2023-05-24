@@ -95,6 +95,22 @@ class MapHomeViewModel {
     
     
     //MARK: - MAPKIT FUNCTIONS
+    func createMemberAnnotations() {
+        guard let activeMembers = mapShareSession?.members.filter({ $0.isActive }) else { return }
+        for member in activeMembers {
+            let memberAnnotation = MemberAnnotation(member: member,
+                                                    coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
+                                                                                       longitude: member.currentLocLongitude),
+                                                    title: member.screenName,
+                                                    annotationColor: .blue)
+            self.memberAnnotations.append(memberAnnotation)
+        }
+    }
+    
+    func createRouteAnnotation() {
+        
+    }
+    
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
         let routeCoordinate  = annotation.coordinate
         let startingLocation = MKPlacemark(coordinate: coordinate)
