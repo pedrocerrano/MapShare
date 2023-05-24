@@ -47,6 +47,7 @@ class MapHomeViewController: UIViewController {
         guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
+        mapHomeViewModel.deleteRouteFromFirestore()
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
     }
     
@@ -68,6 +69,7 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.mapShareSession = session
         mapHomeViewModel.updateMapWithSessionChanges()
         mapHomeViewModel.updateMapWithMemberChanges()
+        mapHomeViewModel.updateMapWithRouteChanges()
     }
     
     func delegateRemoveAnnotations() {
@@ -114,10 +116,11 @@ class MapHomeViewController: UIViewController {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil)
-//            newRouteAnnotation.coordinate = tappedCoordinate
-            #warning("Don't think we need this line above")
+            #warning("Took out: newRouteAnnotation.coordinate = tappedCoordinate")
             UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
             session.routeAnnotations.append(newRouteAnnotation)
+            
+            mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
             
             if session.routeAnnotations.count > 1 {
                 mapView.removeAnnotations(session.routeAnnotations)
@@ -216,6 +219,7 @@ extension MapHomeViewController: MKMapViewDelegate {
             return annotationView
         } else if let memberAnnotation = annotation as? MemberAnnotation {
             annotationView = mapHomeViewModel.setupMemberAnnotations(for: memberAnnotation, on: mapView)
+            mapView.showsUserLocation = false
             return annotationView
         }
         return nil
@@ -225,6 +229,8 @@ extension MapHomeViewController: MKMapViewDelegate {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         if let members = mapHomeViewModel.mapShareSession?.members {
             for member in members {
+                #warning("The title might be key to multiple colors")
+                renderer.polyline.title = member.screenName
                 let renderColor = String.convertToColorFromString(string: member.mapMarkerColor)
                 renderer.strokeColor = renderColor
             }
@@ -240,8 +246,8 @@ extension MapHomeViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if let customAnnotation = view.annotation, customAnnotation.isKind(of: RouteAnnotation.self) {
-            getDirections(annotation: customAnnotation)
+        if let routeAnnotation = view.annotation, routeAnnotation.isKind(of: RouteAnnotation.self) {
+            getDirections(annotation: routeAnnotation)
         }
     }
 } //: MapViewDelegate
@@ -265,9 +271,15 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
                 loadMemberAnnotations()
             }
         }
-//        for member in session.members {
-//            removeMemberAnnotation(member)
-//        }
+    }
+    
+    func changesInRoute() {
+        guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
+        for routeAnnotation in routeAnnotations {
+            mapView.removeAnnotations(routeAnnotations)
+            mapView.removeOverlays(mapView.overlays)
+            mapView.addAnnotation(routeAnnotation)
+        }
     }
     
     func noSessionActive() {
@@ -275,6 +287,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(mapView.annotations)
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.memberAnnotations = []
+        mapView.showsUserLocation = true
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
     }
 } //: ViewModelDelegate

@@ -73,4 +73,8 @@ class ActiveSessionViewModel {
     func denyNewMember(forSession session: Session, withMember member: Member) {
         service.deleteMemberFromFirestore(fromSession: session, member: member)
     }
+    
+    func deleteRouteFromFirestore() {
+        service.deleteRouteOnFirestore(fromSession: session)
+    }
 }

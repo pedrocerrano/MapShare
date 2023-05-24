@@ -38,11 +38,12 @@ class RouteAnnotation: NSObject, MKAnnotation {
 extension RouteAnnotation {
     convenience init?(fromRouteAnnotationDictionary routeAnnotationDictionary: [String : Any]) {
         guard let routeLatitude  = routeAnnotationDictionary[RouteAnnotationKey.routeLatitude] as? Double,
-              let routeLongitude = routeAnnotationDictionary[RouteAnnotationKey.routeLongitude] as? Double,
-              let title          = routeAnnotationDictionary[RouteAnnotationKey.title] as? String else {
+              let routeLongitude = routeAnnotationDictionary[RouteAnnotationKey.routeLongitude] as? Double else {
             print("Failed to initialize RouteAnnotation model object")
             return nil
         }
+        
+        let title = routeAnnotationDictionary[RouteAnnotationKey.title] as? String ?? "Route"
         
         self.init(coordinate: CLLocationCoordinate2D(latitude: routeLatitude, longitude: routeLongitude), title: title)
     }

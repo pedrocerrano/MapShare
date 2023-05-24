@@ -75,6 +75,7 @@ class ActiveSessionViewController: UIViewController {
             for member in self.activeSessionViewModel.session.members {
                 self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             }
+            self.activeSessionViewModel.deleteRouteFromFirestore()
             self.activeSessionViewModel.deleteSession()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
