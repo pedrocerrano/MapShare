@@ -13,6 +13,7 @@ protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
     func changesInRoute()
+    func getDirections()
     func noSessionActive()
 }
 
@@ -97,6 +98,14 @@ class MapHomeViewModel {
     
     
     //MARK: - MAPKIT FUNCTIONS
+    func shareDirections() {
+        if routeDirectionsButton.isTouchInside {
+            delegate?.getDirections()
+        }
+        #warning("This doesn't work the way I want")
+    }
+    
+    
     func createMemberAnnotations() {
         guard let activeMembers = mapShareSession?.members.filter({ $0.isActive }) else { return }
         for member in activeMembers {

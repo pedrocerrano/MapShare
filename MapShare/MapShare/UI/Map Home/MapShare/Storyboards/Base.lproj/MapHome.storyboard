@@ -93,7 +93,7 @@
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled">
-                                                    <imageReference key="image" image="location.north.line" catalog="system" symbolScale="large"/>
+                                                    <imageReference key="image" image="location.circle.fill" catalog="system" symbolScale="large"/>
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aAf-IX-X4G"/>
@@ -111,7 +111,6 @@
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="clearRouteAnnotationsButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9nO-sb-Xkh"/>
-                                                    <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N1g-Jc-fTe"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -136,6 +135,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Vl0-7c-V40"/>
                     <connections>
+                        <outlet property="centerLocationButton" destination="18j-ye-pGs" id="gnm-dW-JE9"/>
                         <outlet property="clearRouteAnnotationsButton" destination="1UV-W0-bbG" id="GuE-UD-Nie"/>
                         <outlet property="mapView" destination="DrH-Fw-j6D" id="u7B-Ep-uAj"/>
                         <outlet property="membersInActiveSessionLabel" destination="Bdg-xw-rNq" id="whV-FC-JCA"/>
@@ -168,7 +168,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="location.north.line" catalog="system" width="84" height="128"/>
+        <image name="location.circle.fill" catalog="system" width="128" height="123"/>
         <image name="person.2" catalog="system" width="128" height="82"/>
         <image name="person.2.fill" catalog="system" width="128" height="81"/>
         <image name="xmark.circle" catalog="system" width="128" height="123"/>

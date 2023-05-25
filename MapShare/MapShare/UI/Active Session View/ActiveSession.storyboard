@@ -54,7 +54,7 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="C8O-20-Xot">
-                                <rect key="frame" x="20" y="111.33333333333331" width="353" height="706.66666666666674"/>
+                                <rect key="frame" x="20" y="117.33333333333331" width="353" height="700.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="activeMemberCell" id="SI3-SA-ukI" customClass="ActiveSessionTableViewCell" customModule="MapShare" customModuleProvider="target">
@@ -204,7 +204,7 @@
                             <constraint firstItem="C8O-20-Xot" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="9iM-DG-Vk7"/>
                             <constraint firstItem="lFu-oK-EI6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="bdG-c3-0ko"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="C8O-20-Xot" secondAttribute="trailing" constant="20" id="bhI-ZR-Kns"/>
-                            <constraint firstItem="C8O-20-Xot" firstAttribute="top" secondItem="lFu-oK-EI6" secondAttribute="bottom" constant="2" id="pe9-5r-uyA"/>
+                            <constraint firstItem="C8O-20-Xot" firstAttribute="top" secondItem="lFu-oK-EI6" secondAttribute="bottom" constant="8" id="pe9-5r-uyA"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="lFu-oK-EI6" secondAttribute="trailing" constant="20" id="sDq-Wl-w4E"/>
                         </constraints>
                     </view>

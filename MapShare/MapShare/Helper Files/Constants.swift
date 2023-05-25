@@ -13,7 +13,7 @@ struct Constants {
         static let deviceID = UIDevice.current.identifierForVendor?.uuidString
     }
     
-    struct AdmitDenyButtonUI {
+    struct ButtonUI {
         static let cornerRadius: CGFloat      = 6
         static let shadowColor                = UIColor.black.cgColor
         static let shadowOpacity: Float       = 0.4

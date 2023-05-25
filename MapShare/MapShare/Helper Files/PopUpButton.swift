@@ -10,8 +10,9 @@ import UIKit
 struct PopUpButton {
     
     static func setUpPopUpButton(for button: UIButton) {
-        let closure = { (action: UIAction) in
-            print(action.title)
+        let defaultClosure = { (action: UIAction) in
+            button.setTitleColor(UIElements.Color.buttonDodgerBlue, for: .normal)
+            button.tintColor = UIElements.Color.buttonDodgerBlue
         }
         
         let redClosure = { (action: UIAction) in
@@ -55,7 +56,7 @@ struct PopUpButton {
         }
         
         button.menu = UIMenu(children: [
-            UIAction(title: "↓", attributes: .hidden, state: .on, handler: closure),
+            UIAction(title: "↓", attributes: .hidden, state: .on, handler: defaultClosure),
             UIAction(title: "Red",    image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareRed, renderingMode: .alwaysOriginal), handler: redClosure),
             UIAction(title: "Pink",   image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapSharePink, renderingMode: .alwaysOriginal), handler: pinkClosure),
             UIAction(title: "Orange", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareOrange, renderingMode: .alwaysOriginal), handler: orangeClosure),
@@ -66,8 +67,8 @@ struct PopUpButton {
             UIAction(title: "Purple", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapSharePurple, renderingMode: .alwaysOriginal), handler: purpleClosure)
         ])
         
-        button.showsMenuAsPrimaryAction = true
+        button.showsMenuAsPrimaryAction        = true
         button.changesSelectionAsPrimaryAction = true
-        button.preferredMenuElementOrder = .fixed
+        button.preferredMenuElementOrder       = .fixed
     }
 }
