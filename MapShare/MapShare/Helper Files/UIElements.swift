@@ -44,4 +44,14 @@ struct UIElements {
         button.layer.backgroundColor           = color.cgColor
         button.layer.masksToBounds             = Constants.AdmitDenyButtonUI.masksToBounds
     }
+    
+    static func hideRouteAnnotationButton(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = .clear
+        button.configuration?.baseForegroundColor = .clear
+    }
+    
+    static func showRouteAnnotationButton(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = .lightGray
+        button.configuration?.baseForegroundColor = .black
+    }
 }

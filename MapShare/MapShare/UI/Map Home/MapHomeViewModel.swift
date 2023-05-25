@@ -12,6 +12,7 @@ import CoreLocation
 protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
+    func changesInRoute()
     func noSessionActive()
 }
 
@@ -29,7 +30,7 @@ class MapHomeViewModel {
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
         
-    let btn = UIButton(type: .detailDisclosure)
+    let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
     init(service: FirebaseService = FirebaseService(), memberAnnotation: MemberAnnotation? = nil, memberAnnotations: [MemberAnnotation] = [], delegate: MapHomeViewModelDelegate) {
         self.service           = service
@@ -62,15 +63,6 @@ class MapHomeViewModel {
             switch result {
             case .success(let loadedMembers):
                 mapShareSession.members = loadedMembers
-                let filteredMembers = loadedMembers.filter { $0.isActive }
-                for member in filteredMembers {
-                    let memberLocation = MemberAnnotation(member: member,
-                                                          coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
-                                                                                             longitude: member.currentLocLongitude),
-                                                          title: member.screenName,
-                                                          annotationColor: .blue)
-                    self.memberAnnotations.append(memberLocation)
-                }
                 self.delegate?.changesInMembers()
             case .failure(let error):
                 print(error.localizedDescription, "MapHomeViewModel: Members are nil")
@@ -84,6 +76,7 @@ class MapHomeViewModel {
             switch result {
             case .success(let loadedRouteAnnotations):
                 mapShareSession.routeAnnotations = loadedRouteAnnotations
+                self.delegate?.changesInRoute()
             case .failure(let error):
                 print(error.localizedDescription, "MapHomeViewModel: RouteAnnotations are nil")
             }
@@ -104,6 +97,18 @@ class MapHomeViewModel {
     
     
     //MARK: - MAPKIT FUNCTIONS
+    func createMemberAnnotations() {
+        guard let activeMembers = mapShareSession?.members.filter({ $0.isActive }) else { return }
+        for member in activeMembers {
+            let memberAnnotation = MemberAnnotation(member: member,
+                                                    coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
+                                                                                       longitude: member.currentLocLongitude),
+                                                    title: member.screenName,
+                                                    annotationColor: .blue)
+            self.memberAnnotations.append(memberAnnotation)
+        }
+    }
+    
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
         let routeCoordinate  = annotation.coordinate
         let startingLocation = MKPlacemark(coordinate: coordinate)
@@ -142,11 +147,12 @@ class MapHomeViewModel {
         
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Route", for: annotation)
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
+            markerAnnotationView.titleVisibility   = .hidden
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout    = true
             markerAnnotationView.markerTintColor   = UIColor.black
-            btn.setImage(UIImage(systemName: "location"), for: .normal)
-            markerAnnotationView.leftCalloutAccessoryView = btn
+            routeDirectionsButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.circle.fill"), for: .normal)
+            markerAnnotationView.leftCalloutAccessoryView = routeDirectionsButton
         }
         return view
     }

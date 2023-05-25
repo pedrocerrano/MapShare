@@ -75,10 +75,12 @@ class ActiveSessionViewController: UIViewController {
             for member in self.activeSessionViewModel.session.members {
                 self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             }
+            self.activeSessionViewModel.deleteRouteFromFirestore()
             self.activeSessionViewModel.deleteSession()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
+            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
         }
         organizerEndedActiveSessionAlertController.addAction(dismissAction)
         organizerEndedActiveSessionAlertController.addAction(confirmAction)
@@ -91,7 +93,9 @@ class ActiveSessionViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.activeSessionViewModel.mapHomeDelegate?.removeMemberAnnotation(member)
             self.activeSessionViewModel.mapHomeDelegate?.delegateRemoveAnnotations()
+            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
@@ -129,7 +133,7 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         case 0:
             guard let activeCell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
             
-            let member = activeSessionViewModel.session.members.filter { $0.isActive == true }[indexPath.row]
+            let member = activeSessionViewModel.session.members.filter { $0.isActive }[indexPath.row]
             activeCell.configureCell(with: member)
             
             return activeCell
@@ -137,7 +141,7 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
             
             let activeSession = activeSessionViewModel.session
-            let member        = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
+            let member        = activeSessionViewModel.session.members.filter { !$0.isActive }[indexPath.row]
             waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, delegate: self)
             
             return waitingRoomCell
