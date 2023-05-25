@@ -141,6 +141,7 @@
                         <outlet property="membersInActiveSessionLabel" destination="Bdg-xw-rNq" id="whV-FC-JCA"/>
                         <outlet property="membersInWaitingRoomLabel" destination="oNS-kK-yPq" id="rJ2-36-ict"/>
                         <outlet property="sessionActivityIndicatorLabel" destination="IA5-Ht-jl0" id="7gm-ll-nEh"/>
+                        <outlet property="waitingRoomStackView" destination="Gq0-bW-2qK" id="owB-qS-RKO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

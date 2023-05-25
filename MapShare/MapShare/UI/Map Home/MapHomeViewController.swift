@@ -17,6 +17,7 @@ class MapHomeViewController: UIViewController {
     @IBOutlet weak var sessionActivityIndicatorLabel: UILabel!
     @IBOutlet weak var membersInActiveSessionLabel: UILabel!
     @IBOutlet weak var membersInWaitingRoomLabel: UILabel!
+    @IBOutlet weak var waitingRoomStackView: UIStackView!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
     
     
@@ -116,7 +117,6 @@ class MapHomeViewController: UIViewController {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil)
-            #warning("Took out: newRouteAnnotation.coordinate = tappedCoordinate")
             UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
             session.routeAnnotations.append(newRouteAnnotation)
             
@@ -270,6 +270,13 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
             if Constants.Device.deviceID == member.memberDeviceID && member.isActive {
                 loadMemberAnnotations()
             }
+        }
+        
+        guard let waitingRoomMembers = mapHomeViewModel.mapShareSession?.members.filter({ !$0.isActive }) else { return }
+        if waitingRoomMembers.count > 0 {
+            waitingRoomStackView.backgroundColor = .yellow
+        } else {
+            waitingRoomStackView.backgroundColor = .clear
         }
     }
     

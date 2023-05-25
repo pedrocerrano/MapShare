@@ -133,7 +133,7 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         case 0:
             guard let activeCell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
             
-            let member = activeSessionViewModel.session.members.filter { $0.isActive == true }[indexPath.row]
+            let member = activeSessionViewModel.session.members.filter { $0.isActive }[indexPath.row]
             activeCell.configureCell(with: member)
             
             return activeCell
@@ -141,7 +141,7 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
             
             let activeSession = activeSessionViewModel.session
-            let member        = activeSessionViewModel.session.members.filter { $0.isActive == false }[indexPath.row]
+            let member        = activeSessionViewModel.session.members.filter { !$0.isActive }[indexPath.row]
             waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, delegate: self)
             
             return waitingRoomCell
