@@ -46,25 +46,39 @@ struct UIElements {
     }
     
     
-    //MARK: - FILLED BUTTONS
+    //MARK: - FILLED and TINTED BUTTON COLORS
     static func configureFilledStyleButtonColor(for button: UIButton) {
         button.configuration?.baseBackgroundColor = Color.buttonDodgerBlue
+        button.layer.shadowColor               = Constants.ButtonUI.shadowColor
+        button.layer.shadowOpacity             = Constants.ButtonUI.shadowOpacity
+        button.layer.shadowRadius              = Constants.ButtonUI.shadowRadius
+        button.layer.shadowOffset              = Constants.ButtonUI.shadowOffset
+        button.titleLabel?.layer.shadowColor   = Constants.ButtonUI.titleShadowColor
+        button.titleLabel?.layer.shadowOpacity = Constants.ButtonUI.titleShadowOpacity
+        button.titleLabel?.layer.shadowRadius  = Constants.ButtonUI.titleShadowRadius
+        button.titleLabel?.layer.shadowOffset  = Constants.ButtonUI.titleShadowOffset
+        button.layer.masksToBounds             = Constants.ButtonUI.masksToBounds
+    }
+    
+    static func configureTintedStyleButtonColor(for button: UIButton) {
+        button.tintColor = Color.buttonDodgerBlue
+        button.setTitleColor(Color.buttonDodgerBlue, for: .normal)
     }
     
     
     //MARK: - ACTIVE SESSION UI
     static func configureActiveSessionTableViewButton(for button: UIButton, withColor color: UIColor) {
-        button.layer.cornerRadius              = Constants.AdmitDenyButtonUI.cornerRadius
-        button.layer.shadowColor               = Constants.AdmitDenyButtonUI.shadowColor
-        button.layer.shadowOpacity             = Constants.AdmitDenyButtonUI.shadowOpacity
-        button.layer.shadowRadius              = Constants.AdmitDenyButtonUI.shadowRadius
-        button.layer.shadowOffset              = Constants.AdmitDenyButtonUI.shadowOffset
-        button.titleLabel?.layer.shadowColor   = Constants.AdmitDenyButtonUI.titleShadowColor
-        button.titleLabel?.layer.shadowOpacity = Constants.AdmitDenyButtonUI.titleShadowOpacity
-        button.titleLabel?.layer.shadowRadius  = Constants.AdmitDenyButtonUI.titleShadowRadius
-        button.titleLabel?.layer.shadowOffset  = Constants.AdmitDenyButtonUI.titleShadowOffset
+        button.layer.cornerRadius              = Constants.ButtonUI.cornerRadius
+        button.layer.shadowColor               = Constants.ButtonUI.shadowColor
+        button.layer.shadowOpacity             = Constants.ButtonUI.shadowOpacity
+        button.layer.shadowRadius              = Constants.ButtonUI.shadowRadius
+        button.layer.shadowOffset              = Constants.ButtonUI.shadowOffset
+        button.titleLabel?.layer.shadowColor   = Constants.ButtonUI.titleShadowColor
+        button.titleLabel?.layer.shadowOpacity = Constants.ButtonUI.titleShadowOpacity
+        button.titleLabel?.layer.shadowRadius  = Constants.ButtonUI.titleShadowRadius
+        button.titleLabel?.layer.shadowOffset  = Constants.ButtonUI.titleShadowOffset
         button.layer.backgroundColor           = color.cgColor
-        button.layer.masksToBounds             = Constants.AdmitDenyButtonUI.masksToBounds
+        button.layer.masksToBounds             = Constants.ButtonUI.masksToBounds
     }
     
     

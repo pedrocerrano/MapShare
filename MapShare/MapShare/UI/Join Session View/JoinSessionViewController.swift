@@ -95,6 +95,8 @@ class JoinSessionViewController: UIViewController {
                 }
             }
             sheetPresentationController.dismissalTransitionWillBegin()
+            PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+            UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
         }
     }
     
@@ -110,7 +112,10 @@ class JoinSessionViewController: UIViewController {
     
     func configureUI() {
         closeJoinSessionSheetButton.layer.cornerRadius = closeJoinSessionSheetButton.frame.height / 2
+        UIElements.configureFilledStyleButtonColor(for: searchSessionButton)
+        UIElements.configureFilledStyleButtonColor(for: joinSessionButton)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+        UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
     }
     
     func hideJoinSessionTextFields() {

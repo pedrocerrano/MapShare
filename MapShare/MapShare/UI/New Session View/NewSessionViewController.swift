@@ -83,8 +83,9 @@ class NewSessionViewController: UIViewController {
             }
             sheetPresentationController.animateChanges {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
-                
             }
+            PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+            UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
         }
     }
     
@@ -102,6 +103,7 @@ class NewSessionViewController: UIViewController {
         UIElements.configureFilledStyleButtonColor(for: joinMapShareButton)
         UIElements.configureFilledStyleButtonColor(for: createSessionButton)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+        UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
     }
     
     

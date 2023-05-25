@@ -143,7 +143,7 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    @objc func getDirections(annotation: MKAnnotation) {
+    func getDirections(annotation: MKAnnotation) {
         guard let members = mapHomeViewModel.mapShareSession?.members else { return }
         for member in members {
             let location   = CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude)
