@@ -73,6 +73,7 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.updateMapWithSessionChanges()
         mapHomeViewModel.updateMapWithMemberChanges()
         mapHomeViewModel.updateMapWithRouteChanges()
+        mapHomeViewModel.shareDirections()
     }
     
     func updateMemberCounts() {
@@ -89,17 +90,6 @@ class MapHomeViewController: UIViewController {
         for memberAnnotation in mapHomeViewModel.memberAnnotations {
             mapView.addAnnotation(memberAnnotation)
         }
-    }
-    
-    func removeMemberAnnotation(_ member: Member) {
-        let memberAnnotations = mapHomeViewModel.memberAnnotations
-        for memberAnnotation in memberAnnotations {
-            if member.memberDeviceID == memberAnnotation.member.memberDeviceID {
-                guard let index = mapHomeViewModel.memberAnnotations.firstIndex(of: memberAnnotation) else { return }
-                mapHomeViewModel.memberAnnotations.remove(at: index)
-            }
-        }
-        #warning("This doesn't do what I want")
     }
     
     func addGesture() {
@@ -143,11 +133,11 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    func getDirections(annotation: MKAnnotation) {
+    func getDirections(routeAnnotation: MKAnnotation) {
         guard let members = mapHomeViewModel.mapShareSession?.members else { return }
         for member in members {
             let location   = CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude)
-            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: annotation)
+            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
             directions.calculate { response, error in
@@ -244,7 +234,7 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let routeAnnotation = view.annotation, routeAnnotation.isKind(of: RouteAnnotation.self) {
-            getDirections(annotation: routeAnnotation)
+            getDirections(routeAnnotation: routeAnnotation)
         }
     }
 } //: MapViewDelegate
@@ -285,6 +275,13 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         guard let newRouteAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
         for newRouteAnnotation in newRouteAnnotations {
             mapView.addAnnotation(newRouteAnnotation)
+        }
+    }
+    
+    func getDirections() {
+        guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
+        for routeAnnotation in routeAnnotations {
+            getDirections(routeAnnotation: routeAnnotation)
         }
     }
     
