@@ -18,6 +18,7 @@ class MapHomeViewController: UIViewController {
     @IBOutlet weak var membersInActiveSessionLabel: UILabel!
     @IBOutlet weak var membersInWaitingRoomLabel: UILabel!
     @IBOutlet weak var waitingRoomStackView: UIStackView!
+    @IBOutlet weak var centerLocationButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
     
     
@@ -45,7 +46,7 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-        guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
+        let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.deleteRouteFromFirestore()
@@ -55,6 +56,7 @@ class MapHomeViewController: UIViewController {
     
     //MARK: - UI and MODEL FUNCTIONS
     func configureUI() {
+        UIElements.configureFilledStyleButtonColor(for: centerLocationButton)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
     }
     
@@ -71,12 +73,6 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.updateMapWithSessionChanges()
         mapHomeViewModel.updateMapWithMemberChanges()
         mapHomeViewModel.updateMapWithRouteChanges()
-    }
-    
-    func delegateRemoveAnnotations() {
-        sessionActivityIndicatorLabel.textColor = .systemGray
-        mapView.removeAnnotations(mapView.annotations)
-        mapHomeViewModel.memberAnnotations = []
     }
     
     func updateMemberCounts() {
@@ -113,7 +109,7 @@ class MapHomeViewController: UIViewController {
     
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.organizerDeviceID == Constants.Device.deviceID {
+        if session.organizerDeviceID == Constants.Device.deviceID && session.isActive == true {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil)
@@ -121,9 +117,10 @@ class MapHomeViewController: UIViewController {
             session.routeAnnotations.append(newRouteAnnotation)
             
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
+            let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
             
-            if session.routeAnnotations.count > 1 {
-                mapView.removeAnnotations(session.routeAnnotations)
+            if routeAnnotations.count > 1 {
+                mapView.removeAnnotations(routeAnnotations)
                 mapView.removeOverlays(mapView.overlays)
                 mapView.addAnnotation(newRouteAnnotation)
             } else {
@@ -257,7 +254,7 @@ extension MapHomeViewController: MKMapViewDelegate {
 extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInSession() {
         guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.isActive == true {
+        if session.isActive {
             sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
         }
     }
@@ -281,20 +278,24 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInRoute() {
-        guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
-        for routeAnnotation in routeAnnotations {
-            mapView.removeAnnotations(routeAnnotations)
-            mapView.removeOverlays(mapView.overlays)
-            mapView.addAnnotation(routeAnnotation)
+        let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
+        mapView.removeAnnotations(routeAnnotations)
+        mapView.removeOverlays(mapView.overlays)
+        
+        guard let newRouteAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
+        for newRouteAnnotation in newRouteAnnotations {
+            mapView.addAnnotation(newRouteAnnotation)
         }
     }
     
     func noSessionActive() {
-        sessionActivityIndicatorLabel.textColor = .systemGray
-        mapView.removeAnnotations(mapView.annotations)
         mapView.removeOverlays(mapView.overlays)
-        mapHomeViewModel.memberAnnotations = []
-        mapView.showsUserLocation = true
+        mapView.removeAnnotations(mapView.annotations)
+        mapHomeViewModel.mapShareSession?.isActive = false
+        mapHomeViewModel.memberAnnotations         = []
+        mapView.showsUserLocation                  = true
+        sessionActivityIndicatorLabel.textColor    = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
+        UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
     }
 } //: ViewModelDelegate

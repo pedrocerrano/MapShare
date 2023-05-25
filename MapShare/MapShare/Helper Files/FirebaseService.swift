@@ -96,7 +96,6 @@ struct FirebaseService {
                 completion(.failure(.sessionReturnedNil))
             }
         }
-        #warning(".remove() ?")
     }
     
     func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) {

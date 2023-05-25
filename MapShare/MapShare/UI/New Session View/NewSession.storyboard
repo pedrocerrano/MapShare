@@ -22,7 +22,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4wv-zi-Thd">
                                         <rect key="frame" x="0.0" y="0.0" width="170.66666666666666" height="34.333333333333336"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Share"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="New"/>
                                         <connections>
                                             <action selector="mapShareButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="UoY-Ux-YMf"/>
                                         </connections>
@@ -38,8 +38,8 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New MapShare" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqJ-do-MJN">
-                                <rect key="frame" x="20" y="129.33333333333334" width="172.33333333333334" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MapShare" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqJ-do-MJN">
+                                <rect key="frame" x="20.000000000000007" y="129.33333333333334" width="115.66666666666669" height="30"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -140,7 +140,9 @@
                     <connections>
                         <outlet property="createSessionButton" destination="tZS-Wz-qK6" id="doA-jQ-7yy"/>
                         <outlet property="firstNameTextField" destination="fln-Q4-K20" id="hNb-NL-ZOC"/>
+                        <outlet property="joinMapShareButton" destination="u4p-Nc-JhR" id="ThQ-Oz-79f"/>
                         <outlet property="lastNameTextField" destination="Oga-J3-6g0" id="GXV-7T-FE3"/>
+                        <outlet property="newMapShareButton" destination="4wv-zi-Thd" id="idH-09-Ef0"/>
                         <outlet property="newMapShareTitleLabel" destination="hqJ-do-MJN" id="ym5-aD-EPP"/>
                         <outlet property="screenNameTextField" destination="0bu-ZL-fqh" id="gxF-Ha-J60"/>
                         <outlet property="sessionNameTextField" destination="xAb-QK-fgm" id="mMb-u8-5ja"/>

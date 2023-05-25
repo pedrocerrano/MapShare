@@ -9,29 +9,51 @@ import UIKit
 
 struct UIElements {
     
+    //MARK: - COLORS
     struct Color {
-        static let mapShareRed    = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
-        static let mapSharePink   = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 1)
-        static let mapShareOrange = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
-        static let mapShareYellow = UIColor(red: 255/255, green: 233/255, blue: 0/255, alpha: 1)
-        static let mapShareGreen  = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
-        static let mapShareCyan   = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
-        static let mapShareBlue   = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1)
-        static let mapSharePurple = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 1)
+        static let mapShareRed      = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
+        static let mapSharePink     = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 1)
+        static let mapShareOrange   = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
+        static let mapShareYellow   = UIColor(red: 255/255, green: 233/255, blue: 0/255, alpha: 1)
+        static let mapShareGreen    = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
+        static let mapShareCyan     = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
+        static let mapShareBlue     = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1)
+        static let mapSharePurple   = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 1)
+        static let buttonDodgerBlue = UIColor(red: 30/255, green: 144/255, blue: 255/255, alpha: 1)
     }
     
     struct Tint {
-        static let redTint        = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
-        static let pinkTint       = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 0.9)
-        static let orangeTint     = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
-        static let yellowTint     = UIColor(red: 210/255, green: 180/255, blue: 40/255, alpha: 0.9)
-        static let greenTint      = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
-        static let cyanTint       = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
-        static let blueTint       = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 0.6)
-        static let purpleTint     = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 0.6)
+        static let redTint    = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
+        static let pinkTint   = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 0.9)
+        static let orangeTint = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
+        static let yellowTint = UIColor(red: 210/255, green: 180/255, blue: 40/255, alpha: 0.9)
+        static let greenTint  = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
+        static let cyanTint   = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
+        static let blueTint   = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 0.6)
+        static let purpleTint = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 0.6)
     }
     
-    static func configureButton(for button: UIButton, withColor color: UIColor) {
+    
+    //MARK: - MAP HOME UI
+    static func hideRouteAnnotationButton(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = .clear
+        button.configuration?.baseForegroundColor = .clear
+    }
+    
+    static func showRouteAnnotationButton(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = .lightGray
+        button.configuration?.baseForegroundColor = .black
+    }
+    
+    
+    //MARK: - FILLED BUTTONS
+    static func configureFilledStyleButtonColor(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = Color.buttonDodgerBlue
+    }
+    
+    
+    //MARK: - ACTIVE SESSION UI
+    static func configureActiveSessionTableViewButton(for button: UIButton, withColor color: UIColor) {
         button.layer.cornerRadius              = Constants.AdmitDenyButtonUI.cornerRadius
         button.layer.shadowColor               = Constants.AdmitDenyButtonUI.shadowColor
         button.layer.shadowOpacity             = Constants.AdmitDenyButtonUI.shadowOpacity
@@ -45,13 +67,5 @@ struct UIElements {
         button.layer.masksToBounds             = Constants.AdmitDenyButtonUI.masksToBounds
     }
     
-    static func hideRouteAnnotationButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .clear
-        button.configuration?.baseForegroundColor = .clear
-    }
     
-    static func showRouteAnnotationButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .lightGray
-        button.configuration?.baseForegroundColor = .black
-    }
 }

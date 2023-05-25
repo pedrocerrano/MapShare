@@ -10,6 +10,8 @@ import UIKit
 class NewSessionViewController: UIViewController {
     
     //MARK: - OUTLETS
+    @IBOutlet weak var newMapShareButton: UIButton!
+    @IBOutlet weak var joinMapShareButton: UIButton!
     @IBOutlet weak var newMapShareTitleLabel: UILabel!
     @IBOutlet weak var sessionNameTextField: UITextField!
     @IBOutlet weak var firstNameTextField: UITextField!
@@ -96,6 +98,9 @@ class NewSessionViewController: UIViewController {
     }
     
     func configureUI() {
+        UIElements.configureFilledStyleButtonColor(for: newMapShareButton)
+        UIElements.configureFilledStyleButtonColor(for: joinMapShareButton)
+        UIElements.configureFilledStyleButtonColor(for: createSessionButton)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
     }
     
