@@ -13,7 +13,6 @@ protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
     func changesInRoute()
-    func getDirections()
     func noSessionActive()
 }
 
@@ -99,21 +98,18 @@ class MapHomeViewModel {
     
     //MARK: - MAPKIT FUNCTIONS
     func shareDirections() {
-        if routeDirectionsButton.isTouchInside {
-            delegate?.getDirections()
-        }
-        #warning("This doesn't work the way I want")
+        routeDirectionsButton.addTarget(self, action: #selector(routeButtonPressed), for: .touchUpInside)
     }
     
+    @objc func routeButtonPressed() {
+        guard let mapShareSession else { return }
+        service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
+    }
     
     func createMemberAnnotations() {
         guard let activeMembers = mapShareSession?.members.filter({ $0.isActive }) else { return }
         for member in activeMembers {
-            let memberAnnotation = MemberAnnotation(member: member,
-                                                    coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude,
-                                                                                       longitude: member.currentLocLongitude),
-                                                    title: member.screenName,
-                                                    annotationColor: .blue)
+            let memberAnnotation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
             self.memberAnnotations.append(memberAnnotation)
         }
     }

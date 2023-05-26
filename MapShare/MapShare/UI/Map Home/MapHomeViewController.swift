@@ -102,13 +102,12 @@ class MapHomeViewController: UIViewController {
         if session.organizerDeviceID == Constants.Device.deviceID && session.isActive == true {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
-            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil)
-            UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
+            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false)
             session.routeAnnotations.append(newRouteAnnotation)
-            
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
-            let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
+            UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
             
+            let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
             if routeAnnotations.count > 1 {
                 mapView.removeAnnotations(routeAnnotations)
                 mapView.removeOverlays(mapView.overlays)
@@ -275,13 +274,10 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         guard let newRouteAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
         for newRouteAnnotation in newRouteAnnotations {
             mapView.addAnnotation(newRouteAnnotation)
-        }
-    }
-    
-    func getDirections() {
-        guard let routeAnnotations = mapHomeViewModel.mapShareSession?.routeAnnotations else { return }
-        for routeAnnotation in routeAnnotations {
-            getDirections(routeAnnotation: routeAnnotation)
+            
+            if newRouteAnnotation.isShowingDirections {
+                getDirections(routeAnnotation: newRouteAnnotation)
+            }
         }
     }
     
