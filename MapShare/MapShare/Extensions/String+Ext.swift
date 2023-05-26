@@ -24,9 +24,9 @@ extension String {
     static func convertToColorFromString(string: String) -> UIColor? {
         let components = string.components(separatedBy: ",")
         guard components.count == 4,
-              let red = Float(components[0]),
+              let red   = Float(components[0]),
               let green = Float(components[1]),
-              let blue = Float(components[2]),
+              let blue  = Float(components[2]),
               let alpha = Float(components[3]) else { return nil}
         
         return UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
