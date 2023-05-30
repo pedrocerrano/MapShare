@@ -93,6 +93,7 @@ class ActiveSessionViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.activeSessionViewModel.mapHomeDelegate?.delegateRemoveFromMemberAnnotations(forMember: member)
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
@@ -118,9 +119,9 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return activeSessionViewModel.session.members.filter { $0.isActive == true }.count
+            return activeSessionViewModel.session.members.filter { $0.isActive }.count
         case 1:
-            return activeSessionViewModel.session.members.filter { $0.isActive == false }.count
+            return activeSessionViewModel.session.members.filter { !$0.isActive }.count
         default:
             return 0
         }
@@ -147,7 +148,6 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             break
         }
         
-        // The line below shouldn't hit because of how the switch handled the returned cells above.
         return UITableViewCell()
     }
 } //: TableView

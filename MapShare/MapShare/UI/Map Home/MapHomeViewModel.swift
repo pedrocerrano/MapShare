@@ -21,8 +21,7 @@ class MapHomeViewModel {
     //MARK: - PROPERTIES
     var service: FirebaseService
     var mapShareSession: Session?
-    var memberAnnotation: MemberAnnotation?
-    var memberAnnotations: [MemberAnnotation]
+    var memberAnnotations: [MemberAnnotation] = []
     private weak var delegate: MapHomeViewModelDelegate?
     
     var user: MKUserLocation?
@@ -32,10 +31,8 @@ class MapHomeViewModel {
         
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
-    init(service: FirebaseService = FirebaseService(), memberAnnotation: MemberAnnotation? = nil, memberAnnotations: [MemberAnnotation] = [], delegate: MapHomeViewModelDelegate) {
+    init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
         self.service           = service
-        self.memberAnnotation  = memberAnnotation
-        self.memberAnnotations = memberAnnotations
         self.delegate          = delegate
     }
     
@@ -95,6 +92,11 @@ class MapHomeViewModel {
         service.deleteRouteOnFirestore(fromSession: mapShareSession)
     }
     
+    func updateMemberTravelTime(forMember member: Member, withTravelTime travelTime: Double) {
+        guard let mapShareSession else { return }
+        service.updateExpectedTravelTime(forSession: mapShareSession, forMember: member, withTime: travelTime)
+    }
+    
     
     //MARK: - MAPKIT FUNCTIONS
     func shareDirections() {
@@ -115,11 +117,11 @@ class MapHomeViewModel {
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
-        let routeCoordinate  = annotation.coordinate
-        let startingLocation = MKPlacemark(coordinate: coordinate)
-        let destination      = MKPlacemark(coordinate: routeCoordinate)
-        let request          = MKDirections.Request()
+        let routeCoordinate   = annotation.coordinate
+        let startingLocation  = MKPlacemark(coordinate: coordinate)
+        let destination       = MKPlacemark(coordinate: routeCoordinate)
         
+        let request           = MKDirections.Request()
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
         request.transportType = .automobile
@@ -154,10 +156,11 @@ class MapHomeViewModel {
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.titleVisibility   = .hidden
             markerAnnotationView.animatesWhenAdded = true
+            markerAnnotationView.glyphImage        = UIImage(systemName: "flag.checkered.2.crossed")
+            markerAnnotationView.markerTintColor   = UIElements.Color.buttonDodgerBlue
             markerAnnotationView.canShowCallout    = true
-            markerAnnotationView.markerTintColor   = UIColor.black
-            routeDirectionsButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.circle.fill"), for: .normal)
             markerAnnotationView.leftCalloutAccessoryView = routeDirectionsButton
+            routeDirectionsButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.circle.fill"), for: .normal)
         }
         return view
     }

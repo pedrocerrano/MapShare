@@ -27,6 +27,7 @@
 		29E6A0CE29FADE2000D109B1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0CD29FADE2000D109B1 /* Constants.swift */; };
 		29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */; };
 		29E6A0D629FAE0CD00D109B1 /* NewSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */; };
+		29EA12782A241A78007EDE03 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EA12772A241A78007EDE03 /* Double+Ext.swift */; };
 		29EB7FDA2A03DFC600F2242F /* MapHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EB7FD82A03DFC600F2242F /* MapHome.storyboard */; };
 		29EB7FDE2A04078500F2242F /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB7FDD2A04078500F2242F /* String+Ext.swift */; };
 		29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */; };
@@ -63,6 +64,7 @@
 		29E6A0CD29FADE2000D109B1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewController.swift; sourceTree = "<group>"; };
 		29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewSession.storyboard; sourceTree = "<group>"; };
+		29EA12772A241A78007EDE03 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
 		29EB7FD92A03DFC600F2242F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MapShare/Storyboards/Base.lproj/MapHome.storyboard; sourceTree = "<group>"; };
 		29EB7FDD2A04078500F2242F /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomTableViewCell.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			children = (
 				29EB7FDD2A04078500F2242F /* String+Ext.swift */,
 				AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */,
+				29EA12772A241A78007EDE03 /* Double+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			files = (
 				AF86025E2A02F7A800A6519D /* RouteAnnotation.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
+				29EA12782A241A78007EDE03 /* Double+Ext.swift in Sources */,
 				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,
 				29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */,
 				AF72D7F82A14113A0080C9AD /* MapHomeViewModel.swift in Sources */,
