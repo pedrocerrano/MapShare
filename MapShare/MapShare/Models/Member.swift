@@ -19,6 +19,7 @@ class Member {
         static let isActive            = "isActive"
         static let currentLocLatitude  = "currentLocLatitude"
         static let currentLocLongitude = "currentLocLongitude"
+        static let expectedTravelTime  = "expectedTravelTime"
     }
     
     var firstName: String
@@ -30,6 +31,7 @@ class Member {
     var isActive: Bool
     var currentLocLatitude: Double
     var currentLocLongitude: Double
+    var expectedTravelTime: Double?
     
     var memberDictionaryRepresentation: [String : AnyHashable] {
         [
@@ -41,11 +43,12 @@ class Member {
             MemberKey.isOrganizer         : self.isOrganizer,
             MemberKey.isActive            : self.isActive,
             MemberKey.currentLocLatitude  : self.currentLocLatitude,
-            MemberKey.currentLocLongitude : self.currentLocLongitude
+            MemberKey.currentLocLongitude : self.currentLocLongitude,
+            MemberKey.expectedTravelTime  : self.expectedTravelTime
         ]
     }
     
-    init(firstName: String, lastName: String, screenName: String, mapMarkerColor: String, memberDeviceID: String, isOrganizer: Bool, isActive: Bool, currentLocLatitude: Double, currentLocLongitude: Double) {
+    init(firstName: String, lastName: String, screenName: String, mapMarkerColor: String, memberDeviceID: String, isOrganizer: Bool, isActive: Bool, currentLocLatitude: Double, currentLocLongitude: Double, expectedTravelTime: Double? = nil) {
         self.firstName           = firstName
         self.lastName            = lastName
         self.screenName          = screenName
@@ -55,6 +58,7 @@ class Member {
         self.isActive            = isActive
         self.currentLocLatitude  = currentLocLatitude
         self.currentLocLongitude = currentLocLongitude
+        self.expectedTravelTime  = expectedTravelTime
     }
 }
 
@@ -75,6 +79,8 @@ extension Member {
             return nil
         }
         
-        self.init(firstName: firstName, lastName: lastName, screenName: screenName, mapMarkerColor: mapMarkerColor, memberDeviceID: memberDeviceID, isOrganizer: isOrganizer, isActive: isActive, currentLocLatitude: currentLocLatitude, currentLocLongitude: currentLocLongitude)
+        let expectedTravelTime = memberDictionary[MemberKey.expectedTravelTime] as? Double ?? -1
+        
+        self.init(firstName: firstName, lastName: lastName, screenName: screenName, mapMarkerColor: mapMarkerColor, memberDeviceID: memberDeviceID, isOrganizer: isOrganizer, isActive: isActive, currentLocLatitude: currentLocLatitude, currentLocLongitude: currentLocLongitude, expectedTravelTime: expectedTravelTime)
     }
 }
