@@ -65,8 +65,8 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
     }
     
-    func updateLocationOfMemberToFirestore() {
-        #warning("This is where the Push Location code will go")
+    func updateLocationOfMemberToFirestore(forSession session: Session, forMember member: Member, withLatitude: Double, withLongitude: Double) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.currentLocLatitude : withLatitude, Member.MemberKey.currentLocLongitude : withLongitude])
     }
     
     

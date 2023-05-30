@@ -17,6 +17,9 @@
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
 		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
+		29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */; };
+		29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE21142A26931900D9AB2C /* LocationPushService.swift */; };
+		29AE21192A26931900D9AB2C /* LocationPush.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 29AE21122A26931900D9AB2C /* LocationPush.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
 		29E5A53C29F81B23008D8834 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53B29F81B23008D8834 /* SceneDelegate.swift */; };
 		29E5A53E29F81B23008D8834 /* MapHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */; };
@@ -41,6 +44,30 @@
 		AF86025E2A02F7A800A6519D /* RouteAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		29AE21172A26931900D9AB2C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29E5A52E29F81B23008D8834 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29AE21112A26931900D9AB2C;
+			remoteInfo = LocationPush;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		29AE210D2A26745600D9AB2C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				29AE21192A26931900D9AB2C /* LocationPush.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		295079302A0309A00059D774 /* ActiveSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewController.swift; sourceTree = "<group>"; };
 		295079322A030A5D0059D774 /* ActiveSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActiveSession.storyboard; sourceTree = "<group>"; };
@@ -53,6 +80,9 @@
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
 		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
 		29AE20FA2A2646AF00D9AB2C /* MapShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapShare.entitlements; sourceTree = "<group>"; };
+		29AE21122A26931900D9AB2C /* LocationPush.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LocationPush.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		29AE21142A26931900D9AB2C /* LocationPushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPushService.swift; sourceTree = "<group>"; };
+		29AE21162A26931900D9AB2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29E5A53629F81B23008D8834 /* MapShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29E5A53929F81B23008D8834 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29E5A53B29F81B23008D8834 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,10 +109,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		29AE210F2A26931900D9AB2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		29E5A53329F81B23008D8834 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */,
 				29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,11 +158,29 @@
 			path = "Join Session View";
 			sourceTree = "<group>";
 		};
+		29AE20FB2A266C2900D9AB2C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29AE21132A26931900D9AB2C /* LocationPush */ = {
+			isa = PBXGroup;
+			children = (
+				29AE21142A26931900D9AB2C /* LocationPushService.swift */,
+				29AE21162A26931900D9AB2C /* Info.plist */,
+			);
+			path = LocationPush;
+			sourceTree = "<group>";
+		};
 		29E5A52D29F81B23008D8834 = {
 			isa = PBXGroup;
 			children = (
 				29E5A53829F81B23008D8834 /* MapShare */,
+				29AE21132A26931900D9AB2C /* LocationPush */,
 				29E5A53729F81B23008D8834 /* Products */,
+				29AE20FB2A266C2900D9AB2C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				29E5A53629F81B23008D8834 /* MapShare.app */,
+				29AE21122A26931900D9AB2C /* LocationPush.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,6 +286,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		29AE21112A26931900D9AB2C /* LocationPush */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29AE211A2A26931900D9AB2C /* Build configuration list for PBXNativeTarget "LocationPush" */;
+			buildPhases = (
+				29AE210E2A26931900D9AB2C /* Sources */,
+				29AE210F2A26931900D9AB2C /* Frameworks */,
+				29AE21102A26931900D9AB2C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LocationPush;
+			productName = LocationPush;
+			productReference = 29AE21122A26931900D9AB2C /* LocationPush.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		29E5A53529F81B23008D8834 /* MapShare */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 29E5A54A29F81B24008D8834 /* Build configuration list for PBXNativeTarget "MapShare" */;
@@ -236,14 +310,17 @@
 				29E5A53229F81B23008D8834 /* Sources */,
 				29E5A53329F81B23008D8834 /* Frameworks */,
 				29E5A53429F81B23008D8834 /* Resources */,
+				29AE210D2A26745600D9AB2C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				29AE21182A26931900D9AB2C /* PBXTargetDependency */,
 			);
 			name = MapShare;
 			packageProductDependencies = (
 				29F859AA2A01884200A53792 /* FirebaseFirestore */,
+				29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */,
 			);
 			productName = MapShare;
 			productReference = 29E5A53629F81B23008D8834 /* MapShare.app */;
@@ -259,6 +336,9 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					29AE21112A26931900D9AB2C = {
+						CreatedOnToolsVersion = 14.3;
+					};
 					29E5A53529F81B23008D8834 = {
 						CreatedOnToolsVersion = 14.3;
 					};
@@ -281,11 +361,19 @@
 			projectRoot = "";
 			targets = (
 				29E5A53529F81B23008D8834 /* MapShare */,
+				29AE21112A26931900D9AB2C /* LocationPush */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		29AE21102A26931900D9AB2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		29E5A53429F81B23008D8834 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -303,6 +391,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		29AE210E2A26931900D9AB2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		29E5A53229F81B23008D8834 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -336,6 +432,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		29AE21182A26931900D9AB2C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29AE21112A26931900D9AB2C /* LocationPush */;
+			targetProxy = 29AE21172A26931900D9AB2C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		29E5A54429F81B24008D8834 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -356,6 +460,58 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		29AE211B2A26931900D9AB2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W6HRJ6R6XG;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LocationPush/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LocationPush;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Studio314.MapShare.LocationPush;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		29AE211C2A26931900D9AB2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W6HRJ6R6XG;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LocationPush/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LocationPush;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Studio314.MapShare.LocationPush;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		29E5A54829F81B24008D8834 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -473,9 +629,11 @@
 		29E5A54B29F81B24008D8834 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MapShare/MapShare.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
@@ -493,6 +651,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Studio314.MapShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -502,9 +661,11 @@
 		29E5A54C29F81B24008D8834 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MapShare/MapShare.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6HRJ6R6XG;
@@ -522,6 +683,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Studio314.MapShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -531,6 +693,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		29AE211A2A26931900D9AB2C /* Build configuration list for PBXNativeTarget "LocationPush" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29AE211B2A26931900D9AB2C /* Debug */,
+				29AE211C2A26931900D9AB2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		29E5A53129F81B23008D8834 /* Build configuration list for PBXProject "MapShare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -563,6 +734,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 29F859A92A01884200A53792 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		29F859AA2A01884200A53792 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 29F859A92A01884200A53792 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

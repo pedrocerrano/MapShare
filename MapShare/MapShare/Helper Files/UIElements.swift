@@ -47,17 +47,17 @@ struct UIElements {
     
     
     //MARK: - FILLED and TINTED BUTTON COLORS
-    static func configureFilledStyleButtonColor(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = Color.buttonDodgerBlue
-        button.layer.shadowColor               = Constants.ButtonUI.shadowColor
-        button.layer.shadowOpacity             = Constants.ButtonUI.shadowOpacity
-        button.layer.shadowRadius              = Constants.ButtonUI.shadowRadius
-        button.layer.shadowOffset              = Constants.ButtonUI.shadowOffset
-        button.titleLabel?.layer.shadowColor   = Constants.ButtonUI.titleShadowColor
-        button.titleLabel?.layer.shadowOpacity = Constants.ButtonUI.titleShadowOpacity
-        button.titleLabel?.layer.shadowRadius  = Constants.ButtonUI.titleShadowRadius
-        button.titleLabel?.layer.shadowOffset  = Constants.ButtonUI.titleShadowOffset
-        button.layer.masksToBounds             = Constants.ButtonUI.masksToBounds
+    static func configureFilledStyleButtonColor(for button: UIButton, withColor color: UIColor) {
+        button.configuration?.baseBackgroundColor = color
+        button.layer.shadowColor                  = Constants.ButtonUI.shadowColor
+        button.layer.shadowOpacity                = Constants.ButtonUI.shadowOpacity
+        button.layer.shadowRadius                 = Constants.ButtonUI.shadowRadius
+        button.layer.shadowOffset                 = Constants.ButtonUI.shadowOffset
+        button.titleLabel?.layer.shadowColor      = Constants.ButtonUI.titleShadowColor
+        button.titleLabel?.layer.shadowOpacity    = Constants.ButtonUI.titleShadowOpacity
+        button.titleLabel?.layer.shadowRadius     = Constants.ButtonUI.titleShadowRadius
+        button.titleLabel?.layer.shadowOffset     = Constants.ButtonUI.titleShadowOffset
+        button.layer.masksToBounds                = Constants.ButtonUI.masksToBounds
     }
     
     static func configureTintedStyleButtonColor(for button: UIButton) {

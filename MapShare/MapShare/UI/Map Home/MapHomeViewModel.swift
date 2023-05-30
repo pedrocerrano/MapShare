@@ -97,6 +97,11 @@ class MapHomeViewModel {
         service.updateExpectedTravelTime(forSession: mapShareSession, forMember: member, withTime: travelTime)
     }
     
+    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
+        guard let mapShareSession else { return }
+        service.updateLocationOfMemberToFirestore(forSession: mapShareSession, forMember: member, withLatitude: withLatitude, withLongitude: withLongitude)
+    }
+    
     
     //MARK: - MAPKIT FUNCTIONS
     func shareDirections() {
@@ -172,6 +177,8 @@ class MapHomeViewModel {
         previousLocation = getCenterLocation(for: mapView)
         locationManager.allowsBackgroundLocationUpdates = false
         locationManager.startMonitoringSignificantLocationChanges()
+        locationManager.desiredAccuracy = .greatestFiniteMagnitude
+        locationManager.distanceFilter = .greatestFiniteMagnitude
     }
     
     func centerViewOnMember(mapView: MKMapView) {
