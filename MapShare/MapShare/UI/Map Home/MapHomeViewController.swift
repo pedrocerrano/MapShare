@@ -95,9 +95,7 @@ class MapHomeViewController: UIViewController {
     
     //MARK: - MAPKIT FUNCTIONS
     func loadMemberAnnotations() {
-        for memberAnnotation in mapHomeViewModel.memberAnnotations {
-            mapView.addAnnotation(memberAnnotation)
-        }
+        mapView.showAnnotations(mapHomeViewModel.memberAnnotations, animated: true)
     }
     
     func addGesture() {
@@ -159,7 +157,6 @@ class MapHomeViewController: UIViewController {
                     self.mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = member.screenName
                     self.mapView.addOverlay(route.polyline)
-                    #warning("Set map zoom here in conjunction with the SheetPresentationController Detents")
                     self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 70, bottom: 200, right: 70), animated: true)
                 }
             }
@@ -252,21 +249,6 @@ extension MapHomeViewController: MKMapViewDelegate {
         return MKOverlayRenderer()
     }
     
-    func createPolylineRenderer(for line: MKPolyline) -> MKPolylineRenderer {
-        let renderer = MKPolylineRenderer(polyline: line)
-        if let members = mapHomeViewModel.mapShareSession?.members {
-            for member in members {
-                if line.title == member.screenName {
-                    renderer.strokeColor = String.convertToColorFromString(string: member.mapMarkerColor)
-                } else {
-                    renderer.strokeColor = .black
-                }
-            }
-        }
-        
-        return renderer
-    }
-    
     func registerMapAnnotations() {
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Route")
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Member")
@@ -290,10 +272,16 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMembers() {
+//        for annotation in mapHomeViewModel.memberAnnotations {
+//            if annotation.member.memberDeviceID == Constants.Device.deviceID {
+//                return
+//            } else {
+//                mapHomeViewModel.createMemberAnnotations()
+//            }
+//        }
         mapHomeViewModel.createMemberAnnotations()
         updateMemberCounts()
         
-        #warning("Figure out when a member leaves the active session, how to remove that member from everyone else's device")
         let memberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
         mapView.removeAnnotations(memberAnnotations)
         

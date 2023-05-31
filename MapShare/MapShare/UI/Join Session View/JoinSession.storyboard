@@ -47,6 +47,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartInsertDeleteType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="ggv-Zh-2dv"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="v5A-g1-3SS">
                                 <rect key="frame" x="20" y="322" width="353" height="40"/>
@@ -55,6 +58,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartInsertDeleteType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="cEJ-s2-Wmd"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Optional Screen Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CYe-tn-TtU">
                                 <rect key="frame" x="20" y="372" width="353" height="40"/>
@@ -63,6 +69,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="join" smartInsertDeleteType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="mGg-Yv-Akh"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVY-Mc-89R">
                                 <rect key="frame" x="137.66666666666666" y="486.33333333333331" width="117.66666666666666" height="39.999999999999943"/>
