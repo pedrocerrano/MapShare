@@ -34,15 +34,24 @@ class NewSessionViewModel {
                                              currentLocLatitude: organizerLatitude,
                                              currentLocLongitude: organizerLongitude)
         
+        let organizerCoordinates = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
+        let organizerAnnotation = MemberAnnotation(deviceID: organizerDeviceID,
+                                                   coordinate: organizerCoordinates,
+                                                   title: screenName,
+                                                   color: markerColor,
+                                                   isShowing: true)
+        
         let newSession  = Session(sessionName: sessionName,
                                   sessionCode: sessionCode,
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
                                   routeAnnotations: [],
+                                  memberAnnotations: [organizerAnnotation],
                                   isActive: true)
         
         session = newSession
-        mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
-        service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer)
+        service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer, withMemberAnnotation: organizerAnnotation) {
+            self.mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
+        }
     }
 }

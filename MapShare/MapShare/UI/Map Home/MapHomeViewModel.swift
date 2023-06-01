@@ -13,6 +13,7 @@ protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
     func changesInRoute()
+    func changesInMemberAnnotations()
     func noSessionActive()
 }
 
@@ -21,14 +22,11 @@ class MapHomeViewModel {
     //MARK: - PROPERTIES
     var service: FirebaseService
     var mapShareSession: Session?
-    var memberAnnotations: [MemberAnnotation] = []
     private weak var delegate: MapHomeViewModelDelegate?
     
-    var user: MKUserLocation?
-    var previousLocation: CLLocation?
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
-        
+    
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
     init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
@@ -39,7 +37,7 @@ class MapHomeViewModel {
     //MARK: - FIREBASE LISTENER FUNCTIONS
     func updateMapWithSessionChanges() {
         guard let mapShareSession else { return }
-        service.listenForChangesToSession(forSession: mapShareSession.sessionCode) { result in
+        service.listenForChangesToSession(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedSession):
                 mapShareSession.isActive          = loadedSession.isActive
@@ -80,6 +78,19 @@ class MapHomeViewModel {
         }
     }
     
+    func updateMapWithMemberAnnotations() {
+        guard let mapShareSession else { return }
+        service.listenToChangesToMemberAnnotations(forSession: mapShareSession) { result in
+            switch result {
+            case .success(let loadedMemberAnnotations):
+                mapShareSession.memberAnnotations = loadedMemberAnnotations
+                self.delegate?.changesInMemberAnnotations()
+            case .failure(let error):
+                print(error.localizedDescription, "MapHomeViewModel: MemberAnnotations are nil")
+            }
+        }
+    }
+    
     
     //MARK: - FIREBASE ROUTE CRUD FUNCTIONS
     func saveRouteToFirestore(newRouteAnnotation: RouteAnnotation) {
@@ -97,6 +108,11 @@ class MapHomeViewModel {
         service.updateExpectedTravelTime(forSession: mapShareSession, forMember: member, withTime: travelTime)
     }
     
+    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
+        guard let mapShareSession else { return }
+        service.updateLocationOfMemberToFirestore(forSession: mapShareSession, forMember: member, withLatitude: withLatitude, withLongitude: withLongitude)
+    }
+    
     
     //MARK: - MAPKIT FUNCTIONS
     func shareDirections() {
@@ -106,14 +122,6 @@ class MapHomeViewModel {
     @objc func routeButtonPressed() {
         guard let mapShareSession else { return }
         service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
-    }
-    
-    func createMemberAnnotations() {
-        guard let activeMembers = mapShareSession?.members.filter({ $0.isActive }) else { return }
-        for member in activeMembers {
-            let memberAnnotation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
-            self.memberAnnotations.append(memberAnnotation)
-        }
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
@@ -136,11 +144,9 @@ class MapHomeViewModel {
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
-    func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
-        annotation.title = annotation.member.screenName
-        
+    func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {        
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Member", for: annotation)
-        guard let markerColor = String.convertToColorFromString(string: annotation.member.mapMarkerColor) else { return nil }
+        guard let markerColor = String.convertToColorFromString(string: annotation.color) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout    = false
@@ -157,7 +163,7 @@ class MapHomeViewModel {
             markerAnnotationView.titleVisibility   = .hidden
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.glyphImage        = UIImage(systemName: "flag.checkered.2.crossed")
-            markerAnnotationView.markerTintColor   = UIElements.Color.buttonDodgerBlue
+            markerAnnotationView.markerTintColor   = UIElements.Color.dodgerBlue
             markerAnnotationView.canShowCallout    = true
             markerAnnotationView.leftCalloutAccessoryView = routeDirectionsButton
             routeDirectionsButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.circle.fill"), for: .normal)
@@ -169,9 +175,7 @@ class MapHomeViewModel {
         mapView.showsUserLocation = true
         centerViewOnMember(mapView: mapView)
         locationManager.startUpdatingLocation()
-        previousLocation = getCenterLocation(for: mapView)
-        locationManager.allowsBackgroundLocationUpdates = false
-        locationManager.startMonitoringSignificantLocationChanges()
+        locationManager.pausesLocationUpdatesAutomatically = true
     }
     
     func centerViewOnMember(mapView: MKMapView) {
