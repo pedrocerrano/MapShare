@@ -22,7 +22,7 @@ class NewSessionViewModel {
     
     
     //MARK: - FUNCTIONS
-    func createNewMapShareSession(sessionName: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
+    func createNewMapShareSession(sessionName: String, sessionCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
         guard let organizerDeviceID = Constants.Device.deviceID else { return }
         let organizer               = Member(firstName: firstName,
                                              lastName: lastName,
@@ -34,7 +34,6 @@ class NewSessionViewModel {
                                              currentLocLatitude: organizerLatitude,
                                              currentLocLongitude: organizerLongitude)
         
-        let sessionCode = String.generateRandomCode()
         let newSession  = Session(sessionName: sessionName,
                                   sessionCode: sessionCode,
                                   organizerDeviceID: organizerDeviceID,

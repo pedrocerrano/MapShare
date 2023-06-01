@@ -30,13 +30,13 @@ class MapHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addGesture()
+        configureUI()
         registerMapAnnotations()
         setupModalHomeSheetController()
         navigationItem.hidesBackButton = true
         mapHomeViewModel = MapHomeViewModel(delegate: self)
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
         locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
-        configureUI()
     }
     
     

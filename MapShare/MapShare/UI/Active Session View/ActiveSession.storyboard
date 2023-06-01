@@ -20,7 +20,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="lFu-oK-EI6">
                                 <rect key="frame" x="20" y="71" width="353" height="38.333333333333343"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="X4c-jP-Ar2">
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="X4c-jP-Ar2">
                                         <rect key="frame" x="0.0" y="0.0" width="325" height="38.333333333333336"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Session Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QOM-tc-fnC">
@@ -53,8 +53,18 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axF-oE-fVR" userLabel="Invite Members Button">
+                                <rect key="frame" x="232" y="117.33333333333331" width="141" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="QZq-nS-7mG"/>
+                                    <constraint firstAttribute="width" constant="141" id="RD5-cw-VjG"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="Invite Members"/>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="C8O-20-Xot">
-                                <rect key="frame" x="20" y="117.33333333333331" width="353" height="700.66666666666674"/>
+                                <rect key="frame" x="20" y="165.33333333333331" width="353" height="652.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="activeMemberCell" id="SI3-SA-ukI" customClass="ActiveSessionTableViewCell" customModule="MapShare" customModuleProvider="target">
@@ -210,15 +220,18 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="C8O-20-Xot" secondAttribute="bottom" id="6TX-XT-QAF"/>
                             <constraint firstItem="lFu-oK-EI6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="12" id="8Ob-DI-O9P"/>
                             <constraint firstItem="C8O-20-Xot" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="9iM-DG-Vk7"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="axF-oE-fVR" secondAttribute="trailing" constant="20" id="NbI-CG-yed"/>
+                            <constraint firstItem="axF-oE-fVR" firstAttribute="top" secondItem="lFu-oK-EI6" secondAttribute="bottom" constant="8" id="TCt-im-EaA"/>
                             <constraint firstItem="lFu-oK-EI6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="bdG-c3-0ko"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="C8O-20-Xot" secondAttribute="trailing" constant="20" id="bhI-ZR-Kns"/>
-                            <constraint firstItem="C8O-20-Xot" firstAttribute="top" secondItem="lFu-oK-EI6" secondAttribute="bottom" constant="8" id="pe9-5r-uyA"/>
+                            <constraint firstItem="C8O-20-Xot" firstAttribute="top" secondItem="axF-oE-fVR" secondAttribute="bottom" constant="8" id="khA-fO-nlb"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="lFu-oK-EI6" secondAttribute="trailing" constant="20" id="sDq-Wl-w4E"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hTG-Vy-HR8"/>
                     <connections>
                         <outlet property="activeSessionTableView" destination="C8O-20-Xot" id="hkh-Qh-jsZ"/>
+                        <outlet property="inviteMembersButton" destination="axF-oE-fVR" id="fLc-CS-AQm"/>
                         <outlet property="sessionCodeLabel" destination="hnT-VS-Hq6" id="r0A-4d-9Pv"/>
                         <outlet property="sessionControlButton" destination="eL7-oI-u0I" id="6wh-AY-M84"/>
                         <outlet property="sessionNameLabel" destination="QOM-tc-fnC" id="RwV-wR-SeX"/>
@@ -226,7 +239,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="927" y="18"/>
+            <point key="canvasLocation" x="925.95419847328242" y="17.605633802816904"/>
         </scene>
     </scenes>
     <resources>

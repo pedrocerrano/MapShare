@@ -14,6 +14,7 @@ class ActiveSessionViewController: UIViewController {
     @IBOutlet weak var sessionCodeLabel: UILabel!
     @IBOutlet weak var sessionControlButton: UIButton!
     @IBOutlet weak var activeSessionTableView: UITableView!
+    @IBOutlet weak var inviteMembersButton: UIButton!
     
     
     //MARK: - PROPERTIES
@@ -36,6 +37,7 @@ class ActiveSessionViewController: UIViewController {
         }
         activeSessionViewModel.updateSession()
         activeSessionViewModel.updateMembers()
+        inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
     }
     
     
@@ -50,6 +52,16 @@ class ActiveSessionViewController: UIViewController {
     
     
     //MARK: - FUNCTIONS
+    @objc func presentShareSheet(_ sender: UIButton) {
+        let session = activeSessionViewModel.session
+        guard let organizer = session.members.filter ({ $0.isOrganizer }).first else { return }
+        let shareMessage = "\(organizer.screenName) is inviting you to a MapShare Session! Join with code: \(session.sessionCode)"
+        let shareSheetVC = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
+        shareSheetVC.popoverPresentationController?.sourceView = sender
+        shareSheetVC.popoverPresentationController?.sourceRect = sender.frame
+        present(shareSheetVC, animated: true)
+    }
+    
     func configureUI() {
         let session = activeSessionViewModel.session
         sessionNameLabel.text = session.sessionName
