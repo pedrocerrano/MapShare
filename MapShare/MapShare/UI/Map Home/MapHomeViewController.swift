@@ -31,13 +31,13 @@ class MapHomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addGesture()
+        configureUI()
         registerMapAnnotations()
         setupModalHomeSheetController()
         navigationItem.hidesBackButton = true
         mapHomeViewModel = MapHomeViewModel(delegate: self)
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
         locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
-        configureUI()
     }
     
     
@@ -163,7 +163,6 @@ class MapHomeViewController: UIViewController {
                     self.mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = member.screenName
                     self.mapView.addOverlay(route.polyline)
-                    #warning("Set map zoom here in conjunction with the SheetPresentationController Detents")
                     self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 70, bottom: 200, right: 70), animated: true)
                 }
             }

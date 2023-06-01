@@ -11,7 +11,7 @@ import CoreLocation
 import CoreLocationUI
 
 class JoinSessionViewController: UIViewController {
-
+    
     //MARK: - OUTLETS
     @IBOutlet weak var closeJoinSessionSheetButton: UIButton!
     @IBOutlet weak var codeEntryTextField: UITextField!
@@ -52,17 +52,26 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.dismissalTransitionWillBegin()
         }
+        [codeEntryTextField, memberfirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
+            if let textField {
+                textField.resignFirstResponder()
+                textField.text = ""
+            }
+        }
     }
     
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
         tellTheGroupLabel.isHidden = true
-        guard let codeEntry = codeEntryTextField.text else { return }
+        guard var codeEntry = codeEntryTextField.text else { return }
         if codeEntry.isEmpty || codeEntry.count != 6 {
             hideJoinSessionTextFields()
             presentNeedsSixDigitsAlert()
         } else {
             joinSessionViewModel.searchFirebase(with: codeEntry)
             codeEntryTextField.resignFirstResponder()
+        }
+        if codeEntry.count > 6 {
+            codeEntry.removeLast()
         }
     }
     
@@ -137,8 +146,8 @@ class JoinSessionViewController: UIViewController {
         userColorPopUpButton.isHidden = false
         joinSessionButton.isHidden = false
     }
-
-        
+    
+    
     //MARK: - ALERTS
     func presentNeedsSixDigitsAlert() {
         let needsSixDigitsAlertController = UIAlertController(title: "Invalid Session Code", message: "Please retype a six-digit session code.", preferredStyle: .alert)
@@ -168,7 +177,7 @@ class JoinSessionViewController: UIViewController {
         present(noColorSelectedAlertController, animated: true)
     }
     
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toJoinActiveSessionVC" {
@@ -206,16 +215,13 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
 //MARK: - EXT: TextFieldDelegate
 extension JoinSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.codeEntryTextField {
-            if let codeEntry = codeEntryTextField.text {
-                if codeEntry.isEmpty || codeEntry.count != 6 {
-                    presentNeedsSixDigitsAlert()
-                } else {
-                    joinSessionViewModel.searchFirebase(with: codeEntry)
-                    joinSessionViewModel.validSessionCode = codeEntry
-                    codeEntryTextField.resignFirstResponder()
-                }
-            }
+        #warning("Come back to clean up into switch statements")
+        if textField == memberfirstNameTextField {
+            memberLastNameTextField.becomeFirstResponder()
+        } else if textField == memberLastNameTextField {
+            memberScreenNameTextField.becomeFirstResponder()
+        } else if textField == memberScreenNameTextField {
+            textField.resignFirstResponder()
         }
         
         return true

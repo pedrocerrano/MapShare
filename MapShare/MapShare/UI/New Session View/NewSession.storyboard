@@ -50,7 +50,10 @@
                                     <constraint firstAttribute="height" constant="40" id="4Kx-GL-zmV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="1ib-Jd-tk9"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fln-Q4-K20">
                                 <rect key="frame" x="20" y="229.33333333333334" width="353" height="40.000000000000028"/>
@@ -58,7 +61,10 @@
                                     <constraint firstAttribute="height" constant="40" id="eAX-5D-cwI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="hVn-mD-YzN"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Oga-J3-6g0">
                                 <rect key="frame" x="20" y="279.33333333333331" width="353" height="40"/>
@@ -66,7 +72,10 @@
                                     <constraint firstAttribute="height" constant="40" id="XPV-VU-V5Z"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="vvB-xR-yKG"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZS-Wz-qK6">
                                 <rect key="frame" x="106.66666666666669" y="443.66666666666669" width="180" height="44"/>
@@ -87,7 +96,10 @@
                                     <constraint firstAttribute="height" constant="40" id="8ag-UC-gBE"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="ypH-ip-ATE"/>
+                                </connections>
                             </textField>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="dHk-Ht-bnF">
                                 <rect key="frame" x="59" y="389.33333333333331" width="275" height="34.333333333333314"/>

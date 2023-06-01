@@ -26,6 +26,7 @@ class NewSessionViewController: UIViewController {
     }
     
     var newSessionViewModel: NewSessionViewModel!
+    let sessionCode = String.generateRandomCode()
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
@@ -51,14 +52,14 @@ class NewSessionViewController: UIViewController {
     
     
     @IBAction func createSessionButtonTapped(_ sender: Any) {
-        guard let sessionName   = sessionNameTextField.text,
-              let firstName     = firstNameTextField.text,
-              let lastName      = lastNameTextField.text,
-              let screenName    = screenNameTextField.text,
-              let markerColor   = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
+        guard let sessionName        = sessionNameTextField.text,
+              let firstName          = firstNameTextField.text,
+              let lastName           = lastNameTextField.text,
+              let screenName         = screenNameTextField.text,
+              let markerColor        = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
               let organizerLatitude  = newSessionViewModel.locationManager.location?.coordinate.latitude,
               let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude else { return }
-        var optionalScreenName  = ""
+        var optionalScreenName = ""
         if screenName.isEmpty {
             optionalScreenName = firstName
         } else {
@@ -74,7 +75,7 @@ class NewSessionViewController: UIViewController {
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
             presentChooseColorAlert()
         } else {
-            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
+            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, sessionCode: sessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
             [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
                 if let textField {
                     textField.resignFirstResponder()
@@ -130,7 +131,7 @@ class NewSessionViewController: UIViewController {
     }
     
     func presentChooseColorAlert() {
-        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color to join.", preferredStyle: .alert)
+        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color so the MapShare members can identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         noColorSelectedAlertController.addAction(dismissAction)
         present(noColorSelectedAlertController, animated: true)
@@ -152,3 +153,18 @@ class NewSessionViewController: UIViewController {
     }
 } //: CLASS
 
+extension NewSessionViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        #warning("Come back to clean up into switch statements")
+        if textField == sessionNameTextField {
+            firstNameTextField.becomeFirstResponder()
+        } else if textField == firstNameTextField {
+            lastNameTextField.becomeFirstResponder()
+        } else if textField == lastNameTextField {
+            screenNameTextField.becomeFirstResponder()
+        } else if textField == screenNameTextField {
+            textField.resignFirstResponder()
+        }
+        return true
+    }
+} //: TextFieldDelegate
