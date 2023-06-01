@@ -11,8 +11,8 @@ struct PopUpButton {
     
     static func setUpPopUpButton(for button: UIButton) {
         let defaultClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.buttonDodgerBlue, for: .normal)
-            button.tintColor = UIElements.Color.buttonDodgerBlue
+            button.setTitleColor(UIElements.Color.dodgerBlue, for: .normal)
+            button.tintColor = UIElements.Color.dodgerBlue
         }
         
         let redClosure = { (action: UIAction) in

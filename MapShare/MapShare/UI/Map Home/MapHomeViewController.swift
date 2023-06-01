@@ -20,6 +20,7 @@ class MapHomeViewController: UIViewController {
     @IBOutlet weak var waitingRoomStackView: UIStackView!
     @IBOutlet weak var centerLocationButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
+    @IBOutlet weak var refreshingLocationButton: UIButton!
     
     
     // MARK: - Properties
@@ -51,13 +52,29 @@ class MapHomeViewController: UIViewController {
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.deleteRouteFromFirestore()
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
+        guard let activeMembers = mapHomeViewModel.mapShareSession?.members else { return }
+        if activeMembers.count == 1 {
+            mapHomeViewModel.centerViewOnMember(mapView: mapView)
+        } else {
+            let memberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
+            mapView.showAnnotations(memberAnnotations, animated: true)
+        }
     }
+    
+    @IBAction func refreshLocationButtonTapped(_ sender: Any) {
+        let manager = mapHomeViewModel.locationManager
+        guard let currentMember = mapHomeViewModel.mapShareSession?.members.filter( { $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
+        mapHomeViewModel.updateMemberLocation(forMember: currentMember, withLatitude: manager.location?.coordinate.latitude ?? 0, withLongitude: manager.location?.coordinate.longitude ?? 0)
+    }
+    
     
     
     //MARK: - UI and MODEL FUNCTIONS
     func configureUI() {
-        UIElements.configureFilledStyleButtonColor(for: centerLocationButton)
+        UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
+        UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
     }
     
     func setupModalHomeSheetController() {
@@ -73,15 +90,8 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.updateMapWithSessionChanges()
         mapHomeViewModel.updateMapWithMemberChanges()
         mapHomeViewModel.updateMapWithRouteChanges()
+        mapHomeViewModel.updateMapWithMemberAnnotations()
         mapHomeViewModel.shareDirections()
-    }
-    
-    func delegateRemoveFromMemberAnnotations(forMember member: Member) {
-        for memberAnnotation in mapHomeViewModel.memberAnnotations {
-            if memberAnnotation.member.memberDeviceID == member.memberDeviceID {
-                mapView.removeAnnotation(memberAnnotation)
-            }
-        }
     }
     
     func updateMemberCounts() {
@@ -94,12 +104,6 @@ class MapHomeViewController: UIViewController {
     
     
     //MARK: - MAPKIT FUNCTIONS
-    func loadMemberAnnotations() {
-        for memberAnnotation in mapHomeViewModel.memberAnnotations {
-            mapView.addAnnotation(memberAnnotation)
-        }
-    }
-    
     func addGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
@@ -184,7 +188,7 @@ class MapHomeViewController: UIViewController {
     
     func alertLocationAccessNeeded() {
         guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted", message: "In order to utilize this application, we need access to your location.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted", message: "In order to utilize MapShare, we need access to your location.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Go To Settings", style: .default, handler: { (alert) -> Void in
             UIApplication.shared.open(settingsAppURL)
@@ -238,7 +242,7 @@ extension MapHomeViewController: MKMapViewDelegate {
         guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }),
               let routeOverlay = overlay as? MKPolyline else { return MKOverlayRenderer() }
         let renderer = MKPolylineRenderer(overlay: routeOverlay)
-        
+
         for member in activeMembers {
             if member.screenName == routeOverlay.title  {
                 renderer.strokeColor = String.convertToColorFromString(string: member.mapMarkerColor)
@@ -250,21 +254,6 @@ extension MapHomeViewController: MKMapViewDelegate {
         }
 
         return MKOverlayRenderer()
-    }
-    
-    func createPolylineRenderer(for line: MKPolyline) -> MKPolylineRenderer {
-        let renderer = MKPolylineRenderer(polyline: line)
-        if let members = mapHomeViewModel.mapShareSession?.members {
-            for member in members {
-                if line.title == member.screenName {
-                    renderer.strokeColor = String.convertToColorFromString(string: member.mapMarkerColor)
-                } else {
-                    renderer.strokeColor = .black
-                }
-            }
-        }
-        
-        return renderer
     }
     
     func registerMapAnnotations() {
@@ -290,25 +279,19 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMembers() {
-        mapHomeViewModel.createMemberAnnotations()
-        updateMemberCounts()
-        
-        #warning("Figure out when a member leaves the active session, how to remove that member from everyone else's device")
-        let memberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
-        mapView.removeAnnotations(memberAnnotations)
-        
         guard let session = mapHomeViewModel.mapShareSession else { return }
-        for member in session.members {
-            if Constants.Device.deviceID == member.memberDeviceID && member.isActive {
-                loadMemberAnnotations()
-            }
-        }
         
-        guard let waitingRoomMembers = mapHomeViewModel.mapShareSession?.members.filter({ !$0.isActive }) else { return }
-        if waitingRoomMembers.count > 0 {
-            waitingRoomStackView.backgroundColor = .yellow
-        } else {
-            waitingRoomStackView.backgroundColor = .clear
+        let activeMembers = session.members.filter { $0.isActive }
+        for _ in activeMembers {
+            updateMemberCounts()
+            UIElements.showLocationRefreshButton(for: refreshingLocationButton)
+            
+            let waitingRoomMembers = session.members.filter { !$0.isActive }
+            if waitingRoomMembers.count > 0 {
+                waitingRoomStackView.backgroundColor = .yellow
+            } else {
+                waitingRoomStackView.backgroundColor = .clear
+            }
         }
     }
     
@@ -325,14 +308,27 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         }
     }
     
+    func changesInMemberAnnotations() {
+        guard let session = mapHomeViewModel.mapShareSession else { return }
+        let activeMembers = session.members.filter { $0.isActive }
+        for _ in activeMembers {
+            let memberAnnotationsShowing = session.memberAnnotations.filter { $0.isShowing }
+            mapView.addAnnotations(memberAnnotationsShowing)
+        }
+    }
+    
     func noSessionActive() {
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
-        mapHomeViewModel.mapShareSession?.isActive = false
-        mapHomeViewModel.memberAnnotations         = []
-        mapView.showsUserLocation                  = true
-        sessionActivityIndicatorLabel.textColor    = .systemGray
+        mapHomeViewModel.mapShareSession?.isActive          = false
+        mapHomeViewModel.mapShareSession?.memberAnnotations = []
+        mapHomeViewModel.mapShareSession?.members           = []
+        updateMemberCounts()
+        mapHomeViewModel.mapShareSession                    = nil
+        mapView.showsUserLocation                           = true
+        sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
+        UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
     }
 } //: ViewModelDelegate

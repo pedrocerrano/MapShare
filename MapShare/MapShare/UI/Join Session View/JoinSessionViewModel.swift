@@ -31,7 +31,7 @@ class JoinSessionViewModel {
     
     //MARK: - FUNCTIONS
     func searchFirebase(with code: String) {
-        service.searchFirebaseForActiveSession(withCode: code) { result in
+        service.searchForActiveSessionOnFirestore(withCode: code) { result in
             switch result {
             case .success(let searchedSession):
                 self.delegate?.sessionExists()
@@ -54,9 +54,19 @@ class JoinSessionViewModel {
                                           isActive: false,
                                           currentLocLatitude: memberLatitude,
                                           currentLocLongitude: memberLongitude)
+        
+        let newMemberCoordinates = CLLocationCoordinate2D(latitude: memberLatitude, longitude: memberLongitude)
+        let newMemberAnnotation  = MemberAnnotation(deviceID: memberDeviceID,
+                                                    coordinate: newMemberCoordinates,
+                                                    title: screenName,
+                                                    color: newMember.mapMarkerColor,
+                                                    isShowing: false)
+        
         searchedSession?.members.append(newMember)
+        searchedSession?.memberAnnotations.append(newMemberAnnotation)
+        
         guard let searchedSession else { return }
-        service.appendMemberToSessionOnFirestore(withCode: validCode, member: newMember) {
+        service.joinNewMemberToActiveSessionOnFirestore(withCode: validCode, withMember: newMember, withMemberAnnotation: newMemberAnnotation) {
             self.mapHomeDelegate?.delegateUpdateWithSession(session: searchedSession)
         }
     }
