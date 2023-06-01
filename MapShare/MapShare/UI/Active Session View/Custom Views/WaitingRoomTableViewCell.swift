@@ -8,7 +8,7 @@
 import UIKit
 
 protocol WaitingRoomTableViewCellDelegate: AnyObject {
-    func admitMember(forSession session: Session, forMember member: Member)
+    func admitMember(forSession session: Session, forMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation)
     func denyMember(fromSession session: Session, forMember member: Member)
 }
 
@@ -22,22 +22,25 @@ class WaitingRoomTableViewCell: UITableViewCell {
 
     
     //MARK: - PROPERTIES
-    var member: Member?
     var session: Session?
+    var member: Member?
+    var memberAnnotation: MemberAnnotation?
     weak var delegate: WaitingRoomTableViewCellDelegate?
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        member   = nil
-        session  = nil
-        delegate = nil
+        session          = nil
+        member           = nil
+        memberAnnotation = nil
+        delegate         = nil
     }
     
     //MARK: - IB ACTIONS
     @IBAction func admitNewMemberButtonTapped(_ sender: Any) {
-        guard let member = member,
-              let session = session else { return }
-        delegate?.admitMember(forSession: session, forMember: member)
+        guard let session          = session,
+              let member           = member,
+              let memberAnnotation = memberAnnotation else { return }
+        delegate?.admitMember(forSession: session, forMember: member, withMemberAnnotation: memberAnnotation)
     }
     
     @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
@@ -48,13 +51,14 @@ class WaitingRoomTableViewCell: UITableViewCell {
         
     
     //MARK: - FUNCTIONS
-    func configureWaitingRoomCell(forSession session: Session, withMember member: Member, delegate: WaitingRoomTableViewCellDelegate) {
+    func configureWaitingRoomCell(forSession session: Session, withMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation , delegate: WaitingRoomTableViewCellDelegate) {
         waitingRoomMemberNameLabel.text = "\(member.firstName) \(member.lastName)"
         waitingRoomScreenNameLabel.text = member.screenName
         
-        self.member   = member
-        self.session  = session
-        self.delegate = delegate
+        self.session          = session
+        self.member           = member
+        self.memberAnnotation = memberAnnotation
+        self.delegate         = delegate
         
         UIElements.configureActiveSessionTableViewButton(for: admitNewMemberButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.configureActiveSessionTableViewButton(for: denyNewMemberButton, withColor: UIElements.Color.mapShareRed)

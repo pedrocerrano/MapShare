@@ -45,9 +45,19 @@ struct UIElements {
         button.configuration?.baseForegroundColor = .black
     }
     
+    static func hideLocationRefreshButton(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = .clear
+        button.configuration?.baseForegroundColor = .clear
+    }
+    
+    static func showLocationRefreshButton(for button: UIButton) {
+        button.configuration?.baseBackgroundColor = Color.mapShareGreen
+        button.configuration?.baseForegroundColor = .white
+    }
+    
     
     //MARK: - FILLED and TINTED BUTTON COLORS
-    static func configureFilledStyleButtonColor(for button: UIButton, withColor color: UIColor) {
+    static func configureFilledStyleButtonAttributes(for button: UIButton, withColor color: UIColor) {
         button.configuration?.baseBackgroundColor = color
         button.layer.shadowColor                  = Constants.ButtonUI.shadowColor
         button.layer.shadowOpacity                = Constants.ButtonUI.shadowOpacity

@@ -13,6 +13,7 @@ protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
     func changesInRoute()
+    func changesInMemberAnnotations()
     func noSessionActive()
 }
 
@@ -21,14 +22,11 @@ class MapHomeViewModel {
     //MARK: - PROPERTIES
     var service: FirebaseService
     var mapShareSession: Session?
-    var memberAnnotations: [MemberAnnotation] = []
     private weak var delegate: MapHomeViewModelDelegate?
     
-    var user: MKUserLocation?
-    var previousLocation: CLLocation?
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
-        
+    
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
     init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
@@ -39,7 +37,7 @@ class MapHomeViewModel {
     //MARK: - FIREBASE LISTENER FUNCTIONS
     func updateMapWithSessionChanges() {
         guard let mapShareSession else { return }
-        service.listenForChangesToSession(forSession: mapShareSession.sessionCode) { result in
+        service.listenForChangesToSession(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedSession):
                 mapShareSession.isActive          = loadedSession.isActive
@@ -80,6 +78,19 @@ class MapHomeViewModel {
         }
     }
     
+    func updateMapWithMemberAnnotations() {
+        guard let mapShareSession else { return }
+        service.listenToChangesToMemberAnnotations(forSession: mapShareSession) { result in
+            switch result {
+            case .success(let loadedMemberAnnotations):
+                mapShareSession.memberAnnotations = loadedMemberAnnotations
+                self.delegate?.changesInMemberAnnotations()
+            case .failure(let error):
+                print(error.localizedDescription, "MapHomeViewModel: MemberAnnotations are nil")
+            }
+        }
+    }
+    
     
     //MARK: - FIREBASE ROUTE CRUD FUNCTIONS
     func saveRouteToFirestore(newRouteAnnotation: RouteAnnotation) {
@@ -113,14 +124,6 @@ class MapHomeViewModel {
         service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
     }
     
-    func createMemberAnnotations() {
-        guard let activeMembers = mapShareSession?.members.filter({ $0.isActive }) else { return }
-        for member in activeMembers {
-            let memberAnnotation = MemberAnnotation(member: member, coordinate: CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude), title: member.screenName, annotationColor: .blue)
-            self.memberAnnotations.append(memberAnnotation)
-        }
-    }
-    
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
         let routeCoordinate   = annotation.coordinate
         let startingLocation  = MKPlacemark(coordinate: coordinate)
@@ -141,11 +144,9 @@ class MapHomeViewModel {
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
-    func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
-        annotation.title = annotation.member.screenName
-        
+    func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {        
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Member", for: annotation)
-        guard let markerColor = String.convertToColorFromString(string: annotation.member.mapMarkerColor) else { return nil }
+        guard let markerColor = String.convertToColorFromString(string: annotation.color) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout    = false
@@ -174,11 +175,7 @@ class MapHomeViewModel {
         mapView.showsUserLocation = true
         centerViewOnMember(mapView: mapView)
         locationManager.startUpdatingLocation()
-        previousLocation = getCenterLocation(for: mapView)
-        locationManager.allowsBackgroundLocationUpdates = false
-        locationManager.startMonitoringSignificantLocationChanges()
-        locationManager.desiredAccuracy = .greatestFiniteMagnitude
-        locationManager.distanceFilter = .greatestFiniteMagnitude
+        locationManager.pausesLocationUpdatesAutomatically = true
     }
     
     func centerViewOnMember(mapView: MKMapView) {

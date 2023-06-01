@@ -22,20 +22,14 @@ struct FirebaseService {
     
     
     //MARK: - SESSION and MEMBER CRUD FUNCTIONS
-    func saveNewSessionToFirestore(newSession: Session, withMember: Member) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(newSession.sessionCode).setData(newSession.sessionDictionaryRepresentation)
-        ref.collection(Session.SessionKey.sessionCollectionType).document(newSession.sessionCode).collection(Session.SessionKey.membersCollectionType).document(withMember.memberDeviceID).setData(withMember.memberDictionaryRepresentation)
+    func saveNewSessionToFirestore(newSession session: Session, withMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation, completion: @escaping () -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).setData(session.sessionDictionaryRepresentation)
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).setData(member.memberDictionaryRepresentation)
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).document(memberAnnotation.deviceID).setData(memberAnnotation.memberAnnotationDictionaryRepresentation)
+        completion()
     }
     
-    func deleteSessionFromFirestore(session: Session) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).delete()
-    }
-    
-    func deleteAllMembersFromFirestore(session: Session, member: Member) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
-    }
-    
-    func searchFirebaseForActiveSession(withCode codeEntered: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
+    func searchForActiveSessionOnFirestore(withCode codeEntered: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(codeEntered).getDocument { document, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
@@ -52,25 +46,32 @@ struct FirebaseService {
         }
     }
     
-    func appendMemberToSessionOnFirestore(withCode sessionCode: String, member: Member, completion: @escaping() -> Void) {
+    func joinNewMemberToActiveSessionOnFirestore(withCode sessionCode: String, withMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation, completion: @escaping() -> Void) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).setData(member.memberDictionaryRepresentation)
+        ref.collection(Session.SessionKey.sessionCollectionType).document(sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).document(memberAnnotation.deviceID).setData(memberAnnotation.memberAnnotationDictionaryRepresentation)
         completion()
     }
     
-    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member) {
+    func admitMemberToActiveSessionOnFirestore(forSession session: Session, forMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.isActive : true])
-    }
-    
-    func deleteMemberFromFirestore(fromSession session: Session, member: Member) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).document(member.memberDeviceID).updateData([MemberAnnotation.MemberAnnotationKey.isShowing : true])
     }
     
     func updateLocationOfMemberToFirestore(forSession session: Session, forMember member: Member, withLatitude: Double, withLongitude: Double) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.currentLocLatitude : withLatitude, Member.MemberKey.currentLocLongitude : withLongitude])
     }
     
+    func deleteSessionFromFirestore(session: Session) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).delete()
+    }
     
-    //MARK: - ROUTE CRUD FUNCTIONS
+    func deleteMemberFromFirestore(fromSession session: Session, withMember member: Member) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).delete()
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).document(member.memberDeviceID).delete()
+    }
+    
+    
+    //MARK: - ROUTE ANNOTATIONS CRUD FUNCTIONS
     func saveNewRouteToFirestore(forSession session: Session, routeAnnotation: RouteAnnotation) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).setData(routeAnnotation.routeAnnotationDictionaryRepresentation)
     }
@@ -89,8 +90,8 @@ struct FirebaseService {
     
     
     //MARK: - LISTENERS
-    func listenForChangesToSession(forSession sessionCode: String, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(sessionCode).addSnapshotListener { documentSnapshot, error in
+    func listenForChangesToSession(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).addSnapshotListener { documentSnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
@@ -129,6 +130,19 @@ struct FirebaseService {
             let routeDictArray      = documentsData.compactMap { $0.data() }
             let routeAnnotations    = routeDictArray.compactMap { RouteAnnotation(fromRouteAnnotationDictionary: $0) }
             completion(.success(routeAnnotations))
+        }
+    }
+    
+    func listenToChangesToMemberAnnotations(forSession session: Session, completion: @escaping(Result<[MemberAnnotation], FirebaseError>) -> Void) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                completion(.failure(.firebaseError(error)))
+            }
+            
+            guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let memberAnnoDictArray = documentsData.compactMap { $0.data() }
+            let memberAnnotations   = memberAnnoDictArray.compactMap { MemberAnnotation(fromMemberAnnotationDictionary: $0) }
+            completion(.success(memberAnnotations))
         }
     }
 }

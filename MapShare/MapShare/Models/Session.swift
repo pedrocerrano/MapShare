@@ -10,18 +10,20 @@ import CoreLocation
 class Session {
     
     enum SessionKey {
-        static let sessionName                   = "sessionName"
-        static let sessionCode                   = "sessionCode"
-        static let organizerDeviceID             = "organizerDeviceID"
-        static let members                       = "members"
-        static let routeAnnotations              = "routeAnnotations"
-        static let isActive                      = "isActive"
+        static let sessionName                    = "sessionName"
+        static let sessionCode                    = "sessionCode"
+        static let organizerDeviceID              = "organizerDeviceID"
+        static let members                        = "members"
+        static let routeAnnotations               = "routeAnnotations"
+        static let memberAnnotations              = "memberAnnotations"
+        static let isActive                       = "isActive"
         
-        static let sessionCollectionType         = "mapShareSession"
-        static let membersCollectionType         = "mapShareMembers"
-        static let routeAnnotationCollectionType = "mapShareRouteAnnotations"
+        static let sessionCollectionType          = "mapShareSession"
+        static let membersCollectionType          = "members"
+        static let routeAnnotationCollectionType  = "routeAnnotations"
+        static let memberAnnotationCollectionType = "memberAnnotations"
         
-        static let routeDocumentType             = "route"
+        static let routeDocumentType              = "route"
     }
     
     var sessionName: String
@@ -29,6 +31,7 @@ class Session {
     var organizerDeviceID: String
     var members: [Member]
     var routeAnnotations: [RouteAnnotation]
+    var memberAnnotations: [MemberAnnotation]
     var isActive: Bool
     
     var sessionDictionaryRepresentation: [String : AnyHashable] {
@@ -40,12 +43,13 @@ class Session {
         ]
     }
     
-    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], routeAnnotations: [RouteAnnotation], isActive: Bool) {
+    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], routeAnnotations: [RouteAnnotation], memberAnnotations: [MemberAnnotation], isActive: Bool) {
         self.sessionName       = sessionName
         self.sessionCode       = sessionCode
         self.organizerDeviceID = organizerDeviceID
         self.members           = members
         self.routeAnnotations  = routeAnnotations
+        self.memberAnnotations = memberAnnotations
         self.isActive          = isActive
     }
     
@@ -63,7 +67,7 @@ extension Session {
             return nil
         }
         
-        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], routeAnnotations: [], isActive: isActive)
+        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], routeAnnotations: [], memberAnnotations: [], isActive: isActive)
     }
 }
 

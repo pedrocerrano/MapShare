@@ -112,8 +112,8 @@ class JoinSessionViewController: UIViewController {
     
     func configureUI() {
         closeJoinSessionSheetButton.layer.cornerRadius = closeJoinSessionSheetButton.frame.height / 2
-        UIElements.configureFilledStyleButtonColor(for: searchSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
-        UIElements.configureFilledStyleButtonColor(for: joinSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
         UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
     }
@@ -216,16 +216,8 @@ extension JoinSessionViewController: UITextFieldDelegate {
                     codeEntryTextField.resignFirstResponder()
                 }
             }
-        } else {
-            #warning("Need to configure the keyboard to advance to the next textfield when return is pressed")
-            if textField == self.memberfirstNameTextField {
-                if let firstName = memberfirstNameTextField.text {
-                    if firstName.isEmpty == true {
-                        print("Booyah")
-                    }
-                }
-            }
         }
+        
         return true
     }
 } //: TextFieldDelegate

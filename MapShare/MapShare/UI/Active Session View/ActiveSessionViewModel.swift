@@ -9,7 +9,6 @@ import Foundation
 
 protocol ActiveSessionViewModelDelegate: AnyObject {
     func sessionDataUpdated()
-    func memberDataUpdated()
     func sessionReturnedNil()
 }
 
@@ -29,9 +28,10 @@ class ActiveSessionViewModel {
         self.mapHomeDelegate = mapHomeDelegate
     }
     
-    //MARK: - FUNCTIONS
+    
+    //MARK: - LISTENERS
     func updateSession() {
-        service.listenForChangesToSession(forSession: session.sessionCode) { result in
+        service.listenForChangesToSession(forSession: session) { result in
             switch result {
             case .success(let updatedSession):
                 self.session = updatedSession
@@ -48,33 +48,44 @@ class ActiveSessionViewModel {
             switch result {
             case .success(let updatedMembers):
                 self.session.members = updatedMembers
-                self.delegate?.memberDataUpdated()
+                self.delegate?.sessionDataUpdated()
             case .failure(let error):
                 print(error.localizedDescription, "ActionSessionViewModel: Members returned nil")
             }
         }
     }
     
-    func deleteSession() {
-        service.deleteSessionFromFirestore(session: session)
-        for member in session.members {
-            service.deleteAllMembersFromFirestore(session: session, member: member)
+    func updateMemberAnnotations() {
+        service.listenToChangesToMemberAnnotations(forSession: session) { result in
+            switch result {
+            case .success(let updatedMemberAnnotations):
+                self.session.memberAnnotations = updatedMemberAnnotations
+                self.delegate?.sessionDataUpdated()
+            case .failure(let error):
+                print(error.localizedDescription, "ActionSessionViewModel: MemberAnnotations returned nil")
+            }
         }
     }
     
-    func deleteMemberFromActiveSession(fromSession session: Session, forMember member: Member) {
-        service.deleteMemberFromFirestore(fromSession: session, member: member)
+    
+    //MARK: - CRUD FUNCTIONS
+    func deleteSession() {
+        for member in session.members {
+            service.deleteMemberFromFirestore(fromSession: session, withMember: member)
+        }
+        service.deleteRouteOnFirestore(fromSession: session)
+        service.deleteSessionFromFirestore(session: session)
     }
     
-    func admitNewMember(forSession session: Session, withMember member: Member) {
-        service.admitMemberToActiveSessionOnFirestore(forSession: session, forMember: member)
+    func deleteMemberFromActiveSession(fromSession session: Session, forMember member: Member) {
+        service.deleteMemberFromFirestore(fromSession: session, withMember: member)
+    }
+    
+    func admitNewMember(forSession session: Session, withMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation) {
+        service.admitMemberToActiveSessionOnFirestore(forSession: session, forMember: member, withMemberAnnotation: memberAnnotation)
     }
     
     func denyNewMember(forSession session: Session, withMember member: Member) {
-        service.deleteMemberFromFirestore(fromSession: session, member: member)
-    }
-    
-    func deleteRouteFromFirestore() {
-        service.deleteRouteOnFirestore(fromSession: session)
+        service.deleteMemberFromFirestore(fromSession: session, withMember: member)
     }
 }

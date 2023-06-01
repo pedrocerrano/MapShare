@@ -99,9 +99,9 @@ class NewSessionViewController: UIViewController {
     }
     
     func configureUI() {
-        UIElements.configureFilledStyleButtonColor(for: newMapShareButton, withColor: UIElements.Color.buttonDodgerBlue)
-        UIElements.configureFilledStyleButtonColor(for: joinMapShareButton, withColor: UIElements.Color.buttonDodgerBlue)
-        UIElements.configureFilledStyleButtonColor(for: createSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: newMapShareButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: joinMapShareButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
         UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
     }
