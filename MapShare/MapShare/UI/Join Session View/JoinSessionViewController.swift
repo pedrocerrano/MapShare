@@ -112,8 +112,8 @@ class JoinSessionViewController: UIViewController {
     
     func configureUI() {
         closeJoinSessionSheetButton.layer.cornerRadius = closeJoinSessionSheetButton.frame.height / 2
-        UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
         UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
     }

@@ -71,7 +71,7 @@ class MapHomeViewController: UIViewController {
     
     //MARK: - UI and MODEL FUNCTIONS
     func configureUI() {
-        UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.buttonDodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
         UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
@@ -322,6 +322,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(mapView.annotations)
         mapHomeViewModel.mapShareSession?.isActive          = false
         mapHomeViewModel.mapShareSession?.memberAnnotations = []
+        mapHomeViewModel.mapShareSession?.members           = []
+        updateMemberCounts()
+        mapHomeViewModel.mapShareSession                    = nil
         mapView.showsUserLocation                           = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)

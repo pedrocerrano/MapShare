@@ -11,15 +11,15 @@ struct UIElements {
     
     //MARK: - COLORS
     struct Color {
-        static let mapShareRed      = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
-        static let mapSharePink     = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 1)
-        static let mapShareOrange   = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
-        static let mapShareYellow   = UIColor(red: 255/255, green: 233/255, blue: 0/255, alpha: 1)
-        static let mapShareGreen    = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
-        static let mapShareCyan     = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
-        static let mapShareBlue     = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1)
-        static let mapSharePurple   = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 1)
-        static let buttonDodgerBlue = UIColor(red: 30/255, green: 144/255, blue: 255/255, alpha: 1)
+        static let mapShareRed    = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
+        static let mapSharePink   = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 1)
+        static let mapShareOrange = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1)
+        static let mapShareYellow = UIColor(red: 255/255, green: 233/255, blue: 0/255, alpha: 1)
+        static let mapShareGreen  = UIColor(red: 10/255, green: 200/255, blue: 80/255, alpha: 1)
+        static let mapShareCyan   = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
+        static let mapShareBlue   = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1)
+        static let mapSharePurple = UIColor(red: 160/255, green: 32/255, blue: 240/255, alpha: 1)
+        static let dodgerBlue     = UIColor(red: 30/255, green: 144/255, blue: 255/255, alpha: 1)
     }
     
     struct Tint {
@@ -71,8 +71,8 @@ struct UIElements {
     }
     
     static func configureTintedStyleButtonColor(for button: UIButton) {
-        button.tintColor = Color.buttonDodgerBlue
-        button.setTitleColor(Color.buttonDodgerBlue, for: .normal)
+        button.tintColor = Color.dodgerBlue
+        button.setTitleColor(Color.dodgerBlue, for: .normal)
     }
     
     
