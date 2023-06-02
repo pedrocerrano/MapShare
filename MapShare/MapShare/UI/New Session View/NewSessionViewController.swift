@@ -11,6 +11,7 @@ class NewSessionViewController: UIViewController {
     
     //MARK: - OUTLETS
     @IBOutlet weak var newMapShareButton: UIButton!
+    @IBOutlet weak var mapShareLogoImageView: UIImageView!
     @IBOutlet weak var joinMapShareButton: UIButton!
     @IBOutlet weak var newMapShareTitleLabel: UILabel!
     @IBOutlet weak var sessionNameTextField: UITextField!
@@ -102,6 +103,12 @@ class NewSessionViewController: UIViewController {
     
     private func configureUI() {
         UIElements.configureFilledStyleButtonAttributes(for: newMapShareButton, withColor: UIElements.Color.dodgerBlue)
+        mapShareLogoImageView.layer.shadowColor = UIColor.black.cgColor
+        mapShareLogoImageView.layer.shadowOpacity      = 0.4
+        mapShareLogoImageView.layer.shadowRadius      = 2
+        mapShareLogoImageView.layer.shadowOffset               = CGSize(width: 0, height: 2)
+        mapShareLogoImageView.layer.masksToBounds = false
+        mapShareLogoImageView.layer.cornerRadius = 6
         UIElements.configureFilledStyleButtonAttributes(for: joinMapShareButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureTextFieldUI(forTextField: sessionNameTextField)
         UIElements.configureTextFieldUI(forTextField: firstNameTextField)

@@ -50,7 +50,7 @@ class MapHomeViewController: UIViewController {
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.deleteRouteFromFirestore()
-        UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
+        clearRouteAnnotationsButton.isHidden = true
         guard let activeMembers = mapHomeViewModel.mapShareSession?.members else { return }
         if activeMembers.count == 1 {
             mapHomeViewModel.centerViewOnMember(mapView: mapView)
@@ -74,14 +74,13 @@ class MapHomeViewController: UIViewController {
     //MARK: - UI and MODEL FUNCTIONS
     private func configureUI() {
         UIElements.configureLabelUI(for: sessionActivityIndicatorLabel)
-        activeMembersStackView.isHidden = true
-        waitingRoomStackView.isHidden   = true
-        navigationItem.hidesBackButton  = true
+        activeMembersStackView.isHidden      = true
+        waitingRoomStackView.isHidden        = true
+        navigationItem.hidesBackButton       = true
+        clearRouteAnnotationsButton.isHidden = true
+        refreshingLocationButton.isHidden    = true
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
-        UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
-        UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
-        navigationItem.hidesBackButton = true
     }
     
     private func setupNewSessionSheetController() {
@@ -123,7 +122,7 @@ class MapHomeViewController: UIViewController {
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false)
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
-            UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
+            clearRouteAnnotationsButton.isHidden = false
         } else {
             return
         }
@@ -239,7 +238,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
             activeMembersStackView.isHidden = false
             waitingRoomStackView.isHidden   = false
             updateMemberCounts()
-            UIElements.showLocationRefreshButton(for: refreshingLocationButton)
+            refreshingLocationButton.isHidden = false
             
             let waitingRoomMembers = session.members.filter { !$0.isActive }
             if waitingRoomMembers.count > 0 {
@@ -269,6 +268,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
             let memberAnnotationsShowing = session.memberAnnotations.filter { $0.isShowing }
             mapView.addAnnotations(memberAnnotationsShowing)
+            if memberAnnotationsShowing.count > 1 {
+                mapView.showAnnotations(memberAnnotationsShowing, animated: true)
+            }
         }
     }
     
