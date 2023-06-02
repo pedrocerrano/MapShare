@@ -36,8 +36,6 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        activeSessionViewModel.updateSession()
-        activeSessionViewModel.updateMembers()
         inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
     }
     

@@ -636,9 +636,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = MapShare;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
@@ -668,9 +669,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W6HRJ6R6XG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = MapShare;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;

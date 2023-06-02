@@ -30,14 +30,12 @@ class MapHomeViewController: UIViewController {
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapHomeViewModel = MapHomeViewModel(delegate: self)
+        mapHomeViewModel.locationManager.delegate = self
+        setupModalHomeSheetController()
+        registerMapAnnotations()
         addGesture()
         configureUI()
-        registerMapAnnotations()
-        setupModalHomeSheetController()
-        navigationItem.hidesBackButton = true
-        mapHomeViewModel = MapHomeViewModel(delegate: self)
-        mapHomeViewModel.centerViewOnMember(mapView: mapView)
-        locationManagerDidChangeAuthorization(mapHomeViewModel.locationManager)
     }
     
     
@@ -59,6 +57,9 @@ class MapHomeViewController: UIViewController {
             let memberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
             mapView.showAnnotations(memberAnnotations, animated: true)
         }
+        for member in activeMembers {
+            mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: -1)
+        }
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
@@ -75,6 +76,7 @@ class MapHomeViewController: UIViewController {
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
         UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
+        navigationItem.hidesBackButton = true
     }
     
     func setupModalHomeSheetController() {
@@ -115,32 +117,10 @@ class MapHomeViewController: UIViewController {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false)
-            session.routeAnnotations.append(newRouteAnnotation)
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
             UIElements.showRouteAnnotationButton(for: clearRouteAnnotationsButton)
-            
-            let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
-            if routeAnnotations.count > 1 {
-                mapView.removeAnnotations(routeAnnotations)
-                mapView.removeOverlays(mapView.overlays)
-                mapView.addAnnotation(newRouteAnnotation)
-            } else {
-                mapView.addAnnotation(newRouteAnnotation)
-            }
         } else {
             return
-        }
-    }
-    
-    func checkLocationServices() {
-        DispatchQueue.global().async {
-            if CLLocationManager.locationServicesEnabled() {
-                self.mapHomeViewModel.locationManager.delegate = self
-                self.mapHomeViewModel.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                self.mapHomeViewModel.locationManager.startUpdatingLocation()
-            } else {
-                self.alertLocationAccessNeeded()
-            }
         }
     }
     
@@ -159,7 +139,6 @@ class MapHomeViewController: UIViewController {
                 
                 guard let response = response else { return }
                 for route in response.routes {
-                    member.expectedTravelTime = route.expectedTravelTime
                     self.mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = member.screenName
                     self.mapView.addOverlay(route.polyline)
@@ -200,7 +179,6 @@ class MapHomeViewController: UIViewController {
 //MARK: - EXT: LocationManagerDelegate
 extension MapHomeViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkLocationServices()
         switch mapHomeViewModel.locationManager.authorizationStatus {
         case .notDetermined:
             mapHomeViewModel.locationManager.requestWhenInUseAuthorization()
@@ -220,10 +198,6 @@ extension MapHomeViewController: CLLocationManagerDelegate {
 
 //MARK: - EXT: MapViewDelegate
 extension MapHomeViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        
-    }
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var annotationView: MKAnnotationView?
         if let routeAnnotation = annotation as? RouteAnnotation {
@@ -238,32 +212,24 @@ extension MapHomeViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }),
-              let routeOverlay = overlay as? MKPolyline else { return MKOverlayRenderer() }
+        guard let routeOverlay = overlay as? MKPolyline,
+              let title = routeOverlay.title else { return MKOverlayRenderer() }
         let renderer = MKPolylineRenderer(overlay: routeOverlay)
-
-        for member in activeMembers {
-            if member.screenName == routeOverlay.title  {
-                renderer.strokeColor = String.convertToColorFromString(string: member.mapMarkerColor)
-                return renderer
-            } else {
-                renderer.strokeColor = .black
-                return renderer
-            }
-        }
-
-        return MKOverlayRenderer()
+        let strokeColor = strokeColor(for: title)
+        renderer.strokeColor = strokeColor
+        return renderer
     }
     
-    func registerMapAnnotations() {
+    private func strokeColor(for screenName: String) -> UIColor? {
+        guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }),
+              let mapMarkerColor = activeMembers.first(where: { $0.screenName == screenName })?.mapMarkerColor else { return nil }
+        let color = String.convertToColorFromString(string: mapMarkerColor)
+        return color
+    }
+    
+    private func registerMapAnnotations() {
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Route")
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Member")
-    }
-    
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if let routeAnnotation = view.annotation, routeAnnotation.isKind(of: RouteAnnotation.self) {
-            getDirections(routeAnnotation: routeAnnotation)
-        }
     }
 } //: MapViewDelegate
 
@@ -308,6 +274,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMemberAnnotations() {
+        let existinMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
+        mapView.removeAnnotations(existinMemberAnnotations)
+        
         guard let session = mapHomeViewModel.mapShareSession else { return }
         let activeMembers = session.members.filter { $0.isActive }
         for _ in activeMembers {

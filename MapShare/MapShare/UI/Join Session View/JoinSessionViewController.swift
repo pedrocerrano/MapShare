@@ -70,9 +70,6 @@ class JoinSessionViewController: UIViewController {
             joinSessionViewModel.searchFirebase(with: codeEntry)
             codeEntryTextField.resignFirstResponder()
         }
-        if codeEntry.count > 6 {
-            codeEntry.removeLast()
-        }
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
