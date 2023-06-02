@@ -33,6 +33,7 @@ class NewSessionViewController: UIViewController {
         super.viewDidLoad()
         configureSheetPresentationController()
         configureUI()
+        setupNotifications()
     }
     
     
@@ -107,8 +108,27 @@ class NewSessionViewController: UIViewController {
         UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
     }
     
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(alertLocationAccessNeeded), name: Constants.Notifications.locationAccessNeeded, object: nil)
+    }
+    
     
     //MARK: - ALERTS
+    @objc func alertLocationAccessNeeded() {
+        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
+        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted",
+                                      message: "In order to utilize MapShare, we need access to your location.",
+                                      preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let goToSettingsAction = UIAlertAction(title: "Go To Settings", style: .default) { _ in
+            UIApplication.shared.open(settingsAppURL)
+        }
+        alert.addAction(dismissAction)
+        alert.addAction(goToSettingsAction)
+        present(alert, animated: true, completion: nil)
+        print("This line hit")
+    }
+    
     func presentSessionNeedsNameAlert() {
         let emptySessionNameAlertController = UIAlertController(title: "No Name Given", message: "Please name this MapShare session.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Will do!", style: .cancel)

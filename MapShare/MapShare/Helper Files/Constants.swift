@@ -13,6 +13,10 @@ struct Constants {
         static let deviceID = UIDevice.current.identifierForVendor?.uuidString
     }
     
+    struct Notifications {
+        static let locationAccessNeeded = Notification.Name("locationAccessNeeded")
+    }
+    
     struct ButtonUI {
         static let cornerRadius: CGFloat      = 6
         static let shadowColor                = UIColor.black.cgColor

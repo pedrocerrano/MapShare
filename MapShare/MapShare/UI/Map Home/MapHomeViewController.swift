@@ -163,16 +163,6 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.directionsArray.append(directions)
         let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
     }
-    
-    private func alertLocationAccessNeeded() {
-        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted", message: "In order to utilize MapShare, we need access to your location.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Go To Settings", style: .default, handler: { (alert) -> Void in
-            UIApplication.shared.open(settingsAppURL)
-        }))
-        present(alert, animated: true, completion: nil)
-    }
 } //: CLASS
 
 
@@ -184,7 +174,7 @@ extension MapHomeViewController: CLLocationManagerDelegate {
             mapHomeViewModel.locationManager.requestWhenInUseAuthorization()
             break
         case .restricted, .denied:
-            alertLocationAccessNeeded()
+            NotificationCenter.default.post(name: Constants.Notifications.locationAccessNeeded, object: nil)
             break
         case .authorizedWhenInUse:
             mapHomeViewModel.startTrackingLocation(mapView: mapView)
