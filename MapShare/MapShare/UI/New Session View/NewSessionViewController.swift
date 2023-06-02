@@ -26,7 +26,7 @@ class NewSessionViewController: UIViewController {
     }
     
     var newSessionViewModel: NewSessionViewModel!
-
+  
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {

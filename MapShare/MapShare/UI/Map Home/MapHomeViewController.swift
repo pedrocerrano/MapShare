@@ -81,6 +81,7 @@ class MapHomeViewController: UIViewController {
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
         UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
+        navigationItem.hidesBackButton = true
     }
     
     private func setupNewSessionSheetController() {

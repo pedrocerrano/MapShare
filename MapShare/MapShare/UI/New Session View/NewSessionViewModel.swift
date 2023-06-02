@@ -15,6 +15,7 @@ class NewSessionViewModel {
     let service: FirebaseService
     let sessionCode = String.generateRandomCode()
     weak var mapHomeDelegate: MapHomeViewController?
+    let sessionCode = String.generateRandomCode()
     
     init(service: FirebaseService = FirebaseService(), mapHomeDelegate: MapHomeViewController) {
         self.service         = service

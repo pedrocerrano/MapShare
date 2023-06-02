@@ -67,6 +67,11 @@ class ActiveSessionViewController: UIViewController {
         sessionCodeLabel.text = session.sessionCode
         
         UIElements.configureCircleButtonAttributes(for: sessionControlButton, backgroundColor: .systemRed, tintColor: .white)
+        if let _ = session.members.filter ({ $0.isOrganizer }).first {
+            inviteMembersButton.isHidden = false
+        } else {
+            inviteMembersButton.isHidden = true
+        }
     }
     
     private func configureViewModelListeners() {

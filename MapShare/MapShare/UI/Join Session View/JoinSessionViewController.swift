@@ -218,7 +218,16 @@ extension JoinSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case codeEntryTextField:
-            return textField.resignFirstResponder()
+            tellTheGroupLabel.isHidden = true
+            guard let codeEntry = codeEntryTextField.text else { return false }
+            if codeEntry.isEmpty || codeEntry.count != 6 {
+                hideJoinSessionTextFields()
+                presentNeedsSixDigitsAlert()
+            } else {
+                joinSessionViewModel.searchFirebase(with: codeEntry)
+            }
+          memberFirstNameTextField.becomeFirstResponder()
+            return true
         case memberFirstNameTextField:
             return memberLastNameTextField.becomeFirstResponder()
         case memberLastNameTextField:
