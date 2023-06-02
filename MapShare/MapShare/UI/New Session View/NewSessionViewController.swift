@@ -93,22 +93,26 @@ class NewSessionViewController: UIViewController {
     
     
     //MARK: - FUNCTIONS
-    func configureSheetPresentationController() {
+    private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
     }
     
-    func configureUI() {
+    private func configureUI() {
         UIElements.configureFilledStyleButtonAttributes(for: newMapShareButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: joinMapShareButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureTextFieldUI(forTextField: sessionNameTextField)
+        UIElements.configureTextFieldUI(forTextField: firstNameTextField)
+        UIElements.configureTextFieldUI(forTextField: lastNameTextField)
+        UIElements.configureTextFieldUI(forTextField: screenNameTextField)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
         UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+        UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.dodgerBlue)
     }
     
-    func setupNotifications() {
+    private func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(alertLocationAccessNeeded), name: Constants.Notifications.locationAccessNeeded, object: nil)
     }
     
@@ -126,31 +130,30 @@ class NewSessionViewController: UIViewController {
         alert.addAction(dismissAction)
         alert.addAction(goToSettingsAction)
         present(alert, animated: true, completion: nil)
-        print("This line hit")
     }
     
-    func presentSessionNeedsNameAlert() {
+    private func presentSessionNeedsNameAlert() {
         let emptySessionNameAlertController = UIAlertController(title: "No Name Given", message: "Please name this MapShare session.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Will do!", style: .cancel)
         emptySessionNameAlertController.addAction(dismissAction)
         present(emptySessionNameAlertController, animated: true)
     }
     
-    func presentNeedsFirstNameAlert() {
+    private func presentNeedsFirstNameAlert() {
         let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for the MapShare members to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyFirstNameAlertController.addAction(dismissAction)
         present(emptyFirstNameAlertController, animated: true)
     }
     
-    func presentNeedsLastNameAlert() {
+    private func presentNeedsLastNameAlert() {
         let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for the MapShare members to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyLastNameAlertController.addAction(dismissAction)
         present(emptyLastNameAlertController, animated: true)
     }
     
-    func presentChooseColorAlert() {
+    private func presentChooseColorAlert() {
         let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color so the MapShare members can identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         noColorSelectedAlertController.addAction(dismissAction)
@@ -175,16 +178,17 @@ class NewSessionViewController: UIViewController {
 
 extension NewSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        #warning("Come back to clean up into switch statements")
-        if textField == sessionNameTextField {
-            firstNameTextField.becomeFirstResponder()
-        } else if textField == firstNameTextField {
-            lastNameTextField.becomeFirstResponder()
-        } else if textField == lastNameTextField {
-            screenNameTextField.becomeFirstResponder()
-        } else if textField == screenNameTextField {
-            textField.resignFirstResponder()
+        switch textField {
+        case sessionNameTextField:
+            return firstNameTextField.becomeFirstResponder()
+        case firstNameTextField:
+            return lastNameTextField.becomeFirstResponder()
+        case lastNameTextField:
+            return screenNameTextField.becomeFirstResponder()
+        case screenNameTextField:
+            return textField.resignFirstResponder()
+        default:
+            return true
         }
-        return true
     }
 } //: TextFieldDelegate

@@ -17,6 +17,7 @@ class MapHomeViewController: UIViewController {
     @IBOutlet weak var sessionActivityIndicatorLabel: UILabel!
     @IBOutlet weak var membersInActiveSessionLabel: UILabel!
     @IBOutlet weak var membersInWaitingRoomLabel: UILabel!
+    @IBOutlet weak var activeMembersStackView: UIStackView!
     @IBOutlet weak var waitingRoomStackView: UIStackView!
     @IBOutlet weak var centerLocationButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
@@ -32,7 +33,7 @@ class MapHomeViewController: UIViewController {
         super.viewDidLoad()
         mapHomeViewModel = MapHomeViewModel(delegate: self)
         mapHomeViewModel.locationManager.delegate = self
-        setupModalHomeSheetController()
+        setupNewSessionSheetController()
         registerMapAnnotations()
         addGesture()
         configureUI()
@@ -72,14 +73,17 @@ class MapHomeViewController: UIViewController {
     
     //MARK: - UI and MODEL FUNCTIONS
     private func configureUI() {
+        UIElements.configureLabelUI(for: sessionActivityIndicatorLabel)
+        activeMembersStackView.isHidden = true
+        waitingRoomStackView.isHidden   = true
+        navigationItem.hidesBackButton  = true
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
         UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
         UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
-        navigationItem.hidesBackButton = true
     }
     
-    private func setupModalHomeSheetController() {
+    private func setupNewSessionSheetController() {
         let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
         sheetController.isModalInPresentation = true
@@ -231,6 +235,8 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInMembers() {
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
+            activeMembersStackView.isHidden = false
+            waitingRoomStackView.isHidden   = false
             updateMemberCounts()
             UIElements.showLocationRefreshButton(for: refreshingLocationButton)
             
@@ -268,6 +274,8 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     func noSessionActive() {
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
+        activeMembersStackView.isHidden                     = true
+        waitingRoomStackView.isHidden                       = true
         mapHomeViewModel.mapShareSession?.isActive          = false
         mapHomeViewModel.mapShareSession?.memberAnnotations = []
         mapHomeViewModel.mapShareSession?.members           = []

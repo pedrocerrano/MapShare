@@ -17,7 +17,7 @@ class JoinSessionViewController: UIViewController {
     @IBOutlet weak var codeEntryTextField: UITextField!
     @IBOutlet weak var searchSessionButton: UIButton!
     @IBOutlet weak var tellTheGroupLabel: UILabel!
-    @IBOutlet weak var memberfirstNameTextField: UITextField!
+    @IBOutlet weak var memberFirstNameTextField: UITextField!
     @IBOutlet weak var memberLastNameTextField: UITextField!
     @IBOutlet weak var memberScreenNameTextField: UITextField!
     @IBOutlet weak var iconColorLabel: UILabel!
@@ -52,7 +52,7 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.dismissalTransitionWillBegin()
         }
-        [codeEntryTextField, memberfirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
+        [codeEntryTextField, memberFirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
             if let textField {
                 textField.resignFirstResponder()
                 textField.text = ""
@@ -62,7 +62,7 @@ class JoinSessionViewController: UIViewController {
     
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
         tellTheGroupLabel.isHidden = true
-        guard var codeEntry = codeEntryTextField.text else { return }
+        guard let codeEntry = codeEntryTextField.text else { return }
         if codeEntry.isEmpty || codeEntry.count != 6 {
             hideJoinSessionTextFields()
             presentNeedsSixDigitsAlert()
@@ -73,7 +73,7 @@ class JoinSessionViewController: UIViewController {
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
-        guard let firstName       = memberfirstNameTextField.text,
+        guard let firstName       = memberFirstNameTextField.text,
               let lastName        = memberLastNameTextField.text,
               let screenName      = memberScreenNameTextField.text,
               let markerColor     = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
@@ -94,7 +94,7 @@ class JoinSessionViewController: UIViewController {
             presentChooseColorAlert()
         } else {
             joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: memberLatitude, memberLongitude: memberLongitude)
-            [memberfirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
+            [memberFirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
                 if let textField {
                     textField.resignFirstResponder()
                     textField.text = ""
@@ -108,7 +108,7 @@ class JoinSessionViewController: UIViewController {
     
     
     //MARK: - FUNCTIONS
-    func configureSheetPresentationController() {
+    private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
@@ -116,17 +116,21 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
     
-    func configureUI() {
-        closeJoinSessionSheetButton.layer.cornerRadius = closeJoinSessionSheetButton.frame.height / 2
+    private func configureUI() {
+        UIElements.configureCircleButtonAttributes(for: closeJoinSessionSheetButton, backgroundColor: .clear, tintColor: .label)
         UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureTextFieldUI(forTextField: codeEntryTextField)
+        UIElements.configureTextFieldUI(forTextField: memberFirstNameTextField)
+        UIElements.configureTextFieldUI(forTextField: memberLastNameTextField)
+        UIElements.configureTextFieldUI(forTextField: memberScreenNameTextField)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
         UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+        UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
     }
     
-    func hideJoinSessionTextFields() {
+    private func hideJoinSessionTextFields() {
         tellTheGroupLabel.isHidden = true
-        memberfirstNameTextField.isHidden = true
+        memberFirstNameTextField.isHidden = true
         memberLastNameTextField.isHidden = true
         memberScreenNameTextField.isHidden = true
         iconColorLabel.isHidden = true
@@ -134,9 +138,9 @@ class JoinSessionViewController: UIViewController {
         joinSessionButton.isHidden = true
     }
     
-    func revealJoinSessionTextFields() {
+    private func revealJoinSessionTextFields() {
         tellTheGroupLabel.isHidden = false
-        memberfirstNameTextField.isHidden = false
+        memberFirstNameTextField.isHidden = false
         memberLastNameTextField.isHidden = false
         memberScreenNameTextField.isHidden = false
         iconColorLabel.isHidden = false
@@ -146,28 +150,28 @@ class JoinSessionViewController: UIViewController {
     
     
     //MARK: - ALERTS
-    func presentNeedsSixDigitsAlert() {
+    private func presentNeedsSixDigitsAlert() {
         let needsSixDigitsAlertController = UIAlertController(title: "Invalid Session Code", message: "Please retype a six-digit session code.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         needsSixDigitsAlertController.addAction(dismissAction)
         present(needsSixDigitsAlertController, animated: true)
     }
     
-    func presentNeedsFirstNameAlert() {
+    private func presentNeedsFirstNameAlert() {
         let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for others to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyFirstNameAlertController.addAction(dismissAction)
         present(emptyFirstNameAlertController, animated: true)
     }
     
-    func presentNeedsLastNameAlert() {
+    private func presentNeedsLastNameAlert() {
         let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for others to identify you.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         emptyLastNameAlertController.addAction(dismissAction)
         present(emptyLastNameAlertController, animated: true)
     }
     
-    func presentChooseColorAlert() {
+    private func presentChooseColorAlert() {
         let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color to join.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
         noColorSelectedAlertController.addAction(dismissAction)
@@ -212,15 +216,17 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
 //MARK: - EXT: TextFieldDelegate
 extension JoinSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        #warning("Come back to clean up into switch statements")
-        if textField == memberfirstNameTextField {
-            memberLastNameTextField.becomeFirstResponder()
-        } else if textField == memberLastNameTextField {
-            memberScreenNameTextField.becomeFirstResponder()
-        } else if textField == memberScreenNameTextField {
-            textField.resignFirstResponder()
+        switch textField {
+        case codeEntryTextField:
+            return textField.resignFirstResponder()
+        case memberFirstNameTextField:
+            return memberLastNameTextField.becomeFirstResponder()
+        case memberLastNameTextField:
+            return memberScreenNameTextField.becomeFirstResponder()
+        case memberScreenNameTextField:
+            return textField.resignFirstResponder()
+        default:
+            return true
         }
-        
-        return true
     }
 } //: TextFieldDelegate
