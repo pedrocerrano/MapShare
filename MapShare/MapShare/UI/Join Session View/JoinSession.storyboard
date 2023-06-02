@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="height" constant="40" id="W0I-JC-xAl"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="join" smartInsertDeleteType="no"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="continue" smartInsertDeleteType="no"/>
                                 <connections>
                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="mGg-Yv-Akh"/>
                                 </connections>

@@ -26,7 +26,6 @@ class NewSessionViewController: UIViewController {
     }
     
     var newSessionViewModel: NewSessionViewModel!
-    let sessionCode = String.generateRandomCode()
     
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
@@ -75,7 +74,7 @@ class NewSessionViewController: UIViewController {
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
             presentChooseColorAlert()
         } else {
-            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, sessionCode: sessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
+            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, sessionCode: newSessionViewModel.sessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
             [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
                 if let textField {
                     textField.resignFirstResponder()

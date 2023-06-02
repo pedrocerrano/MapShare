@@ -36,8 +36,6 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        activeSessionViewModel.updateSession()
-        activeSessionViewModel.updateMembers()
         inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
     }
     
@@ -67,8 +65,12 @@ class ActiveSessionViewController: UIViewController {
         let session = activeSessionViewModel.session
         sessionNameLabel.text = session.sessionName
         sessionCodeLabel.text = session.sessionCode
-        
         sessionControlButton.layer.cornerRadius = sessionControlButton.frame.height / 2
+        if let _ = session.members.filter ({ $0.isOrganizer }).first {
+            inviteMembersButton.isHidden = false
+        } else {
+            inviteMembersButton.isHidden = true
+        }
     }
     
     func configureViewModelListeners() {
