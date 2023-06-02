@@ -13,7 +13,6 @@ class NewSessionViewModel {
     var locationManager = CLLocationManager()
     var session: Session?
     let service: FirebaseService
-    let sessionCode = String.generateRandomCode()
     weak var mapHomeDelegate: MapHomeViewController?
     let sessionCode = String.generateRandomCode()
     
