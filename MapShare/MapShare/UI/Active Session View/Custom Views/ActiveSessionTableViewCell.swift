@@ -22,7 +22,7 @@ class ActiveSessionTableViewCell: UITableViewCell {
         memberNameLabel.text           = "\(member.firstName) \(member.lastName)"
         memberScreenNameLabel.text     = member.screenName
         isOrganizerLabel.textColor     = UIElements.Color.mapShareYellow
-        guard let timeAsDouble = member.expectedTravelTime else { print("ActiveMemberTableViewCell unwrapping failure") ; return }
+        guard let timeAsDouble = member.expectedTravelTime else { print("ActiveMemberTableViewCell unwrapping failure for ETA") ; return }
         if timeAsDouble > 0 {
             expectedTravelTimeLabel.text = "ETA " + timeAsDouble.asHoursAndMinsString(style: .abbreviated)
             expectedTravelTimeLabel.isHidden = false

@@ -55,8 +55,16 @@ struct UIElements {
         button.configuration?.baseForegroundColor = .white
     }
     
+    static func configureLabelUI(for label: UILabel) {
+        label.layer.shadowColor   = Constants.LabelUI.shadowColor
+        label.layer.shadowOpacity = Constants.LabelUI.shadowOpacity
+        label.layer.shadowRadius  = Constants.LabelUI.shadowRadius
+        label.layer.shadowOffset  = Constants.LabelUI.shadowOffset
+        label.layer.masksToBounds = Constants.LabelUI.masksToBounds
+    }
     
-    //MARK: - FILLED and TINTED BUTTON COLORS
+    
+    //MARK: - BUTTON ATTRIBUTES
     static func configureFilledStyleButtonAttributes(for button: UIButton, withColor color: UIColor) {
         button.configuration?.baseBackgroundColor = color
         button.layer.shadowColor                  = Constants.ButtonUI.shadowColor
@@ -70,9 +78,35 @@ struct UIElements {
         button.layer.masksToBounds                = Constants.ButtonUI.masksToBounds
     }
     
+    static func configureCircleButtonAttributes(for button: UIButton, backgroundColor: UIColor, tintColor: UIColor) {
+        button.backgroundColor                 = backgroundColor
+        button.tintColor                       = tintColor
+        button.layer.cornerRadius              = button.frame.height / 2
+        button.layer.shadowColor               = Constants.CircleButtonUI.shadowColor
+        button.layer.shadowOpacity             = Constants.CircleButtonUI.shadowOpacity
+        button.layer.shadowRadius              = Constants.CircleButtonUI.shadowRadius
+        button.layer.shadowOffset              = Constants.CircleButtonUI.shadowOffset
+        button.titleLabel?.layer.shadowColor   = Constants.CircleButtonUI.titleShadowColor
+        button.titleLabel?.layer.shadowOpacity = Constants.CircleButtonUI.titleShadowOpacity
+        button.titleLabel?.layer.shadowRadius  = Constants.CircleButtonUI.titleShadowRadius
+        button.titleLabel?.layer.shadowOffset  = Constants.CircleButtonUI.titleShadowOffset
+        button.layer.masksToBounds             = Constants.CircleButtonUI.masksToBounds
+    }
+    
     static func configureTintedStyleButtonColor(for button: UIButton) {
         button.tintColor = Color.dodgerBlue
         button.setTitleColor(Color.dodgerBlue, for: .normal)
+    }
+    
+    
+    //MARK: - TextField UI
+    static func configureTextFieldUI(forTextField textField: UITextField) {
+        textField.layer.shadowColor   = Constants.TextFieldUI.shadowColor
+        textField.layer.shadowOpacity = Constants.TextFieldUI.shadowOpacity
+        textField.layer.shadowRadius  = Constants.TextFieldUI.shadowRadius
+        textField.layer.shadowOffset  = Constants.TextFieldUI.shadowOffset
+        textField.layer.cornerRadius  = Constants.TextFieldUI.cornerRadius
+        textField.layer.masksToBounds = Constants.TextFieldUI.masksToBounds
     }
     
     
