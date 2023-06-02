@@ -70,9 +70,6 @@ class JoinSessionViewController: UIViewController {
             joinSessionViewModel.searchFirebase(with: codeEntry)
             codeEntryTextField.resignFirstResponder()
         }
-        if codeEntry.count > 6 {
-            codeEntry.removeLast()
-        }
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
@@ -215,15 +212,23 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
 //MARK: - EXT: TextFieldDelegate
 extension JoinSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        #warning("Come back to clean up into switch statements")
-        if textField == memberfirstNameTextField {
+        if textField == codeEntryTextField {
+            tellTheGroupLabel.isHidden = true
+            guard var codeEntry = codeEntryTextField.text else { return false }
+            if codeEntry.isEmpty || codeEntry.count != 6 {
+                hideJoinSessionTextFields()
+                presentNeedsSixDigitsAlert()
+            } else {
+                joinSessionViewModel.searchFirebase(with: codeEntry)
+            }
+            memberfirstNameTextField.becomeFirstResponder()
+        } else if textField == memberfirstNameTextField {
             memberLastNameTextField.becomeFirstResponder()
         } else if textField == memberLastNameTextField {
             memberScreenNameTextField.becomeFirstResponder()
         } else if textField == memberScreenNameTextField {
             textField.resignFirstResponder()
         }
-        
         return true
     }
 } //: TextFieldDelegate
