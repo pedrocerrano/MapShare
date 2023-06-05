@@ -42,7 +42,8 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func currentLocationButtonTapped(_ sender: Any) {
-        mapHomeViewModel.centerViewOnMember(mapView: mapView)
+//        mapHomeViewModel.centerViewOnMember(mapView: mapView)
+        
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
@@ -146,7 +147,7 @@ class MapHomeViewController: UIViewController {
                     self.mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = member.screenName
                     self.mapView.addOverlay(route.polyline)
-                    self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 70, bottom: 200, right: 70), animated: true)
+                    self.resetZoomForPolylineRoutes()
                 }
             }
         }
@@ -166,6 +167,12 @@ class MapHomeViewController: UIViewController {
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.directionsArray.append(directions)
         let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
+    }
+    
+    private func resetZoomForPolylineRoutes() {
+        guard let polylineOverlay = self.mapView.overlays.first else { return }
+        let newMapRect = self.mapView.overlays.reduce(polylineOverlay.boundingMapRect, { $0.union($1.boundingMapRect)} )
+        mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 200, right: 50), animated: true)
     }
 } //: CLASS
 
