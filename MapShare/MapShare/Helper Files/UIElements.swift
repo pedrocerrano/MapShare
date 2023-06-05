@@ -34,27 +34,7 @@ struct UIElements {
     }
     
     
-    //MARK: - MAP HOME UI
-    static func hideRouteAnnotationButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .clear
-        button.configuration?.baseForegroundColor = .clear
-    }
-    
-    static func showRouteAnnotationButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .lightGray
-        button.configuration?.baseForegroundColor = .black
-    }
-    
-    static func hideLocationRefreshButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .clear
-        button.configuration?.baseForegroundColor = .clear
-    }
-    
-    static func showLocationRefreshButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = Color.mapShareGreen
-        button.configuration?.baseForegroundColor = .white
-    }
-    
+    //MARK: - MAP HOME UI    
     static func configureLabelUI(for label: UILabel) {
         label.layer.shadowColor   = Constants.LabelUI.shadowColor
         label.layer.shadowOpacity = Constants.LabelUI.shadowOpacity

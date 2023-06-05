@@ -19,7 +19,9 @@ class MapHomeViewController: UIViewController {
     @IBOutlet weak var membersInWaitingRoomLabel: UILabel!
     @IBOutlet weak var activeMembersStackView: UIStackView!
     @IBOutlet weak var waitingRoomStackView: UIStackView!
+    @IBOutlet weak var travelMethodButton: UIButton!
     @IBOutlet weak var centerLocationButton: UIButton!
+    @IBOutlet weak var centerRouteButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
     @IBOutlet weak var refreshingLocationButton: UIButton!
     
@@ -41,9 +43,16 @@ class MapHomeViewController: UIViewController {
     
     
     // MARK: - IB Actions
-    @IBAction func currentLocationButtonTapped(_ sender: Any) {
-//        mapHomeViewModel.centerViewOnMember(mapView: mapView)
+    @IBAction func travelMethodButtonTapped(_ sender: Any) {
         
+    }
+    
+    @IBAction func currentLocationButtonTapped(_ sender: Any) {
+        mapHomeViewModel.centerViewOnMember(mapView: mapView)
+    }
+    
+    @IBAction func centerRouteButtonTapped(_ sender: Any) {
+        resetZoomForPolylineRoutes()
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
@@ -51,6 +60,7 @@ class MapHomeViewController: UIViewController {
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.deleteRouteFromFirestore()
+        centerRouteButton.isHidden           = true
         clearRouteAnnotationsButton.isHidden = true
         guard let activeMembers = mapHomeViewModel.mapShareSession?.members else { return }
         if activeMembers.count == 1 {
@@ -78,9 +88,12 @@ class MapHomeViewController: UIViewController {
         activeMembersStackView.isHidden      = true
         waitingRoomStackView.isHidden        = true
         navigationItem.hidesBackButton       = true
+        centerRouteButton.isHidden           = true
         clearRouteAnnotationsButton.isHidden = true
         refreshingLocationButton.isHidden    = true
+        UIElements.configureFilledStyleButtonAttributes(for: travelMethodButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: centerRouteButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
     }
     
@@ -264,6 +277,12 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
             displayDirectionsForActiveMembers(forSession: session)
+            
+            if !session.routeAnnotations.isEmpty && session.routeAnnotations.first(where: { $0.isShowingDirections }) != nil {
+                centerRouteButton.isHidden = false
+            } else {
+                centerRouteButton.isHidden = true
+            }
         }
     }
     
@@ -294,7 +313,5 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.showsUserLocation                           = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
-        UIElements.hideRouteAnnotationButton(for: clearRouteAnnotationsButton)
-        UIElements.hideLocationRefreshButton(for: refreshingLocationButton)
     }
 } //: ViewModelDelegate

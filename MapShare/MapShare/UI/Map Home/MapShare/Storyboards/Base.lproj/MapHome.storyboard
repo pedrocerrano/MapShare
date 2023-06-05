@@ -80,10 +80,21 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gkL-BH-qhN">
-                                <rect key="frame" x="348" y="117" width="35" height="78"/>
+                                <rect key="frame" x="348" y="117" width="35" height="164"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18j-ye-pGs">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YdG-Ia-67t">
                                         <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="YdG-Ia-67t" secondAttribute="height" multiplier="1:1" id="AWe-0S-Fy8"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" image="car.circle.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="travelMethodButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CJz-jf-oG6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18j-ye-pGs">
+                                        <rect key="frame" x="0.0" y="43" width="35" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="18j-ye-pGs" secondAttribute="height" multiplier="1:1" id="lhD-MF-x5Y"/>
                                         </constraints>
@@ -95,8 +106,19 @@
                                             <action selector="currentLocationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aAf-IX-X4G"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IcB-qT-f91">
+                                        <rect key="frame" x="0.0" y="86" width="35" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="IcB-qT-f91" secondAttribute="height" multiplier="1:1" id="ptx-ot-Btn"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" image="point.topleft.down.curvedto.point.bottomright.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="centerRouteButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="86D-9s-uOJ"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1UV-W0-bbG">
-                                        <rect key="frame" x="0.0" y="43" width="35" height="35"/>
+                                        <rect key="frame" x="0.0" y="129" width="35" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="1UV-W0-bbG" secondAttribute="height" multiplier="1:1" id="qeN-aP-wCD"/>
                                         </constraints>
@@ -111,11 +133,12 @@
                                     </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="IcB-qT-f91" firstAttribute="width" secondItem="IcB-qT-f91" secondAttribute="height" multiplier="1:1" id="DHc-3A-R8j"/>
                                     <constraint firstAttribute="width" constant="35" id="UpP-FW-ibc"/>
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HG3-gy-K1E">
-                                <rect key="frame" x="348" y="220" width="35" height="35"/>
+                                <rect key="frame" x="348" y="306" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="HG3-gy-K1E" secondAttribute="height" multiplier="1:1" id="49j-Yc-OEY"/>
                                     <constraint firstAttribute="width" constant="35" id="CAm-x8-FlN"/>
@@ -149,12 +172,14 @@
                     <connections>
                         <outlet property="activeMembersStackView" destination="rwE-sw-SPI" id="Hyc-pr-pj4"/>
                         <outlet property="centerLocationButton" destination="18j-ye-pGs" id="gnm-dW-JE9"/>
+                        <outlet property="centerRouteButton" destination="IcB-qT-f91" id="izA-AI-R6L"/>
                         <outlet property="clearRouteAnnotationsButton" destination="1UV-W0-bbG" id="GuE-UD-Nie"/>
                         <outlet property="mapView" destination="DrH-Fw-j6D" id="u7B-Ep-uAj"/>
                         <outlet property="membersInActiveSessionLabel" destination="Bdg-xw-rNq" id="whV-FC-JCA"/>
                         <outlet property="membersInWaitingRoomLabel" destination="oNS-kK-yPq" id="rJ2-36-ict"/>
                         <outlet property="refreshingLocationButton" destination="HG3-gy-K1E" id="qY9-CP-JZX"/>
                         <outlet property="sessionActivityIndicatorLabel" destination="IA5-Ht-jl0" id="7gm-ll-nEh"/>
+                        <outlet property="travelMethodButton" destination="YdG-Ia-67t" id="d7c-wY-oyj"/>
                         <outlet property="waitingRoomStackView" destination="Gq0-bW-2qK" id="owB-qS-RKO"/>
                     </connections>
                 </viewController>
@@ -183,9 +208,11 @@
     </scenes>
     <resources>
         <image name="arrow.clockwise" catalog="system" width="113" height="128"/>
+        <image name="car.circle.fill" catalog="system" width="128" height="123"/>
         <image name="location.circle.fill" catalog="system" width="128" height="123"/>
         <image name="person.2" catalog="system" width="128" height="82"/>
         <image name="person.2.fill" catalog="system" width="128" height="81"/>
+        <image name="point.topleft.down.curvedto.point.bottomright.up" catalog="system" width="119" height="128"/>
         <image name="xmark.circle" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
