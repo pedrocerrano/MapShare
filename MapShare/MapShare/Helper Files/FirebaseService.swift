@@ -57,8 +57,8 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).document(member.memberDeviceID).updateData([MemberAnnotation.MemberAnnotationKey.isShowing : true])
     }
     
-    func updateLocationOfMemberToFirestore(forSession session: Session, forMember member: Member, withLatitude: Double, withLongitude: Double) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.currentLocLatitude : withLatitude, Member.MemberKey.currentLocLongitude : withLongitude])
+    func updateLocationOfMemberAnnotationToFirestore(forSession session: Session, forAnnotation memberAnnotation: MemberAnnotation, withLatitude: Double, withLongitude: Double) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(memberAnnotation.deviceID).updateData([MemberAnnotation.MemberAnnotationKey.memberAnnoLatitude : withLatitude, MemberAnnotation.MemberAnnotationKey.memberAnnoLongitude : withLongitude])
     }
     
     func deleteSessionFromFirestore(session: Session) {
@@ -84,8 +84,8 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).updateData([RouteAnnotation.RouteAnnotationKey.isShowingDirections : true])
     }
     
-    func updateExpectedTravelTime(forSession session: Session, forMember member: Member, withTime travelTime: Double) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.memberDeviceID).updateData([Member.MemberKey.expectedTravelTime : travelTime])
+    func updateExpectedTravelTime(forSession session: Session, withMemberID deviceID: String, withTime travelTime: Double) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(deviceID).updateData([Member.MemberKey.expectedTravelTime : travelTime])
     }
     
     

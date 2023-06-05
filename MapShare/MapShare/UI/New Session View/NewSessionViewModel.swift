@@ -31,9 +31,7 @@ class NewSessionViewModel {
                                              mapMarkerColor: markerColor,
                                              memberDeviceID: organizerDeviceID,
                                              isOrganizer: true,
-                                             isActive: true,
-                                             currentLocLatitude: organizerLatitude,
-                                             currentLocLongitude: organizerLongitude)
+                                             isActive: true)
         
         let organizerCoordinates = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
         let organizerAnnotation = MemberAnnotation(deviceID: organizerDeviceID,

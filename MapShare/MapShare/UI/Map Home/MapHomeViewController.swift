@@ -5,6 +5,7 @@
 //  Created by iMac Pro on 4/25/23.
 //
 
+import Foundation
 import UIKit
 import MapKit
 import CoreLocation
@@ -26,6 +27,7 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - Properties
     var mapHomeViewModel: MapHomeViewModel!
+    var timer: Timer?
     
     
     //MARK: - LIFECYCLE
@@ -37,6 +39,7 @@ class MapHomeViewController: UIViewController {
         registerMapAnnotations()
         addGesture()
         configureUI()
+        startTimer()
     }
     
     
@@ -59,16 +62,13 @@ class MapHomeViewController: UIViewController {
             mapView.showAnnotations(memberAnnotations, animated: true)
         }
         for member in activeMembers {
-            mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: -1)
+            mapHomeViewModel.updateMemberTravelTime(withMemberID: member.memberDeviceID, withTravelTime: -1)
         }
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-        let manager = mapHomeViewModel.locationManager
-        guard let currentMember = mapHomeViewModel.mapShareSession?.members.filter( { $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
-        mapHomeViewModel.updateMemberLocation(forMember: currentMember, withLatitude: manager.location?.coordinate.latitude ?? 0, withLongitude: manager.location?.coordinate.longitude ?? 0)
+
     }
-    
     
     
     //MARK: - UI and MODEL FUNCTIONS
@@ -111,12 +111,29 @@ class MapHomeViewController: UIViewController {
     
     
     //MARK: - MAPKIT FUNCTIONS
+    private func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
+    }
+    
+    @objc func timerFired() {
+        guard let coordinates       = mapHomeViewModel.locationManager.location?.coordinate,
+              let memberAnnotations = mapHomeViewModel.mapShareSession?.memberAnnotations,
+              let currentMember     = memberAnnotations.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
+        
+        let memberLatitude  = coordinates.latitude
+        let memberLongitude = coordinates.longitude
+        
+        mapHomeViewModel.updateMemberAnnotationLocation(forMemberAnnotation: currentMember, withLatitude: memberLatitude, withLongitude: memberLongitude)
+        
+        print("Location Updated")
+    }
+    
     private func addGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
     }
     
-    @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+    @objc func handleTap(gestureRecognizer: UILongPressGestureRecognizer) {
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.organizerDeviceID == Constants.Device.deviceID && session.isActive == true {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
@@ -130,9 +147,9 @@ class MapHomeViewController: UIViewController {
     }
     
     private func getDirections(routeAnnotation: MKAnnotation) {
-        guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }) else { return }
-        for member in activeMembers {
-            let location   = CLLocationCoordinate2D(latitude: member.currentLocLatitude, longitude: member.currentLocLongitude)
+        guard let memberAnnotationsShowing = mapHomeViewModel.mapShareSession?.memberAnnotations.filter ({ $0.isShowing }) else { return }
+        for memberAnnotation in memberAnnotationsShowing {
+            let location   = CLLocationCoordinate2D(latitude: memberAnnotation.coordinate.latitude, longitude: memberAnnotation.coordinate.longitude)
             let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
@@ -144,8 +161,8 @@ class MapHomeViewController: UIViewController {
                 
                 guard let response = response else { return }
                 for route in response.routes {
-                    self.mapHomeViewModel.updateMemberTravelTime(forMember: member, withTravelTime: route.expectedTravelTime)
-                    route.polyline.title = member.screenName
+                    self.mapHomeViewModel.updateMemberTravelTime(withMemberID: memberAnnotation.deviceID, withTravelTime: route.expectedTravelTime)
+                    route.polyline.title = memberAnnotation.title
                     self.mapView.addOverlay(route.polyline)
                     self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 70, bottom: 200, right: 70), animated: true)
                 }
@@ -268,6 +285,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
             let memberAnnotationsShowing = session.memberAnnotations.filter { $0.isShowing }
+//            updateAnnotations()
             mapView.addAnnotations(memberAnnotationsShowing)
         }
     }
