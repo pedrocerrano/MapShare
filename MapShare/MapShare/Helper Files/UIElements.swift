@@ -34,27 +34,7 @@ struct UIElements {
     }
     
     
-    //MARK: - MAP HOME UI
-    static func hideRouteAnnotationButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .clear
-        button.configuration?.baseForegroundColor = .clear
-    }
-    
-    static func showRouteAnnotationButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .lightGray
-        button.configuration?.baseForegroundColor = .black
-    }
-    
-    static func hideLocationRefreshButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = .clear
-        button.configuration?.baseForegroundColor = .clear
-    }
-    
-    static func showLocationRefreshButton(for button: UIButton) {
-        button.configuration?.baseBackgroundColor = Color.mapShareGreen
-        button.configuration?.baseForegroundColor = .white
-    }
-    
+    //MARK: - MAP HOME UI    
     static func configureLabelUI(for label: UILabel) {
         label.layer.shadowColor   = Constants.LabelUI.shadowColor
         label.layer.shadowOpacity = Constants.LabelUI.shadowOpacity
@@ -78,6 +58,25 @@ struct UIElements {
         button.layer.masksToBounds                = Constants.ButtonUI.masksToBounds
     }
     
+    static func configureTintedStyleButtonColor(for button: UIButton) {
+        button.tintColor = Color.dodgerBlue
+        button.setTitleColor(Color.dodgerBlue, for: .normal)
+    }
+    
+    static func configureWaitingRoomButton(for button: UIButton, withColor color: UIColor) {
+        button.layer.cornerRadius              = Constants.ButtonUI.cornerRadius
+        button.layer.shadowColor               = Constants.ButtonUI.shadowColor
+        button.layer.shadowOpacity             = Constants.ButtonUI.shadowOpacity
+        button.layer.shadowRadius              = Constants.ButtonUI.shadowRadius
+        button.layer.shadowOffset              = Constants.ButtonUI.shadowOffset
+        button.titleLabel?.layer.shadowColor   = Constants.ButtonUI.titleShadowColor
+        button.titleLabel?.layer.shadowOpacity = Constants.ButtonUI.titleShadowOpacity
+        button.titleLabel?.layer.shadowRadius  = Constants.ButtonUI.titleShadowRadius
+        button.titleLabel?.layer.shadowOffset  = Constants.ButtonUI.titleShadowOffset
+        button.layer.backgroundColor           = color.cgColor
+        button.layer.masksToBounds             = Constants.ButtonUI.masksToBounds
+    }
+    
     static func configureCircleButtonAttributes(for button: UIButton, backgroundColor: UIColor, tintColor: UIColor) {
         button.backgroundColor                 = backgroundColor
         button.tintColor                       = tintColor
@@ -93,11 +92,6 @@ struct UIElements {
         button.layer.masksToBounds             = Constants.CircleButtonUI.masksToBounds
     }
     
-    static func configureTintedStyleButtonColor(for button: UIButton) {
-        button.tintColor = Color.dodgerBlue
-        button.setTitleColor(Color.dodgerBlue, for: .normal)
-    }
-    
     
     //MARK: - TextField UI
     static func configureTextFieldUI(forTextField textField: UITextField) {
@@ -109,21 +103,11 @@ struct UIElements {
         textField.layer.masksToBounds = Constants.TextFieldUI.masksToBounds
     }
     
-    
-    //MARK: - ACTIVE SESSION UI
-    static func configureActiveSessionTableViewButton(for button: UIButton, withColor color: UIColor) {
-        button.layer.cornerRadius              = Constants.ButtonUI.cornerRadius
-        button.layer.shadowColor               = Constants.ButtonUI.shadowColor
-        button.layer.shadowOpacity             = Constants.ButtonUI.shadowOpacity
-        button.layer.shadowRadius              = Constants.ButtonUI.shadowRadius
-        button.layer.shadowOffset              = Constants.ButtonUI.shadowOffset
-        button.titleLabel?.layer.shadowColor   = Constants.ButtonUI.titleShadowColor
-        button.titleLabel?.layer.shadowOpacity = Constants.ButtonUI.titleShadowOpacity
-        button.titleLabel?.layer.shadowRadius  = Constants.ButtonUI.titleShadowRadius
-        button.titleLabel?.layer.shadowOffset  = Constants.ButtonUI.titleShadowOffset
-        button.layer.backgroundColor           = color.cgColor
-        button.layer.masksToBounds             = Constants.ButtonUI.masksToBounds
+    static func configureImageView(forImageView imageView: UIImageView) {
+        imageView.layer.shadowColor   = UIColor.black.cgColor
+        imageView.layer.shadowOpacity = 0.4
+        imageView.layer.shadowRadius  = 2
+        imageView.layer.shadowOffset  = CGSize(width: 0, height: 1)
+        imageView.layer.masksToBounds = true
     }
-    
-    
 }

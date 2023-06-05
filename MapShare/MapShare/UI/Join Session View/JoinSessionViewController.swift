@@ -17,6 +17,7 @@ class JoinSessionViewController: UIViewController {
     @IBOutlet weak var codeEntryTextField: UITextField!
     @IBOutlet weak var searchSessionButton: UIButton!
     @IBOutlet weak var tellTheGroupLabel: UILabel!
+    @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var memberFirstNameTextField: UITextField!
     @IBOutlet weak var memberLastNameTextField: UITextField!
     @IBOutlet weak var memberScreenNameTextField: UITextField!
@@ -103,6 +104,7 @@ class JoinSessionViewController: UIViewController {
             sheetPresentationController.dismissalTransitionWillBegin()
             PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
             UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+            logoImageView.isHidden = false
         }
     }
     
@@ -117,9 +119,11 @@ class JoinSessionViewController: UIViewController {
     }
     
     private func configureUI() {
-        UIElements.configureCircleButtonAttributes(for: closeJoinSessionSheetButton, backgroundColor: .clear, tintColor: .label)
-        UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureCircleButtonAttributes(for: closeJoinSessionSheetButton, backgroundColor: UIElements.Color.dodgerBlue, tintColor: .white)
         UIElements.configureTextFieldUI(forTextField: codeEntryTextField)
+        UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureImageView(forImageView: logoImageView)
+        logoImageView.isHidden = false
         UIElements.configureTextFieldUI(forTextField: memberFirstNameTextField)
         UIElements.configureTextFieldUI(forTextField: memberLastNameTextField)
         UIElements.configureTextFieldUI(forTextField: memberScreenNameTextField)
@@ -200,6 +204,7 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
                                     Share with the group:
                                  """
         joinSessionViewModel.validSessionCode = codeEntry
+        logoImageView.isHidden = true
         revealJoinSessionTextFields()
     }
     

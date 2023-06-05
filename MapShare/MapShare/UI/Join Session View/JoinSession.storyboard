@@ -21,6 +21,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uz4-cg-Kqv">
+                                <rect key="frame" x="345" y="79" width="28" height="28"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Uz4-cg-Kqv" secondAttribute="height" multiplier="1:1" id="Y5J-ti-vKU"/>
+                                    <constraint firstAttribute="width" constant="28" id="gRu-ym-fGN"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="xmark.circle" catalog="system"/>
+                                <connections>
+                                    <action selector="closeJoinSessionSheetButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="lYd-zn-SYz"/>
+                                </connections>
+                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Code..." textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nJI-FY-X14">
                                 <rect key="frame" x="137.66666666666666" y="118.66666666666669" width="117.66666666666666" height="40"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -41,6 +55,11 @@
                                     <action selector="searchSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Gik-ZK-BUd"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell the group about yourself:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dff-5l-drj">
+                                <rect key="frame" x="78.666666666666671" y="240.66666666666666" width="235.66666666666663" height="19.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RtC-JV-4mm">
                                 <rect key="frame" x="20" y="272" width="353" height="40"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -77,18 +96,6 @@
                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="mGg-Yv-Akh"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVY-Mc-89R">
-                                <rect key="frame" x="137.66666666666666" y="486.33333333333331" width="117.66666666666666" height="39.999999999999943"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="BIw-DQ-jYe"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="JOIN"/>
-                                <connections>
-                                    <action selector="joinSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1Pp-c0-SJh"/>
-                                    <segue destination="Kms-U8-SMw" kind="show" identifier="toJoinActiveSessionVC" id="ddg-DO-qqG"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Qcb-eT-dRi">
                                 <rect key="frame" x="59" y="432" width="275" height="34.333333333333314"/>
                                 <subviews>
@@ -107,25 +114,24 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell the group about yourself:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dff-5l-drj">
-                                <rect key="frame" x="78.666666666666671" y="240.66666666666666" width="235.66666666666663" height="19.333333333333343"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uz4-cg-Kqv">
-                                <rect key="frame" x="345" y="79" width="28" height="28"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVY-Mc-89R">
+                                <rect key="frame" x="137.66666666666666" y="486.33333333333331" width="117.66666666666666" height="39.999999999999943"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="Uz4-cg-Kqv" secondAttribute="height" multiplier="1:1" id="Y5J-ti-vKU"/>
-                                    <constraint firstAttribute="width" constant="28" id="gRu-ym-fGN"/>
+                                    <constraint firstAttribute="height" constant="40" id="BIw-DQ-jYe"/>
                                 </constraints>
-                                <color key="tintColor" systemColor="labelColor"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="xmark.circle" catalog="system"/>
+                                <buttonConfiguration key="configuration" style="filled" title="JOIN"/>
                                 <connections>
-                                    <action selector="closeJoinSessionSheetButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="lYd-zn-SYz"/>
+                                    <action selector="joinSessionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1Pp-c0-SJh"/>
+                                    <segue destination="Kms-U8-SMw" kind="show" identifier="toJoinActiveSessionVC" id="ddg-DO-qqG"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo3" translatesAutoresizingMaskIntoConstraints="NO" id="PB0-sI-HmM">
+                                <rect key="frame" x="59" y="280" width="275" height="275"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="PB0-sI-HmM" secondAttribute="height" multiplier="1:1" id="MOB-r5-T0S"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -147,9 +153,12 @@
                             <constraint firstItem="Qcb-eT-dRi" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.7" id="Vye-tU-vxf"/>
                             <constraint firstItem="Dff-5l-drj" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.6" id="ZH2-LJ-DuV"/>
                             <constraint firstItem="CYe-tn-TtU" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="aiy-Wv-SKN"/>
+                            <constraint firstItem="PB0-sI-HmM" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.7" id="e58-5A-Fyq"/>
+                            <constraint firstItem="PB0-sI-HmM" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="e5c-LR-E5v"/>
                             <constraint firstItem="OVY-Mc-89R" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="e6g-NW-WdE"/>
                             <constraint firstItem="S48-Eg-dbo" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="iO2-48-QFh"/>
                             <constraint firstItem="Dff-5l-drj" firstAttribute="top" secondItem="pfz-uo-Fle" secondAttribute="bottom" constant="30" id="iYZ-NO-i5U"/>
+                            <constraint firstItem="PB0-sI-HmM" firstAttribute="top" secondItem="Dff-5l-drj" secondAttribute="bottom" constant="20" id="kr8-jN-Dzz"/>
                             <constraint firstItem="S48-Eg-dbo" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="m6v-p6-val"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="v5A-g1-3SS" secondAttribute="trailing" constant="20" id="mhi-aL-V3r"/>
                             <constraint firstItem="pfz-uo-Fle" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="mxV-4Z-NGI"/>
@@ -165,6 +174,7 @@
                         <outlet property="codeEntryTextField" destination="nJI-FY-X14" id="4Ud-m5-kQ8"/>
                         <outlet property="iconColorLabel" destination="bZG-16-Q88" id="7rW-CW-RNn"/>
                         <outlet property="joinSessionButton" destination="OVY-Mc-89R" id="tmT-wQ-Pk2"/>
+                        <outlet property="logoImageView" destination="PB0-sI-HmM" id="CZq-qs-1ok"/>
                         <outlet property="memberFirstNameTextField" destination="RtC-JV-4mm" id="Nzc-kP-ZT4"/>
                         <outlet property="memberLastNameTextField" destination="v5A-g1-3SS" id="toW-qi-vea"/>
                         <outlet property="memberScreenNameTextField" destination="CYe-tn-TtU" id="0ja-Do-jDz"/>
@@ -189,6 +199,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="logo3" width="1024" height="1024"/>
         <image name="xmark.circle" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
