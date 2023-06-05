@@ -51,9 +51,7 @@ class JoinSessionViewModel {
                                           mapMarkerColor: markerColor,
                                           memberDeviceID: memberDeviceID,
                                           isOrganizer: false,
-                                          isActive: false,
-                                          currentLocLatitude: memberLatitude,
-                                          currentLocLongitude: memberLongitude)
+                                          isActive: false)
         
         let newMemberCoordinates = CLLocationCoordinate2D(latitude: memberLatitude, longitude: memberLongitude)
         let newMemberAnnotation  = MemberAnnotation(deviceID: memberDeviceID,

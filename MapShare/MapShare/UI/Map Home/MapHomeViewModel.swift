@@ -103,14 +103,14 @@ class MapHomeViewModel {
         service.deleteRouteOnFirestore(fromSession: mapShareSession)
     }
     
-    func updateMemberTravelTime(forMember member: Member, withTravelTime travelTime: Double) {
+    func updateMemberTravelTime(withMemberID deviceID: String, withTravelTime travelTime: Double) {
         guard let mapShareSession else { return }
-        service.updateExpectedTravelTime(forSession: mapShareSession, forMember: member, withTime: travelTime)
+        service.updateExpectedTravelTime(forSession: mapShareSession, withMemberID: deviceID, withTime: travelTime)
     }
     
-    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
+    func updateMemberAnnotationLocation(forMemberAnnotation memberAnnotation: MemberAnnotation, withLatitude: Double, withLongitude: Double) {
         guard let mapShareSession else { return }
-        service.updateLocationOfMemberToFirestore(forSession: mapShareSession, forMember: member, withLatitude: withLatitude, withLongitude: withLongitude)
+        service.updateLocationOfMemberAnnotationToFirestore(forSession: mapShareSession, forAnnotation: memberAnnotation, withLatitude: withLatitude, withLongitude: withLongitude)
     }
     
     
