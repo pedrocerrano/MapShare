@@ -94,6 +94,7 @@ class MapHomeViewController: UIViewController {
         UIElements.configureFilledStyleButtonAttributes(for: travelMethodButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerRouteButton, withColor: UIElements.Color.dodgerBlue)
+        UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray6)
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
     }
     
@@ -185,7 +186,7 @@ class MapHomeViewController: UIViewController {
     private func resetZoomForPolylineRoutes() {
         guard let polylineOverlay = self.mapView.overlays.first else { return }
         let newMapRect = self.mapView.overlays.reduce(polylineOverlay.boundingMapRect, { $0.union($1.boundingMapRect)} )
-        mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 200, right: 50), animated: true)
+        mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
     }
 } //: CLASS
 

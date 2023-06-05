@@ -102,4 +102,12 @@ struct UIElements {
         textField.layer.cornerRadius  = Constants.TextFieldUI.cornerRadius
         textField.layer.masksToBounds = Constants.TextFieldUI.masksToBounds
     }
+    
+    static func configureImageView(forImageView imageView: UIImageView) {
+        imageView.layer.shadowColor   = UIColor.black.cgColor
+        imageView.layer.shadowOpacity = 0.4
+        imageView.layer.shadowRadius  = 2
+        imageView.layer.shadowOffset  = CGSize(width: 0, height: 1)
+        imageView.layer.masksToBounds = true
+    }
 }
