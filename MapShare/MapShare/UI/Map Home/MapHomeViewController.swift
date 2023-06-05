@@ -40,7 +40,7 @@ class MapHomeViewController: UIViewController {
         registerMapAnnotations()
         addGesture()
         configureUI()
-        startTimer()
+//        startTimer()
     }
     
     
@@ -93,7 +93,8 @@ class MapHomeViewController: UIViewController {
         UIElements.configureFilledStyleButtonAttributes(for: travelMethodButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerRouteButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray6)
+        UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray2)
+        clearRouteAnnotationsButton.configuration?.baseForegroundColor = .label
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
     }
     
