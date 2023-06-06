@@ -12,6 +12,7 @@
 		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
 		295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */; };
 		295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */; };
+		296F4CCD2A2F84AD006A65EE /* MemberAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296F4CCC2A2F84AD006A65EE /* MemberAnnotation.swift */; };
 		297626AF2A09788C00F7BCC4 /* JoinSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */; };
 		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
@@ -37,7 +38,6 @@
 		29F859A82A0187BF00A53792 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29F859A72A0187BF00A53792 /* GoogleService-Info.plist */; };
 		29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 29F859AA2A01884200A53792 /* FirebaseFirestore */; };
 		29F859AD2A018A7500A53792 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F859AC2A018A7500A53792 /* FirebaseService.swift */; };
-		AF72D7F02A0D56980080C9AD /* MemberAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */; };
 		AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */; };
 		AF72D7F62A1407980080C9AD /* PopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F52A1407980080C9AD /* PopUpButton.swift */; };
 		AF72D7F82A14113A0080C9AD /* MapHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */; };
@@ -74,6 +74,7 @@
 		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
 		295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionTableViewCell.swift; sourceTree = "<group>"; };
 		295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewModel.swift; sourceTree = "<group>"; };
+		296F4CCC2A2F84AD006A65EE /* MemberAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberAnnotation.swift; sourceTree = "<group>"; };
 		297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = JoinSession.storyboard; sourceTree = "<group>"; };
 		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
@@ -101,7 +102,6 @@
 		29EC20F72A0AC1CB0085743A /* WaitingRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomTableViewCell.swift; sourceTree = "<group>"; };
 		29F859A72A0187BF00A53792 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29F859AC2A018A7500A53792 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
-		AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberAnnotation.swift; sourceTree = "<group>"; };
 		AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		AF72D7F52A1407980080C9AD /* PopUpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpButton.swift; sourceTree = "<group>"; };
 		AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHomeViewModel.swift; sourceTree = "<group>"; };
@@ -225,7 +225,7 @@
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
 				AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */,
-				AF72D7EF2A0D56980080C9AD /* MemberAnnotation.swift */,
+				296F4CCC2A2F84AD006A65EE /* MemberAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -423,7 +423,7 @@
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
 				AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */,
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
-				AF72D7F02A0D56980080C9AD /* MemberAnnotation.swift in Sources */,
+				296F4CCD2A2F84AD006A65EE /* MemberAnnotation.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
@@ -640,11 +640,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = MapShare;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need access to your location when using this app.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location when using this app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -673,11 +674,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MapShare/Supporting Files/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = MapShare;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need access to your location when using this app.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location when using this app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

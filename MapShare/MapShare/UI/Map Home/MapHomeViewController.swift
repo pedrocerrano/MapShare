@@ -302,6 +302,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMemberAnnotations() {
+        #warning("This clears ALL memberAnnotations. It will not work for real-time updates")
         let existingMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
         mapView.removeAnnotations(existingMemberAnnotations)
         
@@ -329,5 +330,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.showsUserLocation                           = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
+        mapHomeViewModel.sessionListener?.remove()
+        mapHomeViewModel.memberListener?.remove()
+        mapHomeViewModel.routesListener?.remove()
+        mapHomeViewModel.memberAnnotationsListener?.remove()
     }
 } //: ViewModelDelegate

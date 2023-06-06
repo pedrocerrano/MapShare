@@ -90,8 +90,8 @@ struct FirebaseService {
     
     
     //MARK: - LISTENERS
-    func listenForChangesToSession(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).addSnapshotListener { documentSnapshot, error in
+    func listenForChangesToSession(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) -> ListenerRegistration {
+        let sessionListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).addSnapshotListener { documentSnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
@@ -105,10 +105,12 @@ struct FirebaseService {
                 completion(.failure(.sessionReturnedNil))
             }
         }
+        
+        return sessionListener
     }
     
-    func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).addSnapshotListener { querySnapshot, error in
+    func listenForChangesToMembers(forSession session: Session, completion: @escaping(Result<[Member], FirebaseError>) -> Void) -> ListenerRegistration {
+        let memberListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).addSnapshotListener { querySnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
@@ -118,10 +120,12 @@ struct FirebaseService {
             let members             = memberDictArray.compactMap { Member(fromMemberDictionary: $0) }
             completion(.success(members))
         }
+        
+        return memberListener
     }
     
-    func listenToChangesForRoutes(forSession session: Session, completion: @escaping(Result<[RouteAnnotation], FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
+    func listenToChangesForRoutes(forSession session: Session, completion: @escaping(Result<[RouteAnnotation], FirebaseError>) -> Void) -> ListenerRegistration {
+        let routesListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
@@ -131,10 +135,12 @@ struct FirebaseService {
             let routeAnnotations    = routeDictArray.compactMap { RouteAnnotation(fromRouteAnnotationDictionary: $0) }
             completion(.success(routeAnnotations))
         }
+        
+        return routesListener
     }
     
-    func listenToChangesToMemberAnnotations(forSession session: Session, completion: @escaping(Result<[MemberAnnotation], FirebaseError>) -> Void) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
+    func listenToChangesToMemberAnnotations(forSession session: Session, completion: @escaping(Result<[MemberAnnotation], FirebaseError>) -> Void) -> ListenerRegistration {
+        let memberAnnotationsListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
@@ -144,5 +150,7 @@ struct FirebaseService {
             let memberAnnotations   = memberAnnoDictArray.compactMap { MemberAnnotation(fromMemberAnnotationDictionary: $0) }
             completion(.success(memberAnnotations))
         }
+        
+        return memberAnnotationsListener
     }
 }

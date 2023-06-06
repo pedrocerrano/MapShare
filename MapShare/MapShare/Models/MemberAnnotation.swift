@@ -55,7 +55,7 @@ extension MemberAnnotation {
               let memberAnnoLongitude = memberAnnotationDictionary[MemberAnnotationKey.memberAnnoLongitude] as? Double,
               let title               = memberAnnotationDictionary[MemberAnnotationKey.title] as? String,
               let color               = memberAnnotationDictionary[MemberAnnotationKey.color] as? String,
-        let isShowing           = memberAnnotationDictionary[MemberAnnotationKey.isShowing] as? Bool  else {
+              let isShowing           = memberAnnotationDictionary[MemberAnnotationKey.isShowing] as? Bool  else {
             print("Failed to initialize MemberAnnotation model object")
             return nil
         }
