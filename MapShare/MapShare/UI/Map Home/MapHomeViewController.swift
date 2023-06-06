@@ -28,7 +28,6 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - Properties
     var mapHomeViewModel: MapHomeViewModel!
-    var timer: Timer?
     
     
     //MARK: - LIFECYCLE
@@ -40,13 +39,22 @@ class MapHomeViewController: UIViewController {
         registerMapAnnotations()
         addGesture()
         configureUI()
-//        startTimer()
     }
     
     
     // MARK: - IB Actions
     @IBAction func travelMethodButtonTapped(_ sender: Any) {
+        guard let drivingImage = UIImage(systemName: "car.circle.fill"),
+              let walkingImage = UIImage(systemName: "figure.walk") else { return }
         
+        switch travelMethodButton.currentImage {
+        case drivingImage:
+            travelMethodButton.setImage(walkingImage, for: .normal)
+        case walkingImage:
+            travelMethodButton.setImage(drivingImage, for: .normal)
+        default:
+            travelMethodButton.setImage(drivingImage, for: .normal)
+        }
     }
     
     @IBAction func currentLocationButtonTapped(_ sender: Any) {
@@ -77,7 +85,11 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-
+        guard let coordinates       = mapHomeViewModel.locationManager.location?.coordinate,
+              let memberAnnotations = mapHomeViewModel.mapShareSession?.memberAnnotations,
+              let currentMember     = memberAnnotations.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
+        
+        mapHomeViewModel.updateMemberAnnotationLocation(forMemberAnnotation: currentMember, withLatitude: coordinates.latitude, withLongitude: coordinates.longitude)
     }
     
     
@@ -87,13 +99,14 @@ class MapHomeViewController: UIViewController {
         activeMembersStackView.isHidden      = true
         waitingRoomStackView.isHidden        = true
         navigationItem.hidesBackButton       = true
+        travelMethodButton.isHidden          = true
         centerRouteButton.isHidden           = true
         clearRouteAnnotationsButton.isHidden = true
         refreshingLocationButton.isHidden    = true
         UIElements.configureFilledStyleButtonAttributes(for: travelMethodButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerRouteButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray2)
+        UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray3)
         clearRouteAnnotationsButton.configuration?.baseForegroundColor = .label
         UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
     }
@@ -125,36 +138,20 @@ class MapHomeViewController: UIViewController {
     
     
     //MARK: - MAPKIT FUNCTIONS
-    private func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
-    }
-    
-    @objc func timerFired() {
-        guard let coordinates       = mapHomeViewModel.locationManager.location?.coordinate,
-              let memberAnnotations = mapHomeViewModel.mapShareSession?.memberAnnotations,
-              let currentMember     = memberAnnotations.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
-        
-        let memberLatitude  = coordinates.latitude
-        let memberLongitude = coordinates.longitude
-        
-        mapHomeViewModel.updateMemberAnnotationLocation(forMemberAnnotation: currentMember, withLatitude: memberLatitude, withLongitude: memberLongitude)
-        
-        print("Location Updated")
-    }
-    
     private func addGesture() {
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleTap))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(tapGesture)
     }
     
-    @objc func handleTap(gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.organizerDeviceID == Constants.Device.deviceID && session.isActive == true {
+        if session.organizerDeviceID == Constants.Device.deviceID && session.isActive && session.routeAnnotations.isEmpty {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false)
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
             clearRouteAnnotationsButton.isHidden = false
+            travelMethodButton.isHidden          = false
         } else {
             return
         }
@@ -164,7 +161,7 @@ class MapHomeViewController: UIViewController {
         guard let memberAnnotationsShowing = mapHomeViewModel.mapShareSession?.memberAnnotations.filter ({ $0.isShowing }) else { return }
         for memberAnnotation in memberAnnotationsShowing {
             let location   = CLLocationCoordinate2D(latitude: memberAnnotation.coordinate.latitude, longitude: memberAnnotation.coordinate.longitude)
-            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation)
+            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withButton: travelMethodButton)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
             directions.calculate { response, error in
@@ -273,10 +270,10 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     func changesInMembers() {
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
-            activeMembersStackView.isHidden = false
-            waitingRoomStackView.isHidden   = false
-            updateMemberCounts()
+            activeMembersStackView.isHidden   = false
+            waitingRoomStackView.isHidden     = false
             refreshingLocationButton.isHidden = false
+            updateMemberCounts()
             
             let waitingRoomMembers = session.members.filter { !$0.isActive }
             if waitingRoomMembers.count > 0 {
@@ -305,13 +302,13 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMemberAnnotations() {
-        let existinMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
-        mapView.removeAnnotations(existinMemberAnnotations)
+        #warning("This clears ALL memberAnnotations. It will not work for real-time updates")
+        let existingMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
+        mapView.removeAnnotations(existingMemberAnnotations)
         
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
             let memberAnnotationsShowing = session.memberAnnotations.filter { $0.isShowing }
-//            updateAnnotations()
             mapView.addAnnotations(memberAnnotationsShowing)
             if memberAnnotationsShowing.count > 1 {
                 mapView.showAnnotations(memberAnnotationsShowing, animated: true)
@@ -324,6 +321,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(mapView.annotations)
         activeMembersStackView.isHidden                     = true
         waitingRoomStackView.isHidden                       = true
+        travelMethodButton.isHidden                         = true
         mapHomeViewModel.mapShareSession?.isActive          = false
         mapHomeViewModel.mapShareSession?.memberAnnotations = []
         mapHomeViewModel.mapShareSession?.members           = []
@@ -332,5 +330,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.showsUserLocation                           = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
+        mapHomeViewModel.sessionListener?.remove()
+        mapHomeViewModel.memberListener?.remove()
+        mapHomeViewModel.routesListener?.remove()
+        mapHomeViewModel.memberAnnotationsListener?.remove()
     }
 } //: ViewModelDelegate

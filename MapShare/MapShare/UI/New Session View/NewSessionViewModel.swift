@@ -14,7 +14,7 @@ class NewSessionViewModel {
     var session: Session?
     let service: FirebaseService
     weak var mapHomeDelegate: MapHomeViewController?
-    let sessionCode = String.generateRandomCode()
+    var sessionCode = String.generateRandomCode()
     
     init(service: FirebaseService = FirebaseService(), mapHomeDelegate: MapHomeViewController) {
         self.service         = service
@@ -52,5 +52,7 @@ class NewSessionViewModel {
         service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer, withMemberAnnotation: organizerAnnotation) {
             self.mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
         }
+        
+        self.sessionCode = String.generateRandomCode()
     }
 }

@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import FirebaseFirestore
 
 protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
@@ -21,6 +22,11 @@ class MapHomeViewModel {
     
     //MARK: - PROPERTIES
     var service: FirebaseService
+    var sessionListener: ListenerRegistration?
+    var memberListener: ListenerRegistration?
+    var routesListener: ListenerRegistration?
+    var memberAnnotationsListener: ListenerRegistration?
+    
     var mapShareSession: Session?
     private weak var delegate: MapHomeViewModelDelegate?
     
@@ -37,7 +43,7 @@ class MapHomeViewModel {
     //MARK: - FIREBASE LISTENER FUNCTIONS
     func updateMapWithSessionChanges() {
         guard let mapShareSession else { return }
-        service.listenForChangesToSession(forSession: mapShareSession) { result in
+        sessionListener = service.listenForChangesToSession(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedSession):
                 mapShareSession.isActive          = loadedSession.isActive
@@ -54,7 +60,7 @@ class MapHomeViewModel {
     
     func updateMapWithMemberChanges() {
         guard let mapShareSession else { return }
-        service.listenForChangesToMembers(forSession: mapShareSession) { result in
+        memberListener = service.listenForChangesToMembers(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedMembers):
                 mapShareSession.members = loadedMembers
@@ -67,7 +73,7 @@ class MapHomeViewModel {
     
     func updateMapWithRouteChanges() {
         guard let mapShareSession else { return }
-        service.listenToChangesForRoutes(forSession: mapShareSession) { result in
+        routesListener = service.listenToChangesForRoutes(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedRouteAnnotations):
                 mapShareSession.routeAnnotations = loadedRouteAnnotations
@@ -80,7 +86,7 @@ class MapHomeViewModel {
     
     func updateMapWithMemberAnnotations() {
         guard let mapShareSession else { return }
-        service.listenToChangesToMemberAnnotations(forSession: mapShareSession) { result in
+        memberAnnotationsListener = service.listenToChangesToMemberAnnotations(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedMemberAnnotations):
                 mapShareSession.memberAnnotations = loadedMemberAnnotations
@@ -124,7 +130,7 @@ class MapHomeViewModel {
         service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
     }
     
-    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
+    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation, withButton button: UIButton) -> MKDirections.Request {
         let routeCoordinate   = annotation.coordinate
         let startingLocation  = MKPlacemark(coordinate: coordinate)
         let destination       = MKPlacemark(coordinate: routeCoordinate)
@@ -132,7 +138,12 @@ class MapHomeViewModel {
         let request           = MKDirections.Request()
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
-        request.transportType = .automobile
+        
+        if button.currentImage == UIImage(systemName: "car.circle.fill") {
+            request.transportType = .automobile
+        } else {
+            request.transportType = .walking
+        }
         
         return request
     }
