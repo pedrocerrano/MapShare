@@ -58,7 +58,7 @@ struct FirebaseService {
     }
     
     func updateLocationOfMemberAnnotationToFirestore(forSession session: Session, forAnnotation memberAnnotation: MemberAnnotation, withLatitude: Double, withLongitude: Double) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(memberAnnotation.deviceID).updateData([MemberAnnotation.MemberAnnotationKey.memberAnnoLatitude : withLatitude, MemberAnnotation.MemberAnnotationKey.memberAnnoLongitude : withLongitude])
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.memberAnnotationCollectionType).document(memberAnnotation.deviceID).updateData([MemberAnnotation.MemberAnnotationKey.memberAnnoLatitude : withLatitude, MemberAnnotation.MemberAnnotationKey.memberAnnoLongitude : withLongitude])
     }
     
     func deleteSessionFromFirestore(session: Session) {

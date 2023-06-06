@@ -138,13 +138,13 @@ class MapHomeViewModel {
         let request           = MKDirections.Request()
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
-        
+      
         if button.currentImage == UIImage(systemName: "car.circle.fill") {
             request.transportType = .automobile
         } else {
             request.transportType = .walking
         }
-        
+      
         return request
     }
     
