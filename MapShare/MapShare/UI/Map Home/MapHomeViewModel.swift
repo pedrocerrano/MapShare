@@ -124,7 +124,7 @@ class MapHomeViewModel {
         service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
     }
     
-    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation) -> MKDirections.Request {
+    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation, withButton button: UIButton) -> MKDirections.Request {
         let routeCoordinate   = annotation.coordinate
         let startingLocation  = MKPlacemark(coordinate: coordinate)
         let destination       = MKPlacemark(coordinate: routeCoordinate)
@@ -132,8 +132,11 @@ class MapHomeViewModel {
         let request           = MKDirections.Request()
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
-        request.transportType = .automobile
-        
+        if button.currentImage == UIImage(systemName: "car.circle.fill") {
+            request.transportType = .automobile
+        } else {
+            request.transportType = .walking
+        }
         return request
     }
     
