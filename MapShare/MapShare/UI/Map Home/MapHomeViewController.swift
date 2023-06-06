@@ -304,13 +304,12 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func changesInMemberAnnotations() {
-        let existinMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
-        mapView.removeAnnotations(existinMemberAnnotations)
+        let existingMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
+        mapView.removeAnnotations(existingMemberAnnotations)
         
         guard let session = mapHomeViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
             let memberAnnotationsShowing = session.memberAnnotations.filter { $0.isShowing }
-//            updateAnnotations()
             mapView.addAnnotations(memberAnnotationsShowing)
             if memberAnnotationsShowing.count > 1 {
                 mapView.showAnnotations(memberAnnotationsShowing, animated: true)
