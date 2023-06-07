@@ -33,10 +33,10 @@ class ActiveSessionViewController: UIViewController {
         configureUI()
         configureViewModelListeners()
         configureSheetPresentationController()
+        inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
         }
-        inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
     }
     
     
@@ -78,6 +78,7 @@ class ActiveSessionViewController: UIViewController {
     private func configureViewModelListeners() {
         activeSessionViewModel.updateSession()
         activeSessionViewModel.updateMembers()
+        activeSessionViewModel.updateRouteAnnotations()
         activeSessionViewModel.updateMemberAnnotations()
     }
     
@@ -89,6 +90,13 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
     
+    private func removeListeners() {
+        activeSessionViewModel.sessionListener?.remove()
+        activeSessionViewModel.memberListener?.remove()
+        activeSessionViewModel.routesListener?.remove()
+        activeSessionViewModel.memberAnnotationsListener?.remove()
+    }
+    
     
     //MARK: - ALERTS
     private func organizerEndedActiveSessionAlert() {
@@ -96,6 +104,7 @@ class ActiveSessionViewController: UIViewController {
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             self.activeSessionViewModel.deleteSession()
+            self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
@@ -112,6 +121,7 @@ class ActiveSessionViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
@@ -150,15 +160,17 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         case 0:
             guard let activeCell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
             
-            let member = activeSessionViewModel.session.members.filter { $0.isActive }[indexPath.row]
-            activeCell.configureCell(with: member)
+            let activeSession = activeSessionViewModel.session
+            let member        = activeSession.members.filter { $0.isActive }[indexPath.row]
+            activeCell.configureCell(forSession: activeSession, with: member)
             
             return activeCell
         case 1:
-            let activeSession    = activeSessionViewModel.session
-            let member           = activeSession.members.filter { !$0.isActive }[indexPath.row]
+            let activeSession = activeSessionViewModel.session
+            let member        = activeSession.members.filter { !$0.isActive }[indexPath.row]
+            
             guard let memberAnnotation = activeSession.memberAnnotations.filter({ $0.deviceID == member.memberDeviceID }).first,
-                  let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
+                  let waitingRoomCell  = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
             
             waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, withMemberAnnotation: memberAnnotation, delegate: self)
             

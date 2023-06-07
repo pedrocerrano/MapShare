@@ -88,7 +88,7 @@
                                             <constraint firstAttribute="width" secondItem="YdG-Ia-67t" secondAttribute="height" multiplier="1:1" id="AWe-0S-Fy8"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" image="car.circle.fill" catalog="system"/>
+                                        <buttonConfiguration key="configuration" style="filled" image="figure.walk" catalog="system"/>
                                         <connections>
                                             <action selector="travelMethodButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CJz-jf-oG6"/>
                                         </connections>
@@ -208,7 +208,7 @@
     </scenes>
     <resources>
         <image name="arrow.clockwise" catalog="system" width="113" height="128"/>
-        <image name="car.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="figure.walk" catalog="system" width="95" height="128"/>
         <image name="location.circle.fill" catalog="system" width="128" height="123"/>
         <image name="person.2" catalog="system" width="128" height="82"/>
         <image name="person.2.fill" catalog="system" width="128" height="81"/>

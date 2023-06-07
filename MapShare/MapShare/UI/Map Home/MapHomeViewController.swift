@@ -47,13 +47,14 @@ class MapHomeViewController: UIViewController {
         guard let drivingImage = UIImage(systemName: "car.circle.fill"),
               let walkingImage = UIImage(systemName: "figure.walk") else { return }
         
-        switch travelMethodButton.currentImage {
-        case drivingImage:
+        if mapHomeViewModel.isDriving {
+            mapHomeViewModel.isDriving.toggle()
+            mapHomeViewModel.updateToWalking()
+            travelMethodButton.setImage(drivingImage, for: .normal)
+        } else {
+            mapHomeViewModel.isDriving.toggle()
+            mapHomeViewModel.updateToDriving()
             travelMethodButton.setImage(walkingImage, for: .normal)
-        case walkingImage:
-            travelMethodButton.setImage(drivingImage, for: .normal)
-        default:
-            travelMethodButton.setImage(drivingImage, for: .normal)
         }
     }
     
@@ -62,7 +63,18 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func centerRouteButtonTapped(_ sender: Any) {
-        resetZoomForPolylineRoutes()
+        guard let singleRoute = UIImage(systemName: "point.topleft.down.curvedto.point.bottomright.up"),
+              let multiRoutes = UIImage(systemName: "point.3.connected.trianglepath.dotted") else { return }
+        
+        if mapHomeViewModel.zoomsToFitAll == false {
+            mapHomeViewModel.zoomsToFitAll.toggle()
+            resetZoomForAllPolylineRoutes()
+            centerRouteButton.setImage(singleRoute, for: .normal)
+        } else {
+            mapHomeViewModel.zoomsToFitAll.toggle()
+            resetZoomForUserRoute()
+            centerRouteButton.setImage(multiRoutes, for: .normal)
+        }
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
@@ -148,7 +160,7 @@ class MapHomeViewController: UIViewController {
         if session.organizerDeviceID == Constants.Device.deviceID && session.isActive && session.routeAnnotations.isEmpty {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
-            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false)
+            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false, isDriving: true)
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
             clearRouteAnnotationsButton.isHidden = false
             travelMethodButton.isHidden          = false
@@ -157,11 +169,11 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    private func getDirections(routeAnnotation: MKAnnotation) {
+    private func getDirections(routeAnnotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) {
         guard let memberAnnotationsShowing = mapHomeViewModel.mapShareSession?.memberAnnotations.filter ({ $0.isShowing }) else { return }
         for memberAnnotation in memberAnnotationsShowing {
             let location   = CLLocationCoordinate2D(latitude: memberAnnotation.coordinate.latitude, longitude: memberAnnotation.coordinate.longitude)
-            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withButton: travelMethodButton)
+            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withTravelType: travelType)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
             directions.calculate { response, error in
@@ -175,18 +187,18 @@ class MapHomeViewController: UIViewController {
                     self.mapHomeViewModel.updateMemberTravelTime(withMemberID: memberAnnotation.deviceID, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = memberAnnotation.title
                     self.mapView.addOverlay(route.polyline)
-                    self.resetZoomForPolylineRoutes()
+                    self.resetZoomForAllPolylineRoutes()
                 }
             }
         }
     }
     
-    private func displayDirectionsForActiveMembers(forSession session: Session) {
+    private func displayDirectionsForActiveMembers(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
         for newRouteAnnotation in session.routeAnnotations {
             mapView.addAnnotation(newRouteAnnotation)
             
             if newRouteAnnotation.isShowingDirections {
-                getDirections(routeAnnotation: newRouteAnnotation)
+                getDirections(routeAnnotation: newRouteAnnotation, withTravelType: travelType)
             }
         }
     }
@@ -197,7 +209,13 @@ class MapHomeViewController: UIViewController {
         let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
     }
     
-    private func resetZoomForPolylineRoutes() {
+    private func resetZoomForUserRoute() {
+        guard let currentUser = mapHomeViewModel.mapShareSession?.memberAnnotations.first(where: { $0.deviceID == Constants.Device.deviceID }),
+              let userPolyline = self.mapView.overlays.first(where: { $0.title == currentUser.title }) else { return }
+        mapView.setVisibleMapRect(userPolyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
+    }
+    
+    private func resetZoomForAllPolylineRoutes() {
         guard let polylineOverlay = self.mapView.overlays.first else { return }
         let newMapRect = self.mapView.overlays.reduce(polylineOverlay.boundingMapRect, { $0.union($1.boundingMapRect)} )
         mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
@@ -289,9 +307,15 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         
-        guard let session = mapHomeViewModel.mapShareSession else { return }
+        guard let session = mapHomeViewModel.mapShareSession,
+              let routeAnnotation = session.routeAnnotations.first else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
-            displayDirectionsForActiveMembers(forSession: session)
+            
+            if routeAnnotation.isDriving {
+                displayDirectionsForActiveMembers(forSession: session, withTravelType: .automobile)
+            } else {
+                displayDirectionsForActiveMembers(forSession: session, withTravelType: .walking)
+            }
             
             if !session.routeAnnotations.isEmpty && session.routeAnnotations.first(where: { $0.isShowingDirections }) != nil {
                 centerRouteButton.isHidden = false
@@ -328,6 +352,8 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         updateMemberCounts()
         mapHomeViewModel.mapShareSession                    = nil
         mapView.showsUserLocation                           = true
+        mapHomeViewModel.isDriving                          = true
+        mapHomeViewModel.zoomsToFitAll                      = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
         mapHomeViewModel.sessionListener?.remove()
