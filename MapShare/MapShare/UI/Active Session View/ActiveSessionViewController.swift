@@ -89,6 +89,12 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
     
+    private func removeListeners() {
+        activeSessionViewModel.sessionListener?.remove()
+        activeSessionViewModel.memberListener?.remove()
+        activeSessionViewModel.routesListener?.remove()
+    }
+    
     
     //MARK: - ALERTS
     private func organizerEndedActiveSessionAlert() {
@@ -97,6 +103,7 @@ class ActiveSessionViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             self.activeSessionViewModel.deleteSession()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+            self.removeListeners()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
@@ -112,6 +119,7 @@ class ActiveSessionViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
             guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()

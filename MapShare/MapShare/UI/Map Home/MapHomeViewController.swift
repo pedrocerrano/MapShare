@@ -44,14 +44,17 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func travelMethodButtonTapped(_ sender: Any) {
-        guard let drivingImage = UIImage(systemName: "car.circle.fill"),
+        guard let session = mapHomeViewModel.mapShareSession,
+              let drivingImage = UIImage(systemName: "car.circle.fill"),
               let walkingImage = UIImage(systemName: "figure.walk") else { return }
         
         switch travelMethodButton.currentImage {
-        case drivingImage:
-            travelMethodButton.setImage(walkingImage, for: .normal)
         case walkingImage:
             travelMethodButton.setImage(drivingImage, for: .normal)
+            displayDirectionsForActiveMembers(forSession: session)
+        case drivingImage:
+            travelMethodButton.setImage(walkingImage, for: .normal)
+            displayDirectionsForActiveMembers(forSession: session)
         default:
             travelMethodButton.setImage(drivingImage, for: .normal)
         }
