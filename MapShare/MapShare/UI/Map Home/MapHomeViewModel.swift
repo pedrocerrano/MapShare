@@ -125,14 +125,12 @@ class MapHomeViewModel {
         guard let mapShareSession,
               let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
         service.updateTransportTypeToDriving(forSession: mapShareSession, forRoute: routeAnnotation)
-//        completion()
     }
     
     func updateToWalking() {
         guard let mapShareSession,
               let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
         service.updateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
-//        completion()
     }
     
     //MARK: - MAPKIT FUNCTIONS
