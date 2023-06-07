@@ -52,9 +52,11 @@ class MapHomeViewController: UIViewController {
         case walkingImage:
             travelMethodButton.setImage(drivingImage, for: .normal)
             displayDirectionsForActiveMembers(forSession: session)
+            mapHomeViewModel.updateToWalking()
         case drivingImage:
             travelMethodButton.setImage(walkingImage, for: .normal)
             displayDirectionsForActiveMembers(forSession: session)
+            mapHomeViewModel.updateToDriving()
         default:
             travelMethodButton.setImage(drivingImage, for: .normal)
         }

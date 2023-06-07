@@ -46,7 +46,8 @@ class NewSessionViewModel {
                                   members: [organizer],
                                   routeAnnotations: [],
                                   memberAnnotations: [organizerAnnotation],
-                                  isActive: true)
+                                  isActive: true,
+                                  isDriving: true)
         
         session = newSession
         service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer, withMemberAnnotation: organizerAnnotation) {

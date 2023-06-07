@@ -158,8 +158,9 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
         case 0:
             guard let activeCell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
             
-            let member = activeSessionViewModel.session.members.filter { $0.isActive }[indexPath.row]
-            activeCell.configureCell(with: member)
+            let activeSession = activeSessionViewModel.session
+            let member        = activeSession.members.filter { $0.isActive }[indexPath.row]
+            activeCell.configureCell(forSession: activeSession, with: member)
             
             return activeCell
         case 1:

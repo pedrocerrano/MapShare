@@ -88,6 +88,15 @@ struct FirebaseService {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(deviceID).updateData([Member.MemberKey.expectedTravelTime : travelTime])
     }
     
+    func updateTransportTypeToDriving(forSession session: Session) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).updateData([Session.SessionKey.isDriving : true])
+    }
+    
+    func updateTransportTypeToWalking(forSession session: Session) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).updateData([Session.SessionKey.isDriving : false])
+    }
+    
+    
     
     //MARK: - LISTENERS
     func listenForChangesToSession(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) -> ListenerRegistration {

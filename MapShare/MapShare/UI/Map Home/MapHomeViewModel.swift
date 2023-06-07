@@ -119,6 +119,15 @@ class MapHomeViewModel {
         service.updateLocationOfMemberAnnotationToFirestore(forSession: mapShareSession, forAnnotation: memberAnnotation, withLatitude: withLatitude, withLongitude: withLongitude)
     }
     
+    func updateToDriving() {
+        guard let mapShareSession else { return }
+        service.updateTransportTypeToDriving(forSession: mapShareSession)
+    }
+    
+    func updateToWalking() {
+        guard let mapShareSession else { return }
+        service.updateTransportTypeToWalking(forSession: mapShareSession)
+    }
     
     //MARK: - MAPKIT FUNCTIONS
     func shareDirections() {
