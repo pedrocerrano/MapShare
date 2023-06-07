@@ -32,6 +32,7 @@ class MapHomeViewModel {
     
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
+    var selectedTransportType: TransportType = .automobile
     
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
@@ -119,14 +120,16 @@ class MapHomeViewModel {
         service.updateLocationOfMemberAnnotationToFirestore(forSession: mapShareSession, forAnnotation: memberAnnotation, withLatitude: withLatitude, withLongitude: withLongitude)
     }
     
-    func updateToDriving() {
+    func updateToDriving(completion: @escaping() -> Void) {
         guard let mapShareSession else { return }
         service.updateTransportTypeToDriving(forSession: mapShareSession)
+        completion()
     }
     
-    func updateToWalking() {
+    func updateToWalking(completion: @escaping() -> Void) {
         guard let mapShareSession else { return }
         service.updateTransportTypeToWalking(forSession: mapShareSession)
+        completion()
     }
     
     //MARK: - MAPKIT FUNCTIONS
@@ -147,12 +150,7 @@ class MapHomeViewModel {
         let request           = MKDirections.Request()
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
-      
-        if button.currentImage == UIImage(systemName: "car.circle.fill") {
-            request.transportType = .automobile
-        } else {
-            request.transportType = .walking
-        }
+        request.transportType = selectedTransportType.type
       
         return request
     }

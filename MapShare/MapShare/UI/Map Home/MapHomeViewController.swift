@@ -48,17 +48,18 @@ class MapHomeViewController: UIViewController {
               let drivingImage = UIImage(systemName: "car.circle.fill"),
               let walkingImage = UIImage(systemName: "figure.walk") else { return }
         
-        switch travelMethodButton.currentImage {
-        case walkingImage:
-            travelMethodButton.setImage(drivingImage, for: .normal)
-            displayDirectionsForActiveMembers(forSession: session)
-            mapHomeViewModel.updateToWalking()
-        case drivingImage:
-            travelMethodButton.setImage(walkingImage, for: .normal)
-            displayDirectionsForActiveMembers(forSession: session)
-            mapHomeViewModel.updateToDriving()
-        default:
-            travelMethodButton.setImage(drivingImage, for: .normal)
+        if mapHomeViewModel.selectedTransportType == .automobile {
+            mapHomeViewModel.selectedTransportType.toggle()
+            mapHomeViewModel.updateToWalking {
+                self.travelMethodButton.setImage(drivingImage, for: .normal)
+                self.displayDirectionsForActiveMembers(forSession: session)
+            }
+        } else {
+            mapHomeViewModel.selectedTransportType.toggle()
+            mapHomeViewModel.updateToDriving {
+                self.travelMethodButton.setImage(walkingImage, for: .normal)
+                self.displayDirectionsForActiveMembers(forSession: session)
+            }
         }
     }
     
@@ -67,7 +68,7 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func centerRouteButtonTapped(_ sender: Any) {
-        resetZoomForPolylineRoutes()
+        resetZoomForAllPolylineRoutes()
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
@@ -180,7 +181,7 @@ class MapHomeViewController: UIViewController {
                     self.mapHomeViewModel.updateMemberTravelTime(withMemberID: memberAnnotation.deviceID, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = memberAnnotation.title
                     self.mapView.addOverlay(route.polyline)
-                    self.resetZoomForPolylineRoutes()
+                    self.resetZoomForAllPolylineRoutes()
                 }
             }
         }
@@ -202,7 +203,7 @@ class MapHomeViewController: UIViewController {
         let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
     }
     
-    private func resetZoomForPolylineRoutes() {
+    private func resetZoomForAllPolylineRoutes() {
         guard let polylineOverlay = self.mapView.overlays.first else { return }
         let newMapRect = self.mapView.overlays.reduce(polylineOverlay.boundingMapRect, { $0.union($1.boundingMapRect)} )
         mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
