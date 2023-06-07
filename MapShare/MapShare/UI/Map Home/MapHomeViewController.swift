@@ -44,22 +44,17 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func travelMethodButtonTapped(_ sender: Any) {
-        guard let session = mapHomeViewModel.mapShareSession,
-              let drivingImage = UIImage(systemName: "car.circle.fill"),
+        guard let drivingImage = UIImage(systemName: "car.circle.fill"),
               let walkingImage = UIImage(systemName: "figure.walk") else { return }
         
-        if mapHomeViewModel.selectedTransportType == .automobile {
-            mapHomeViewModel.selectedTransportType.toggle()
-            mapHomeViewModel.updateToWalking {
-                self.travelMethodButton.setImage(drivingImage, for: .normal)
-                self.displayDirectionsForActiveMembers(forSession: session)
-            }
+        if mapHomeViewModel.isDriving {
+            mapHomeViewModel.isDriving.toggle()
+            mapHomeViewModel.updateToWalking()
+            travelMethodButton.setImage(drivingImage, for: .normal)
         } else {
-            mapHomeViewModel.selectedTransportType.toggle()
-            mapHomeViewModel.updateToDriving {
-                self.travelMethodButton.setImage(walkingImage, for: .normal)
-                self.displayDirectionsForActiveMembers(forSession: session)
-            }
+            mapHomeViewModel.isDriving.toggle()
+            mapHomeViewModel.updateToDriving()
+            travelMethodButton.setImage(walkingImage, for: .normal)
         }
     }
     
@@ -163,11 +158,11 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    private func getDirections(routeAnnotation: MKAnnotation) {
+    private func getDirections(routeAnnotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) {
         guard let memberAnnotationsShowing = mapHomeViewModel.mapShareSession?.memberAnnotations.filter ({ $0.isShowing }) else { return }
         for memberAnnotation in memberAnnotationsShowing {
             let location   = CLLocationCoordinate2D(latitude: memberAnnotation.coordinate.latitude, longitude: memberAnnotation.coordinate.longitude)
-            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withButton: travelMethodButton)
+            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withTravelType: travelType)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
             directions.calculate { response, error in
@@ -187,12 +182,12 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    private func displayDirectionsForActiveMembers(forSession session: Session) {
+    private func displayDirectionsForActiveMembers(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
         for newRouteAnnotation in session.routeAnnotations {
             mapView.addAnnotation(newRouteAnnotation)
             
             if newRouteAnnotation.isShowingDirections {
-                getDirections(routeAnnotation: newRouteAnnotation)
+                getDirections(routeAnnotation: newRouteAnnotation, withTravelType: travelType)
             }
         }
     }
@@ -295,9 +290,15 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         
-        guard let session = mapHomeViewModel.mapShareSession else { return }
+        guard let session = mapHomeViewModel.mapShareSession,
+              let routeAnnotation = session.routeAnnotations.first else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
-            displayDirectionsForActiveMembers(forSession: session)
+            
+            if routeAnnotation.isDriving {
+                displayDirectionsForActiveMembers(forSession: session, withTravelType: .automobile)
+            } else {
+                displayDirectionsForActiveMembers(forSession: session, withTravelType: .walking)
+            }
             
             if !session.routeAnnotations.isEmpty && session.routeAnnotations.first(where: { $0.isShowingDirections }) != nil {
                 centerRouteButton.isHidden = false

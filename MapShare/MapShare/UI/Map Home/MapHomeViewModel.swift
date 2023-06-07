@@ -32,7 +32,7 @@ class MapHomeViewModel {
     
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
-    var selectedTransportType: TransportType = .automobile
+    var isDriving = true
     
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
@@ -120,18 +120,18 @@ class MapHomeViewModel {
         service.updateLocationOfMemberAnnotationToFirestore(forSession: mapShareSession, forAnnotation: memberAnnotation, withLatitude: withLatitude, withLongitude: withLongitude)
     }
     
-    func updateToDriving(completion: @escaping() -> Void) {
+    func updateToDriving() {
         guard let mapShareSession,
               let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
         service.updateTransportTypeToDriving(forSession: mapShareSession, forRoute: routeAnnotation)
-        completion()
+//        completion()
     }
     
-    func updateToWalking(completion: @escaping() -> Void) {
+    func updateToWalking() {
         guard let mapShareSession,
               let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
         service.updateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
-        completion()
+//        completion()
     }
     
     //MARK: - MAPKIT FUNCTIONS
@@ -144,7 +144,7 @@ class MapHomeViewModel {
         service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
     }
     
-    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation, withButton button: UIButton) -> MKDirections.Request {
+    func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) -> MKDirections.Request {
         let routeCoordinate   = annotation.coordinate
         let startingLocation  = MKPlacemark(coordinate: coordinate)
         let destination       = MKPlacemark(coordinate: routeCoordinate)
@@ -152,7 +152,7 @@ class MapHomeViewModel {
         let request           = MKDirections.Request()
         request.source        = MKMapItem(placemark: startingLocation)
         request.destination   = MKMapItem(placemark: destination)
-        request.transportType = selectedTransportType.type
+        request.transportType = travelType
       
         return request
     }
