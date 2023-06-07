@@ -32,13 +32,14 @@ class MapHomeViewModel {
     
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
-    var isDriving = true
+    var isDriving       = true
+    var zoomsToFitAll   = true
     
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
     init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
-        self.service           = service
-        self.delegate          = delegate
+        self.service  = service
+        self.delegate = delegate
     }
     
     //MARK: - FIREBASE LISTENER FUNCTIONS

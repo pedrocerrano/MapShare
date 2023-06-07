@@ -63,7 +63,18 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func centerRouteButtonTapped(_ sender: Any) {
-        resetZoomForAllPolylineRoutes()
+        guard let singleRoute = UIImage(systemName: "point.topleft.down.curvedto.point.bottomright.up"),
+              let multiRoutes = UIImage(systemName: "point.3.connected.trianglepath.dotted") else { return }
+        
+        if mapHomeViewModel.zoomsToFitAll == false {
+            mapHomeViewModel.zoomsToFitAll.toggle()
+            resetZoomForAllPolylineRoutes()
+            centerRouteButton.setImage(singleRoute, for: .normal)
+        } else {
+            mapHomeViewModel.zoomsToFitAll.toggle()
+            resetZoomForUserRoute()
+            centerRouteButton.setImage(multiRoutes, for: .normal)
+        }
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
@@ -196,6 +207,12 @@ class MapHomeViewController: UIViewController {
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.directionsArray.append(directions)
         let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
+    }
+    
+    private func resetZoomForUserRoute() {
+        guard let currentUser = mapHomeViewModel.mapShareSession?.memberAnnotations.first(where: { $0.deviceID == Constants.Device.deviceID }),
+              let userPolyline = self.mapView.overlays.first(where: { $0.title == currentUser.title }) else { return }
+        mapView.setVisibleMapRect(userPolyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
     }
     
     private func resetZoomForAllPolylineRoutes() {
@@ -335,6 +352,8 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         updateMemberCounts()
         mapHomeViewModel.mapShareSession                    = nil
         mapView.showsUserLocation                           = true
+        mapHomeViewModel.isDriving                          = true
+        mapHomeViewModel.zoomsToFitAll                      = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
         mapHomeViewModel.sessionListener?.remove()
