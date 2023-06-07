@@ -25,7 +25,8 @@ class ActiveSessionTableViewCell: UITableViewCell {
         isOrganizerLabel.textColor     = UIElements.Color.mapShareYellow
         dotColorLabel.textColor = String.convertToColorFromString(string: member.mapMarkerColor)
         
-        guard let timeAsDouble = member.expectedTravelTime else { print("ActiveMemberTableViewCell unwrapping failure for ETA") ; return }
+        guard let timeAsDouble = member.expectedTravelTime else {  return }
+        
         if timeAsDouble > 0 {
             expectedTravelTimeLabel.text = timeAsDouble.asHoursAndMinsString(style: .abbreviated)
             expectedTravelTimeLabel.isHidden = false
@@ -39,16 +40,18 @@ class ActiveSessionTableViewCell: UITableViewCell {
             transportTypeLabel.isHidden      = true
         }
         
-        if session.isDriving {
-            transportTypeLabel.text = "Driving ETA"
-        } else {
-            transportTypeLabel.text = "Walking ETA"
-        }
-        
         if member.isOrganizer == false {
             isOrganizerLabel.isHidden = true
         } else {
             isOrganizerLabel.isHidden = false
+        }
+        
+        if let routeAnnotation = session.routeAnnotations.first {
+            if routeAnnotation.isDriving {
+                transportTypeLabel.text = "Driving ETA"
+            } else {
+                transportTypeLabel.text = "Walking ETA"
+            }
         }
     }
 } //: CLASS

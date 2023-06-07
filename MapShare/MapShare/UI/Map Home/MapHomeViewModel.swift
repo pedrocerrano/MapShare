@@ -121,14 +121,16 @@ class MapHomeViewModel {
     }
     
     func updateToDriving(completion: @escaping() -> Void) {
-        guard let mapShareSession else { return }
-        service.updateTransportTypeToDriving(forSession: mapShareSession)
+        guard let mapShareSession,
+              let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
+        service.updateTransportTypeToDriving(forSession: mapShareSession, forRoute: routeAnnotation)
         completion()
     }
     
     func updateToWalking(completion: @escaping() -> Void) {
-        guard let mapShareSession else { return }
-        service.updateTransportTypeToWalking(forSession: mapShareSession)
+        guard let mapShareSession,
+              let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
+        service.updateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
         completion()
     }
     

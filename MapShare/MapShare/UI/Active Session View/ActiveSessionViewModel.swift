@@ -21,6 +21,7 @@ class ActiveSessionViewModel {
     var sessionListener: ListenerRegistration?
     var memberListener: ListenerRegistration?
     var routesListener: ListenerRegistration?
+    var memberAnnotationsListener: ListenerRegistration?
     
     let sectionTitles = ["Active Members", "Waiting Room"]
     private weak var delegate: ActiveSessionViewModelDelegate?
@@ -60,8 +61,20 @@ class ActiveSessionViewModel {
         }
     }
     
+    func updateRouteAnnotations() {
+        routesListener = service.listenToChangesForRoutes(forSession: session) { result in
+            switch result {
+            case .success(let updatedRouteAnnotations):
+                self.session.routeAnnotations = updatedRouteAnnotations
+                self.delegate?.sessionDataUpdated()
+            case .failure(let error):
+                print(error.localizedDescription, "ActionSessionViewModel: RouteAnnotations returned nil")
+            }
+        }
+    }
+    
     func updateMemberAnnotations() {
-        routesListener = service.listenToChangesToMemberAnnotations(forSession: session) { result in
+        memberAnnotationsListener = service.listenToChangesToMemberAnnotations(forSession: session) { result in
             switch result {
             case .success(let updatedMemberAnnotations):
                 self.session.memberAnnotations = updatedMemberAnnotations

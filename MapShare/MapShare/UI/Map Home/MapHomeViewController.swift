@@ -154,7 +154,7 @@ class MapHomeViewController: UIViewController {
         if session.organizerDeviceID == Constants.Device.deviceID && session.isActive && session.routeAnnotations.isEmpty {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
-            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false)
+            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false, isDriving: true)
             mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
             clearRouteAnnotationsButton.isHidden = false
             travelMethodButton.isHidden          = false
