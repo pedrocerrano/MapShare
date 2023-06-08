@@ -58,7 +58,7 @@ class NewSessionViewController: UIViewController {
               let firstName          = firstNameTextField.text,
               let lastName           = lastNameTextField.text,
               let screenName         = screenNameTextField.text,
-              let markerColor        = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
+              let markerColor        = userColorPopUpButton.backgroundColor?.convertColorToString(),
               let organizerLatitude  = newSessionViewModel.locationManager.location?.coordinate.latitude,
               let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude else { return }
         var optionalScreenName = ""
@@ -88,7 +88,7 @@ class NewSessionViewController: UIViewController {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
             }
             PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-            UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+            UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
         }
     }
     
@@ -110,7 +110,7 @@ class NewSessionViewController: UIViewController {
         UIElements.configureTextFieldUI(forTextField: lastNameTextField)
         UIElements.configureTextFieldUI(forTextField: screenNameTextField)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-        UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+        UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
         UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.dodgerBlue)
     }
     

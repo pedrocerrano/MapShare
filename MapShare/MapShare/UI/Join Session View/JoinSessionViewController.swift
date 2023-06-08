@@ -77,7 +77,7 @@ class JoinSessionViewController: UIViewController {
         guard let firstName       = memberFirstNameTextField.text,
               let lastName        = memberLastNameTextField.text,
               let screenName      = memberScreenNameTextField.text,
-              let markerColor     = userColorPopUpButton.titleLabel?.textColor.convertColorToString(),
+              let markerColor     = userColorPopUpButton.backgroundColor?.convertColorToString(),
               let memberLatitude  = joinSessionViewModel.locationManager.location?.coordinate.latitude,
               let memberLongitude = joinSessionViewModel.locationManager.location?.coordinate.longitude else { return }
         var optionalScreenName    = ""
@@ -103,7 +103,7 @@ class JoinSessionViewController: UIViewController {
             }
             sheetPresentationController.dismissalTransitionWillBegin()
             PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-            UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+            UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
             logoImageView.isHidden = false
         }
     }
@@ -128,7 +128,7 @@ class JoinSessionViewController: UIViewController {
         UIElements.configureTextFieldUI(forTextField: memberLastNameTextField)
         UIElements.configureTextFieldUI(forTextField: memberScreenNameTextField)
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-        UIElements.configureTintedStyleButtonColor(for: userColorPopUpButton)
+        UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
         UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
     }
     

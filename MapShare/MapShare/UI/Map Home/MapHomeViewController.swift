@@ -258,6 +258,15 @@ extension MapHomeViewController: MKMapViewDelegate {
         return nil
     }
     
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        print("I got called")
+        guard let mapShareSession = mapHomeViewModel.mapShareSession else { return }
+        if let annotation = view.annotation, annotation.isKind(of: RouteAnnotation.self) {
+            print("So did I")
+            mapHomeViewModel.service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         guard let routeOverlay   = overlay as? MKPolyline,
               let activeMembers  = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }),

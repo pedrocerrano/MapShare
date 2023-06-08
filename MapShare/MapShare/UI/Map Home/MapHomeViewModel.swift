@@ -184,8 +184,8 @@ class MapHomeViewModel {
             markerAnnotationView.glyphImage        = UIImage(systemName: "flag.checkered.2.crossed")
             markerAnnotationView.markerTintColor   = UIElements.Color.dodgerBlue
             markerAnnotationView.canShowCallout    = true
-            markerAnnotationView.leftCalloutAccessoryView = routeDirectionsButton
             routeDirectionsButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.circle.fill"), for: .normal)
+            markerAnnotationView.rightCalloutAccessoryView = routeDirectionsButton
         }
         return view
     }

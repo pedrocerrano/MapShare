@@ -58,9 +58,18 @@ struct UIElements {
         button.layer.masksToBounds                = Constants.ButtonUI.masksToBounds
     }
     
-    static func configureTintedStyleButtonColor(for button: UIButton) {
-        button.tintColor = Color.dodgerBlue
-        button.setTitleColor(Color.dodgerBlue, for: .normal)
+    static func configureTintedStylePopUpButton(for button: UIButton) {
+        button.layer.cornerRadius                 = Constants.PopUpButtonUI.cornerRadius
+        button.layer.shadowColor                  = Constants.PopUpButtonUI.shadowColor
+        button.layer.shadowOpacity                = Constants.PopUpButtonUI.shadowOpacity
+        button.layer.shadowRadius                 = Constants.PopUpButtonUI.shadowRadius
+        button.layer.shadowOffset                 = Constants.PopUpButtonUI.shadowOffset
+        button.titleLabel?.layer.shadowColor      = Constants.PopUpButtonUI.titleShadowColor
+        button.titleLabel?.layer.shadowOpacity    = Constants.PopUpButtonUI.titleShadowOpacity
+        button.titleLabel?.layer.shadowRadius     = Constants.PopUpButtonUI.titleShadowRadius
+        button.titleLabel?.layer.shadowOffset     = Constants.PopUpButtonUI.titleShadowOffset
+        button.layer.masksToBounds                = Constants.PopUpButtonUI.masksToBounds
+        
     }
     
     static func configureWaitingRoomButton(for button: UIButton, withColor color: UIColor) {
