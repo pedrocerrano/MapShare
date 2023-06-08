@@ -106,9 +106,11 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2e2-W9-OHV">
                                         <rect key="frame" x="125" y="0.0" width="150" height="34.333333333333336"/>
+                                        <color key="backgroundColor" red="0.1176470588" green="0.56470588239999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="KsP-h4-Dg2"/>
                                         </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="Button"/>
                                     </button>

@@ -11,48 +11,56 @@ struct PopUpButton {
     
     static func setUpPopUpButton(for button: UIButton) {
         let defaultClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.dodgerBlue, for: .normal)
-            button.tintColor = UIElements.Color.dodgerBlue
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.dodgerBlue
         }
         
         let redClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapShareRed, for: .normal)
-            button.tintColor = UIElements.Tint.redTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapShareRed
+            button.tintColor = .white
         }
         
         let pinkClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapSharePink, for: .normal)
-            button.tintColor = UIElements.Tint.pinkTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapSharePink
+            button.tintColor = .white
         }
         
         let orangeClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapShareOrange, for: .normal)
-            button.tintColor = UIElements.Tint.orangeTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapShareOrange
+            button.tintColor = .white
         }
         
         let yellowClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapShareYellow, for: .normal)
-            button.tintColor = .label
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapShareYellow
+            button.tintColor = .white
         }
         
         let greenClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapShareGreen, for: .normal)
-            button.tintColor = UIElements.Tint.greenTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapShareGreen
+            button.tintColor = .white
         }
         
         let cyanClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapShareCyan, for: .normal)
-            button.tintColor = UIElements.Tint.cyanTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapShareCyan
+            button.tintColor = .white
         }
         
         let blueClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapShareBlue, for: .normal)
-            button.tintColor = UIElements.Tint.blueTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapShareBlue
+            button.tintColor = .white
         }
         
         let purpleClosure = { (action: UIAction) in
-            button.setTitleColor(UIElements.Color.mapSharePurple, for: .normal)
-            button.tintColor = UIElements.Tint.purpleTint
+            button.setTitleColor(.white, for: .normal)
+            button.backgroundColor = UIElements.Color.mapSharePurple
+            button.tintColor = .white
         }
         
         button.menu = UIMenu(children: [
