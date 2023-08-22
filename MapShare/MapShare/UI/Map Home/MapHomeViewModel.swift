@@ -133,6 +133,7 @@ class MapHomeViewModel {
         service.updateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
     }
     
+    
     //MARK: - MAPKIT FUNCTIONS
     func shareDirections() {
         routeDirectionsButton.addTarget(self, action: #selector(routeButtonPressed), for: .touchUpInside)
