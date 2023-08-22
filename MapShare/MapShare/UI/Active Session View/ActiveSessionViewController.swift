@@ -31,7 +31,7 @@ class ActiveSessionViewController: UIViewController {
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate   = self
         configureUI()
-        configureViewModelListeners()
+        configureListeners()
         configureSheetPresentationController()
         inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
         sheetPresentationController.animateChanges {
@@ -75,19 +75,19 @@ class ActiveSessionViewController: UIViewController {
         }
     }
     
-    private func configureViewModelListeners() {
-        activeSessionViewModel.updateSession()
-        activeSessionViewModel.updateMembers()
-        activeSessionViewModel.updateRouteAnnotations()
-        activeSessionViewModel.updateMemberAnnotations()
-    }
-    
     private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
         sheetPresentationController.prefersGrabberVisible = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
         sheetPresentationController.presentedViewController.isModalInPresentation = true
+    }
+
+    private func configureListeners() {
+        activeSessionViewModel.updateSession()
+        activeSessionViewModel.updateMembers()
+        activeSessionViewModel.updateRouteAnnotations()
+        activeSessionViewModel.updateMemberAnnotations()
     }
     
     private func removeListeners() {
