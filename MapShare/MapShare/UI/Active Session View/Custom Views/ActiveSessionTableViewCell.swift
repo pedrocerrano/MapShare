@@ -21,9 +21,9 @@ class ActiveSessionTableViewCell: UITableViewCell {
     //MARK: - FUNCTIONS
     func configureCell(forSession session: Session, with member: Member) {
         memberNameLabel.text           = "\(member.firstName) \(member.lastName)"
-        memberScreenNameLabel.text     = member.screenName
+        memberScreenNameLabel.text     = member.title
         isOrganizerLabel.textColor     = UIElements.Color.mapShareYellow
-        dotColorLabel.textColor = String.convertToColorFromString(string: member.mapMarkerColor)
+        dotColorLabel.textColor = String.convertToColorFromString(string: member.color)
         
         guard let timeAsDouble = member.expectedTravelTime else {  return }
         

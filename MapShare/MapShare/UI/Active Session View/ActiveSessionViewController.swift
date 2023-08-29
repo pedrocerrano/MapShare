@@ -52,10 +52,9 @@ class ActiveSessionViewController: UIViewController {
     
     //MARK: - FUNCTIONS
     @objc func presentShareSheet(_ sender: UIButton) {
-        let session = activeSessionViewModel.session
-        guard let organizer = session.members.filter ({ $0.isOrganizer }).first else { return }
-        let shareMessage = "\(organizer.screenName) is inviting you to a MapShare Session! Join with code: \(session.sessionCode)"
-        let shareSheetVC = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
+        guard let organizer = activeSessionViewModel.session.members.filter ({ $0.isOrganizer }).first else { return }
+        let shareMessage    = "\(organizer.title) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
+        let shareSheetVC    = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
         shareSheetVC.popoverPresentationController?.sourceView = sender
         shareSheetVC.popoverPresentationController?.sourceRect = sender.frame
         present(shareSheetVC, animated: true)
@@ -87,14 +86,12 @@ class ActiveSessionViewController: UIViewController {
         activeSessionViewModel.updateSession()
         activeSessionViewModel.updateMembers()
         activeSessionViewModel.updateRouteAnnotations()
-        activeSessionViewModel.updateMemberAnnotations()
     }
     
     private func removeListeners() {
         activeSessionViewModel.sessionListener?.remove()
         activeSessionViewModel.memberListener?.remove()
         activeSessionViewModel.routesListener?.remove()
-        activeSessionViewModel.memberAnnotationsListener?.remove()
     }
     
     
@@ -119,7 +116,7 @@ class ActiveSessionViewController: UIViewController {
         let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
+            guard let member = self.activeSessionViewModel.session.members.filter({ $0.deviceID == Constants.Device.deviceID }).first else { return }
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
@@ -166,13 +163,11 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             
             return activeCell
         case 1:
+            guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
+
             let activeSession = activeSessionViewModel.session
             let member        = activeSession.members.filter { !$0.isActive }[indexPath.row]
-            
-            guard let memberAnnotation = activeSession.memberAnnotations.filter({ $0.deviceID == member.memberDeviceID }).first,
-                  let waitingRoomCell  = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
-            
-            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, withMemberAnnotation: memberAnnotation, delegate: self)
+            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, delegate: self)
             
             return waitingRoomCell
         default:
@@ -199,8 +194,8 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
 
 //MARK: - EXT: WaitingRoomCellDelegate
 extension ActiveSessionViewController: WaitingRoomTableViewCellDelegate {
-    func admitMember(forSession session: Session, forMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation) {
-        self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member, withMemberAnnotation: memberAnnotation)
+    func admitMember(forSession session: Session, forMember member: Member) {
+        self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member)
     }
         
     func denyMember(fromSession session: Session, forMember member: Member) {

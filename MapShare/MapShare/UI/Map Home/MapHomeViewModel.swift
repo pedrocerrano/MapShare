@@ -14,7 +14,6 @@ protocol MapHomeViewModelDelegate: AnyObject {
     func changesInSession()
     func changesInMembers()
     func changesInRoute()
-    func changesInMemberAnnotations()
     func noSessionActive()
 }
 
@@ -25,7 +24,6 @@ class MapHomeViewModel {
     var sessionListener: ListenerRegistration?
     var memberListener: ListenerRegistration?
     var routesListener: ListenerRegistration?
-    var memberAnnotationsListener: ListenerRegistration?
     
     var mapShareSession: Session?
     private weak var delegate: MapHomeViewModelDelegate?
@@ -42,10 +40,11 @@ class MapHomeViewModel {
         self.delegate = delegate
     }
     
-    //MARK: - FIREBASE LISTENER FUNCTIONS
+    
+    //MARK: - FIREBASE LISTENERS
     func updateMapWithSessionChanges() {
         guard let mapShareSession else { return }
-        sessionListener = service.listenForChangesToSession(forSession: mapShareSession) { result in
+        sessionListener = service.firestoreListenToSession(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedSession):
                 mapShareSession.isActive          = loadedSession.isActive
@@ -62,7 +61,7 @@ class MapHomeViewModel {
     
     func updateMapWithMemberChanges() {
         guard let mapShareSession else { return }
-        memberListener = service.listenForChangesToMembers(forSession: mapShareSession) { result in
+        memberListener = service.firestoreListenToMembers(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedMembers):
                 mapShareSession.members = loadedMembers
@@ -75,7 +74,7 @@ class MapHomeViewModel {
     
     func updateMapWithRouteChanges() {
         guard let mapShareSession else { return }
-        routesListener = service.listenToChangesForRoutes(forSession: mapShareSession) { result in
+        routesListener = service.firestoreListenToRoutes(forSession: mapShareSession) { result in
             switch result {
             case .success(let loadedRouteAnnotations):
                 mapShareSession.routeAnnotations = loadedRouteAnnotations
@@ -86,51 +85,38 @@ class MapHomeViewModel {
         }
     }
     
-    func updateMapWithMemberAnnotations() {
-        guard let mapShareSession else { return }
-        memberAnnotationsListener = service.listenToChangesToMemberAnnotations(forSession: mapShareSession) { result in
-            switch result {
-            case .success(let loadedMemberAnnotations):
-                mapShareSession.memberAnnotations = loadedMemberAnnotations
-                self.delegate?.changesInMemberAnnotations()
-            case .failure(let error):
-                print(error.localizedDescription, "MapHomeViewModel: MemberAnnotations are nil")
-            }
-        }
-    }
-    
     
     //MARK: - FIREBASE ROUTE CRUD FUNCTIONS
     func saveRouteToFirestore(newRouteAnnotation: RouteAnnotation) {
         guard let mapShareSession else { return }
-        service.saveNewRouteToFirestore(forSession: mapShareSession, routeAnnotation: newRouteAnnotation)
+        service.firestoreSaveNewRoute(forSession: mapShareSession, routeAnnotation: newRouteAnnotation)
     }
     
     func deleteRouteFromFirestore() {
         guard let mapShareSession else { return }
-        service.deleteRouteOnFirestore(fromSession: mapShareSession)
+        service.firestoreDeleteRoute(fromSession: mapShareSession)
     }
     
     func updateMemberTravelTime(withMemberID deviceID: String, withTravelTime travelTime: Double) {
         guard let mapShareSession else { return }
-        service.updateExpectedTravelTime(forSession: mapShareSession, withMemberID: deviceID, withTime: travelTime)
+        service.firestoreUpdateTravelTime(forSession: mapShareSession, withMemberID: deviceID, withTime: travelTime)
     }
     
-    func updateMemberAnnotationLocation(forMemberAnnotation memberAnnotation: MemberAnnotation, withLatitude: Double, withLongitude: Double) {
+    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
         guard let mapShareSession else { return }
-        service.updateLocationOfMemberAnnotationToFirestore(forSession: mapShareSession, forAnnotation: memberAnnotation, withLatitude: withLatitude, withLongitude: withLongitude)
+        // This is the function to update Real-Time Location update with Ably
     }
     
     func updateToDriving() {
         guard let mapShareSession,
               let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
-        service.updateTransportTypeToDriving(forSession: mapShareSession, forRoute: routeAnnotation)
+        service.firestoreUpdateTransportTypeToDriving(forSession: mapShareSession, forRoute: routeAnnotation)
     }
     
     func updateToWalking() {
         guard let mapShareSession,
               let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
-        service.updateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
+        service.firestoreUpdateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
     }
     
     
@@ -141,7 +127,7 @@ class MapHomeViewModel {
     
     @objc func routeButtonPressed() {
         guard let mapShareSession else { return }
-        service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
+        service.firestoreShareDirections(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) -> MKDirections.Request {
@@ -164,9 +150,9 @@ class MapHomeViewModel {
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
-    func setupMemberAnnotations(for annotation: MemberAnnotation, on mapView: MKMapView) -> MKAnnotationView? {        
-        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Member", for: annotation)
-        guard let markerColor = String.convertToColorFromString(string: annotation.color) else { return nil }
+    func setupMemberAnnotations(for member: Member, on mapView: MKMapView) -> MKAnnotationView? {
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Member", for: member)
+        guard let markerColor = String.convertToColorFromString(string: member.color) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout    = false
@@ -175,10 +161,10 @@ class MapHomeViewModel {
         return view
     }
     
-    func setupRouteAnnotations(for annotation: RouteAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
-        annotation.title = "Route"
+    func setupRouteAnnotations(for routeAnnotation: RouteAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
+        routeAnnotation.title = "Route"
         
-        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Route", for: annotation)
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Route", for: routeAnnotation)
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.titleVisibility   = .hidden
             markerAnnotationView.animatesWhenAdded = true

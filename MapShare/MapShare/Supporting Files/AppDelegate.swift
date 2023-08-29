@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
-        #warning("self.sendDeviceTokenToServer(data: deviceToken)")
+//        #warning("self.sendDeviceTokenToServer(data: deviceToken)")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

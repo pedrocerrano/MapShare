@@ -48,7 +48,8 @@ extension RouteAnnotation {
         guard let routeLatitude       = routeAnnotationDictionary[RouteAnnotationKey.routeLatitude] as? Double,
               let routeLongitude      = routeAnnotationDictionary[RouteAnnotationKey.routeLongitude] as? Double,
               let isShowingDirections = routeAnnotationDictionary[RouteAnnotationKey.isShowingDirections] as? Bool,
-              let isDriving           = routeAnnotationDictionary[RouteAnnotationKey.isDriving] as? Bool else {
+              let isDriving           = routeAnnotationDictionary[RouteAnnotationKey.isDriving] as? Bool
+        else {
             print("Failed to initialize RouteAnnotation model object")
             return nil
         }

@@ -25,31 +25,25 @@ class NewSessionViewModel {
     //MARK: - FUNCTIONS
     func createNewMapShareSession(sessionName: String, sessionCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
         guard let organizerDeviceID = Constants.Device.deviceID else { return }
+        let organizerCoordinates    = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
         let organizer               = Member(firstName: firstName,
                                              lastName: lastName,
-                                             screenName: screenName,
-                                             mapMarkerColor: markerColor,
-                                             memberDeviceID: organizerDeviceID,
+                                             color: markerColor,
+                                             deviceID: organizerDeviceID,
                                              isOrganizer: true,
-                                             isActive: true)
-        
-        let organizerCoordinates = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
-        let organizerAnnotation = MemberAnnotation(deviceID: organizerDeviceID,
-                                                   coordinate: organizerCoordinates,
-                                                   title: screenName,
-                                                   color: markerColor,
-                                                   isShowing: true)
+                                             isActive: true,
+                                             coordinate: organizerCoordinates,
+                                             title: screenName)
         
         let newSession  = Session(sessionName: sessionName,
                                   sessionCode: sessionCode,
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
                                   routeAnnotations: [],
-                                  memberAnnotations: [organizerAnnotation],
                                   isActive: true)
         
         session = newSession
-        service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer, withMemberAnnotation: organizerAnnotation) {
+        service.firestoreSaveNewSession(newSession: newSession, withMember: organizer) {
             self.mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
         }
         

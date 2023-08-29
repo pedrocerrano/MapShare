@@ -21,11 +21,11 @@ class ActiveSessionViewModel {
     var sessionListener: ListenerRegistration?
     var memberListener: ListenerRegistration?
     var routesListener: ListenerRegistration?
-    var memberAnnotationsListener: ListenerRegistration?
     
-    let sectionTitles = ["Active Members", "Waiting Room"]
     private weak var delegate: ActiveSessionViewModelDelegate?
     weak var mapHomeDelegate: MapHomeViewController?
+    
+    let sectionTitles = ["Active Members", "Waiting Room"]
     
     init(session: Session, service: FirebaseService = FirebaseService(), delegate: ActiveSessionViewModelDelegate, mapHomeDelegate: MapHomeViewController) {
         self.session         = session
@@ -37,7 +37,7 @@ class ActiveSessionViewModel {
     
     //MARK: - LISTENERS
     func updateSession() {
-        sessionListener = service.listenForChangesToSession(forSession: session) { result in
+        sessionListener = service.firestoreListenToSession(forSession: session) { result in
             switch result {
             case .success(let updatedSession):
                 self.session = updatedSession
@@ -50,7 +50,7 @@ class ActiveSessionViewModel {
     }
     
     func updateMembers() {
-        memberListener = service.listenForChangesToMembers(forSession: session) { result in
+        memberListener = service.firestoreListenToMembers(forSession: session) { result in
             switch result {
             case .success(let updatedMembers):
                 self.session.members = updatedMembers
@@ -62,7 +62,7 @@ class ActiveSessionViewModel {
     }
     
     func updateRouteAnnotations() {
-        routesListener = service.listenToChangesForRoutes(forSession: session) { result in
+        routesListener = service.firestoreListenToRoutes(forSession: session) { result in
             switch result {
             case .success(let updatedRouteAnnotations):
                 self.session.routeAnnotations = updatedRouteAnnotations
@@ -73,37 +73,25 @@ class ActiveSessionViewModel {
         }
     }
     
-    func updateMemberAnnotations() {
-        memberAnnotationsListener = service.listenToChangesToMemberAnnotations(forSession: session) { result in
-            switch result {
-            case .success(let updatedMemberAnnotations):
-                self.session.memberAnnotations = updatedMemberAnnotations
-                self.delegate?.sessionDataUpdated()
-            case .failure(let error):
-                print(error.localizedDescription, "ActionSessionViewModel: MemberAnnotations returned nil")
-            }
-        }
-    }
-    
     
     //MARK: - CRUD FUNCTIONS
     func deleteSession() {
         for member in session.members {
-            service.deleteMemberFromFirestore(fromSession: session, withMember: member)
+            service.firestoreDeleteMember(fromSession: session, withMember: member)
         }
-        service.deleteRouteOnFirestore(fromSession: session)
-        service.deleteSessionFromFirestore(session: session)
+        service.firestoreDeleteRoute(fromSession: session)
+        service.firestoreDeleteSession(session: session)
     }
     
     func deleteMemberFromActiveSession(fromSession session: Session, forMember member: Member) {
-        service.deleteMemberFromFirestore(fromSession: session, withMember: member)
+        service.firestoreDeleteMember(fromSession: session, withMember: member)
     }
     
-    func admitNewMember(forSession session: Session, withMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation) {
-        service.admitMemberToActiveSessionOnFirestore(forSession: session, forMember: member, withMemberAnnotation: memberAnnotation)
+    func admitNewMember(forSession session: Session, withMember member: Member) {
+        service.firestoreAdmitMember(forSession: session, forMember: member)
     }
     
     func denyNewMember(forSession session: Session, withMember member: Member) {
-        service.deleteMemberFromFirestore(fromSession: session, withMember: member)
+        service.firestoreDeleteMember(fromSession: session, withMember: member)
     }
 }

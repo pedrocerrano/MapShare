@@ -78,30 +78,33 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-        let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
+        let routeAnnotations = mapView.annotations.filter { !($0 is Member) }
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         mapHomeViewModel.deleteRouteFromFirestore()
         centerRouteButton.isHidden           = true
         clearRouteAnnotationsButton.isHidden = true
+        
         guard let activeMembers = mapHomeViewModel.mapShareSession?.members else { return }
         if activeMembers.count == 1 {
             mapHomeViewModel.centerViewOnMember(mapView: mapView)
         } else {
-            let memberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
+            let memberAnnotations = mapView.annotations.filter { ($0 is Member) }
             mapView.showAnnotations(memberAnnotations, animated: true)
         }
+        
         for member in activeMembers {
-            mapHomeViewModel.updateMemberTravelTime(withMemberID: member.memberDeviceID, withTravelTime: -1)
+            mapHomeViewModel.updateMemberTravelTime(withMemberID: member.deviceID, withTravelTime: -1)
         }
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-        guard let coordinates       = mapHomeViewModel.locationManager.location?.coordinate,
-              let memberAnnotations = mapHomeViewModel.mapShareSession?.memberAnnotations,
-              let currentMember     = memberAnnotations.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
+        guard let coordinates   = mapHomeViewModel.locationManager.location?.coordinate,
+              let member        = mapHomeViewModel.mapShareSession?.members,
+              let currentMember = member.first(where: { Constants.Device.deviceID == $0.deviceID })
+        else { return }
         
-        mapHomeViewModel.updateMemberAnnotationLocation(forMemberAnnotation: currentMember, withLatitude: coordinates.latitude, withLongitude: coordinates.longitude)
+        mapHomeViewModel.updateMemberLocation(forMember: currentMember, withLatitude: coordinates.latitude, withLongitude: coordinates.longitude)
     }
     
     
@@ -136,7 +139,6 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.updateMapWithSessionChanges()
         mapHomeViewModel.updateMapWithMemberChanges()
         mapHomeViewModel.updateMapWithRouteChanges()
-        mapHomeViewModel.updateMapWithMemberAnnotations()
         mapHomeViewModel.shareDirections()
     }
     
@@ -170,9 +172,9 @@ class MapHomeViewController: UIViewController {
     }
     
     private func getDirections(routeAnnotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) {
-        guard let memberAnnotationsShowing = mapHomeViewModel.mapShareSession?.memberAnnotations.filter ({ $0.isShowing }) else { return }
-        for memberAnnotation in memberAnnotationsShowing {
-            let location   = CLLocationCoordinate2D(latitude: memberAnnotation.coordinate.latitude, longitude: memberAnnotation.coordinate.longitude)
+        guard let membersShowing = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }) else { return }
+        for member in membersShowing {
+            let location   = CLLocationCoordinate2D(latitude: member.coordinate.latitude, longitude: member.coordinate.longitude)
             let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withTravelType: travelType)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
@@ -184,8 +186,8 @@ class MapHomeViewController: UIViewController {
                 
                 guard let response = response else { return }
                 for route in response.routes {
-                    self.mapHomeViewModel.updateMemberTravelTime(withMemberID: memberAnnotation.deviceID, withTravelTime: route.expectedTravelTime)
-                    route.polyline.title = memberAnnotation.title
+                    self.mapHomeViewModel.updateMemberTravelTime(withMemberID: member.deviceID, withTravelTime: route.expectedTravelTime)
+                    route.polyline.title = member.title
                     self.mapView.addOverlay(route.polyline)
                     self.resetZoomForAllPolylineRoutes()
                 }
@@ -210,14 +212,16 @@ class MapHomeViewController: UIViewController {
     }
     
     private func resetZoomForUserRoute() {
-        guard let currentUser = mapHomeViewModel.mapShareSession?.memberAnnotations.first(where: { $0.deviceID == Constants.Device.deviceID }),
-              let userPolyline = self.mapView.overlays.first(where: { $0.title == currentUser.title }) else { return }
+        guard let currentUser  = mapHomeViewModel.mapShareSession?.members.first(where: { $0.deviceID == Constants.Device.deviceID }),
+              let userPolyline = self.mapView.overlays.first(where: { $0.title == currentUser.title })
+        else { return }
+        
         mapView.setVisibleMapRect(userPolyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
     }
     
     private func resetZoomForAllPolylineRoutes() {
         guard let polylineOverlay = self.mapView.overlays.first else { return }
-        let newMapRect = self.mapView.overlays.reduce(polylineOverlay.boundingMapRect, { $0.union($1.boundingMapRect)} )
+        let newMapRect            = self.mapView.overlays.reduce(polylineOverlay.boundingMapRect, { $0.union($1.boundingMapRect)} )
         mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
     }
 } //: CLASS
@@ -250,8 +254,8 @@ extension MapHomeViewController: MKMapViewDelegate {
         if let routeAnnotation = annotation as? RouteAnnotation {
             annotationView = mapHomeViewModel.setupRouteAnnotations(for: routeAnnotation, on: mapView)
             return annotationView
-        } else if let memberAnnotation = annotation as? MemberAnnotation {
-            annotationView = mapHomeViewModel.setupMemberAnnotations(for: memberAnnotation, on: mapView)
+        } else if let member = annotation as? Member {
+            annotationView = mapHomeViewModel.setupMemberAnnotations(for: member, on: mapView)
             mapView.showsUserLocation = false
             return annotationView
         }
@@ -259,20 +263,20 @@ extension MapHomeViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        print("I got called")
         guard let mapShareSession = mapHomeViewModel.mapShareSession else { return }
         if let annotation = view.annotation, annotation.isKind(of: RouteAnnotation.self) {
-            print("So did I")
-            mapHomeViewModel.service.showDirectionsToMembers(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
+            mapHomeViewModel.service.firestoreShareDirections(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
         }
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        guard let routeOverlay   = overlay as? MKPolyline,
-              let activeMembers  = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }),
-              let routeTitle     = routeOverlay.title,
-              let mapMarkerColor = activeMembers.first(where: { $0.screenName == routeTitle })?.mapMarkerColor else { return MKOverlayRenderer() }
-        let strokeColor      = String.convertToColorFromString(string: mapMarkerColor)
+        guard let routeOverlay  = overlay as? MKPolyline,
+              let activeMembers = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }),
+              let routeTitle    = routeOverlay.title,
+              let markerColor   = activeMembers.first(where: { $0.title == routeTitle })?.color
+        else { return MKOverlayRenderer() }
+        
+        let strokeColor      = String.convertToColorFromString(string: markerColor)
         let renderer         = MKPolylineRenderer(overlay: routeOverlay)
         renderer.strokeColor = strokeColor
         return renderer
@@ -296,7 +300,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     
     func changesInMembers() {
         guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
+        if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
             activeMembersStackView.isHidden   = false
             waitingRoomStackView.isHidden     = false
             refreshingLocationButton.isHidden = false
@@ -308,18 +312,27 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
             } else {
                 waitingRoomStackView.backgroundColor = .clear
             }
+            
+            let activeMembers = session.members.filter { $0.isActive }
+            mapView.addAnnotations(activeMembers)
+            if activeMembers.count > 1 {
+                mapView.showAnnotations(activeMembers, animated: true)
+            }
+        } else {
+            // Remove member annotatations here?
         }
     }
     
     func changesInRoute() {
-        let routeAnnotations = mapView.annotations.filter { !($0 is MemberAnnotation) }
+        let routeAnnotations = mapView.annotations.filter { !($0 is Member) }
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         
-        guard let session = mapHomeViewModel.mapShareSession,
-              let routeAnnotation = session.routeAnnotations.first else { return }
-        if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
-            
+        guard let session         = mapHomeViewModel.mapShareSession,
+              let routeAnnotation = session.routeAnnotations.first
+        else { return }
+        
+        if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
             if routeAnnotation.isDriving {
                 displayDirectionsForActiveMembers(forSession: session, withTravelType: .automobile)
             } else {
@@ -334,21 +347,6 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         }
     }
     
-    func changesInMemberAnnotations() {
-        #warning("This clears ALL memberAnnotations. It will not work for real-time updates")
-        let existingMemberAnnotations = mapView.annotations.filter { ($0 is MemberAnnotation) }
-        mapView.removeAnnotations(existingMemberAnnotations)
-        
-        guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.members.first(where: { Constants.Device.deviceID == $0.memberDeviceID && $0.isActive }) != nil {
-            let memberAnnotationsShowing = session.memberAnnotations.filter { $0.isShowing }
-            mapView.addAnnotations(memberAnnotationsShowing)
-            if memberAnnotationsShowing.count > 1 {
-                mapView.showAnnotations(memberAnnotationsShowing, animated: true)
-            }
-        }
-    }
-    
     func noSessionActive() {
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
@@ -356,7 +354,6 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         waitingRoomStackView.isHidden                       = true
         travelMethodButton.isHidden                         = true
         mapHomeViewModel.mapShareSession?.isActive          = false
-        mapHomeViewModel.mapShareSession?.memberAnnotations = []
         mapHomeViewModel.mapShareSession?.members           = []
         updateMemberCounts()
         mapHomeViewModel.mapShareSession                    = nil
@@ -368,6 +365,5 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapHomeViewModel.sessionListener?.remove()
         mapHomeViewModel.memberListener?.remove()
         mapHomeViewModel.routesListener?.remove()
-        mapHomeViewModel.memberAnnotationsListener?.remove()
     }
 } //: ViewModelDelegate

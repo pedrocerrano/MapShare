@@ -1,12 +1,30 @@
 {
   "pins" : [
     {
+      "identity" : "ably-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ably/ably-cocoa",
+      "state" : {
+        "revision" : "0a97ac35ee8f994762e963a9e501df492247a578",
+        "version" : "1.2.20"
+      }
+    },
+    {
       "identity" : "abseil-cpp-binary",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/abseil-cpp-binary.git",
       "state" : {
         "revision" : "a5f16ba68913840ee5df91b8dc06f5cc063579de",
         "version" : "1.2021110200.0"
+      }
+    },
+    {
+      "identity" : "delta-codec-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ably/delta-codec-cocoa",
+      "state" : {
+        "revision" : "3ee62ea40a63996b55818d44b3f0e56d8753be88",
+        "version" : "1.3.3"
       }
     },
     {
@@ -70,6 +88,15 @@
       "state" : {
         "revision" : "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
         "version" : "1.22.2"
+      }
+    },
+    {
+      "identity" : "msgpack-objective-c",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rvi/msgpack-objective-C",
+      "state" : {
+        "revision" : "3e36b48e04ecd756cb927bd5f5b9bf6d45e475f9",
+        "version" : "0.4.0"
       }
     },
     {

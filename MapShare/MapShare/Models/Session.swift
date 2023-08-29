@@ -21,7 +21,6 @@ class Session {
         static let sessionCollectionType          = "mapShareSession"
         static let membersCollectionType          = "members"
         static let routeAnnotationCollectionType  = "routeAnnotations"
-        static let memberAnnotationCollectionType = "memberAnnotations"
         
         static let routeDocumentType              = "route"
     }
@@ -31,7 +30,6 @@ class Session {
     var organizerDeviceID: String
     var members: [Member]
     var routeAnnotations: [RouteAnnotation]
-    var memberAnnotations: [MemberAnnotation]
     var isActive: Bool
     
     var sessionDictionaryRepresentation: [String : AnyHashable] {
@@ -43,13 +41,12 @@ class Session {
         ]
     }
     
-    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], routeAnnotations: [RouteAnnotation], memberAnnotations: [MemberAnnotation], isActive: Bool) {
+    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], routeAnnotations: [RouteAnnotation], isActive: Bool) {
         self.sessionName       = sessionName
         self.sessionCode       = sessionCode
         self.organizerDeviceID = organizerDeviceID
         self.members           = members
         self.routeAnnotations  = routeAnnotations
-        self.memberAnnotations = memberAnnotations
         self.isActive          = isActive
     }
     
@@ -62,12 +59,13 @@ extension Session {
         guard let sessionName           = sessionDictionary[SessionKey.sessionName] as? String,
               let sessionCode           = sessionDictionary[SessionKey.sessionCode] as? String,
               let organizerDeviceID     = sessionDictionary[SessionKey.organizerDeviceID] as? String,
-              let isActive              = sessionDictionary[SessionKey.isActive] as? Bool else {
+              let isActive              = sessionDictionary[SessionKey.isActive] as? Bool
+        else {
             print("Failed to initialize Session model object")
             return nil
         }
         
-        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], routeAnnotations: [], memberAnnotations: [], isActive: isActive)
+        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], routeAnnotations: [], isActive: isActive)
     }
 }
 

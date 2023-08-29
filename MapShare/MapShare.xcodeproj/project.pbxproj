@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29345F972A9524B200B9F386 /* Ably in Frameworks */ = {isa = PBXBuildFile; productRef = 29345F962A9524B200B9F386 /* Ably */; };
 		295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079302A0309A00059D774 /* ActiveSessionViewController.swift */; };
 		295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 295079322A030A5D0059D774 /* ActiveSession.storyboard */; };
 		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
 		295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */; };
 		295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */; };
-		296F4CCD2A2F84AD006A65EE /* MemberAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296F4CCC2A2F84AD006A65EE /* MemberAnnotation.swift */; };
 		297626AF2A09788C00F7BCC4 /* JoinSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */; };
 		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
@@ -74,7 +74,6 @@
 		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
 		295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionTableViewCell.swift; sourceTree = "<group>"; };
 		295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewModel.swift; sourceTree = "<group>"; };
-		296F4CCC2A2F84AD006A65EE /* MemberAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberAnnotation.swift; sourceTree = "<group>"; };
 		297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = JoinSession.storyboard; sourceTree = "<group>"; };
 		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
@@ -122,6 +121,7 @@
 			files = (
 				29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */,
 				29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */,
+				29345F972A9524B200B9F386 /* Ably in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +225,6 @@
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
 				AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */,
-				296F4CCC2A2F84AD006A65EE /* MemberAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -321,6 +320,7 @@
 			packageProductDependencies = (
 				29F859AA2A01884200A53792 /* FirebaseFirestore */,
 				29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */,
+				29345F962A9524B200B9F386 /* Ably */,
 			);
 			productName = MapShare;
 			productReference = 29E5A53629F81B23008D8834 /* MapShare.app */;
@@ -355,6 +355,7 @@
 			mainGroup = 29E5A52D29F81B23008D8834;
 			packageReferences = (
 				29F859A92A01884200A53792 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				29345F952A9524B200B9F386 /* XCRemoteSwiftPackageReference "ably-cocoa" */,
 			);
 			productRefGroup = 29E5A53729F81B23008D8834 /* Products */;
 			projectDirPath = "";
@@ -423,7 +424,6 @@
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
 				AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */,
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
-				296F4CCD2A2F84AD006A65EE /* MemberAnnotation.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
@@ -737,6 +737,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		29345F952A9524B200B9F386 /* XCRemoteSwiftPackageReference "ably-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ably/ably-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		29F859A92A01884200A53792 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -748,6 +756,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		29345F962A9524B200B9F386 /* Ably */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 29345F952A9524B200B9F386 /* XCRemoteSwiftPackageReference "ably-cocoa" */;
+			productName = Ably;
+		};
 		29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 29F859A92A01884200A53792 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
