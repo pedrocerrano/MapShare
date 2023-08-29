@@ -76,20 +76,20 @@ class MapHomeViewModel {
         guard let mapShareSession else { return }
         routesListener = service.firestoreListenToRoutes(forSession: mapShareSession) { result in
             switch result {
-            case .success(let loadedRouteAnnotations):
-                mapShareSession.routeAnnotations = loadedRouteAnnotations
+            case .success(let loadedRoute):
+                mapShareSession.route = loadedRoute
                 self.delegate?.changesInRoute()
             case .failure(let error):
-                print(error.localizedDescription, "MapHomeViewModel: RouteAnnotations are nil")
+                print(error.localizedDescription, "MapHomeViewModel: Routes are nil")
             }
         }
     }
     
     
     //MARK: - FIREBASE ROUTE CRUD FUNCTIONS
-    func saveRouteToFirestore(newRouteAnnotation: RouteAnnotation) {
+    func saveRouteToFirestore(newRoute: Route) {
         guard let mapShareSession else { return }
-        service.firestoreSaveNewRoute(forSession: mapShareSession, routeAnnotation: newRouteAnnotation)
+        service.firestoreSaveNewRoute(forSession: mapShareSession, route: newRoute)
     }
     
     func deleteRouteFromFirestore() {
@@ -99,24 +99,24 @@ class MapHomeViewModel {
     
     func updateMemberTravelTime(withMemberID deviceID: String, withTravelTime travelTime: Double) {
         guard let mapShareSession else { return }
-        service.firestoreUpdateTravelTime(forSession: mapShareSession, withMemberID: deviceID, withTime: travelTime)
+        service.firestoreUpdateRouteTravelTime(forSession: mapShareSession, withMemberID: deviceID, withTime: travelTime)
     }
     
     func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
-        guard let mapShareSession else { return }
+//        guard let mapShareSession else { return }
         // This is the function to update Real-Time Location update with Ably
     }
     
     func updateToDriving() {
         guard let mapShareSession,
-              let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
-        service.firestoreUpdateTransportTypeToDriving(forSession: mapShareSession, forRoute: routeAnnotation)
+              let route = mapShareSession.route.first else { return }
+        service.firestoreUpdateRouteToDriving(forSession: mapShareSession, forRoute: route)
     }
     
     func updateToWalking() {
         guard let mapShareSession,
-              let routeAnnotation = mapShareSession.routeAnnotations.first else { return }
-        service.firestoreUpdateTransportTypeToWalking(forSession: mapShareSession, forRoute: routeAnnotation)
+              let route = mapShareSession.route.first else { return }
+        service.firestoreUpdateRouteToWalking(forSession: mapShareSession, forRoute: route)
     }
     
     
@@ -127,7 +127,7 @@ class MapHomeViewModel {
     
     @objc func routeButtonPressed() {
         guard let mapShareSession else { return }
-        service.firestoreShareDirections(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
+        service.firestoreShareDirections(forSession: mapShareSession, using: mapShareSession.route[0])
     }
     
     func createDirectionsRequest(from coordinate: CLLocationCoordinate2D, annotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) -> MKDirections.Request {
@@ -161,7 +161,7 @@ class MapHomeViewModel {
         return view
     }
     
-    func setupRouteAnnotations(for routeAnnotation: RouteAnnotation, on mapView: MKMapView) -> MKAnnotationView? {
+    func setupRouteAnnotations(for routeAnnotation: Route, on mapView: MKMapView) -> MKAnnotationView? {
         routeAnnotation.title = "Route"
         
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Route", for: routeAnnotation)

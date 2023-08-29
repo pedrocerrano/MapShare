@@ -39,7 +39,7 @@ class NewSessionViewModel {
                                   sessionCode: sessionCode,
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
-                                  routeAnnotations: [],
+                                  route: [],
                                   isActive: true)
         
         session = newSession

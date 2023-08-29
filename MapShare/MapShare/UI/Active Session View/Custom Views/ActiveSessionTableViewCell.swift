@@ -46,7 +46,7 @@ class ActiveSessionTableViewCell: UITableViewCell {
             isOrganizerLabel.isHidden = false
         }
         
-        if let routeAnnotation = session.routeAnnotations.first {
+        if let routeAnnotation = session.route.first {
             if routeAnnotation.isDriving {
                 transportTypeLabel.text = "Driving ETA"
             } else {

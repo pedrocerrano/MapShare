@@ -159,11 +159,11 @@ class MapHomeViewController: UIViewController {
     
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.organizerDeviceID == Constants.Device.deviceID && session.isActive && session.routeAnnotations.isEmpty {
+        if session.organizerDeviceID == Constants.Device.deviceID && session.isActive && session.route.isEmpty {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
-            let newRouteAnnotation = RouteAnnotation(coordinate: tappedCoordinate, title: nil, isShowingDirections: false, isDriving: true)
-            mapHomeViewModel.saveRouteToFirestore(newRouteAnnotation: newRouteAnnotation)
+            let newRouteAnnotation = Route(coordinate: tappedCoordinate, title: nil, isShowingDirections: false, isDriving: true)
+            mapHomeViewModel.saveRouteToFirestore(newRoute: newRouteAnnotation)
             clearRouteAnnotationsButton.isHidden = false
             travelMethodButton.isHidden          = false
         } else {
@@ -196,7 +196,7 @@ class MapHomeViewController: UIViewController {
     }
     
     private func displayDirectionsForActiveMembers(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
-        for newRouteAnnotation in session.routeAnnotations {
+        for newRouteAnnotation in session.route {
             mapView.addAnnotation(newRouteAnnotation)
             
             if newRouteAnnotation.isShowingDirections {
@@ -251,7 +251,7 @@ extension MapHomeViewController: CLLocationManagerDelegate {
 extension MapHomeViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var annotationView: MKAnnotationView?
-        if let routeAnnotation = annotation as? RouteAnnotation {
+        if let routeAnnotation = annotation as? Route {
             annotationView = mapHomeViewModel.setupRouteAnnotations(for: routeAnnotation, on: mapView)
             return annotationView
         } else if let member = annotation as? Member {
@@ -264,8 +264,8 @@ extension MapHomeViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         guard let mapShareSession = mapHomeViewModel.mapShareSession else { return }
-        if let annotation = view.annotation, annotation.isKind(of: RouteAnnotation.self) {
-            mapHomeViewModel.service.firestoreShareDirections(forSession: mapShareSession, using: mapShareSession.routeAnnotations[0])
+        if let annotation = view.annotation, annotation.isKind(of: Route.self) {
+            mapHomeViewModel.service.firestoreShareDirections(forSession: mapShareSession, using: mapShareSession.route[0])
         }
     }
     
@@ -329,7 +329,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeOverlays(mapView.overlays)
         
         guard let session         = mapHomeViewModel.mapShareSession,
-              let routeAnnotation = session.routeAnnotations.first
+              let routeAnnotation = session.route.first
         else { return }
         
         if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
@@ -339,7 +339,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
                 displayDirectionsForActiveMembers(forSession: session, withTravelType: .walking)
             }
             
-            if !session.routeAnnotations.isEmpty && session.routeAnnotations.first(where: { $0.isShowingDirections }) != nil {
+            if !session.route.isEmpty && session.route.first(where: { $0.isShowingDirections }) != nil {
                 centerRouteButton.isHidden = false
             } else {
                 centerRouteButton.isHidden = true

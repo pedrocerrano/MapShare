@@ -41,7 +41,7 @@
 		AF72D7F42A12AE030080C9AD /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */; };
 		AF72D7F62A1407980080C9AD /* PopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F52A1407980080C9AD /* PopUpButton.swift */; };
 		AF72D7F82A14113A0080C9AD /* MapHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */; };
-		AF86025E2A02F7A800A6519D /* RouteAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */; };
+		AF86025E2A02F7A800A6519D /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF86025D2A02F7A800A6519D /* Route.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +104,7 @@
 		AF72D7F32A12AE030080C9AD /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		AF72D7F52A1407980080C9AD /* PopUpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpButton.swift; sourceTree = "<group>"; };
 		AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHomeViewModel.swift; sourceTree = "<group>"; };
-		AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAnnotation.swift; sourceTree = "<group>"; };
+		AF86025D2A02F7A800A6519D /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,7 +224,7 @@
 			children = (
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
-				AF86025D2A02F7A800A6519D /* RouteAnnotation.swift */,
+				AF86025D2A02F7A800A6519D /* Route.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -404,7 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF86025E2A02F7A800A6519D /* RouteAnnotation.swift in Sources */,
+				AF86025E2A02F7A800A6519D /* Route.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
 				29EA12782A241A78007EDE03 /* Double+Ext.swift in Sources */,
 				295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */,

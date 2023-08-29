@@ -21,7 +21,7 @@ struct FirebaseService {
     let ref = Firestore.firestore()
     
     
-    //MARK: - SESSION and MEMBER CRUD FUNCTIONS
+    //MARK: - SESSION and MEMBER FUNCTIONS
     func firestoreSaveNewSession(newSession session: Session, withMember member: Member, completion: @escaping () -> Void) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).setData(session.sessionDictionaryRepresentation)
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.deviceID).setData(member.memberDictionaryRepresentation)
@@ -63,29 +63,29 @@ struct FirebaseService {
     }
     
     
-    //MARK: - ROUTE ANNOTATIONS CRUD FUNCTIONS
-    func firestoreSaveNewRoute(forSession session: Session, routeAnnotation: RouteAnnotation) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).setData(routeAnnotation.routeAnnotationDictionaryRepresentation)
+    //MARK: - ROUTE FUNCTIONS
+    func firestoreSaveNewRoute(forSession session: Session, route: Route) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).document(Session.SessionKey.routeDocumentType).setData(route.routeDictionaryRepresentation)
     }
     
     func firestoreDeleteRoute(fromSession session: Session) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).delete()
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).document(Session.SessionKey.routeDocumentType).delete()
     }
     
-    func firestoreShareDirections(forSession session: Session, using routeAnnotation: RouteAnnotation) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).updateData([RouteAnnotation.RouteAnnotationKey.isShowingDirections : true])
+    func firestoreShareDirections(forSession session: Session, using route: Route) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).document(Session.SessionKey.routeDocumentType).updateData([Route.RouteKey.isShowingDirections : true])
     }
     
-    func firestoreUpdateTravelTime(forSession session: Session, withMemberID deviceID: String, withTime travelTime: Double) {
+    func firestoreUpdateRouteTravelTime(forSession session: Session, withMemberID deviceID: String, withTime travelTime: Double) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(deviceID).updateData([Member.MemberKey.expectedTravelTime : travelTime])
     }
     
-    func firestoreUpdateTransportTypeToDriving(forSession session: Session, forRoute route: RouteAnnotation) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).updateData([RouteAnnotation.RouteAnnotationKey.isDriving : true])
+    func firestoreUpdateRouteToDriving(forSession session: Session, forRoute route: Route) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).document(Session.SessionKey.routeDocumentType).updateData([Route.RouteKey.isDriving : true])
     }
     
-    func firestoreUpdateTransportTypeToWalking(forSession session: Session, forRoute route: RouteAnnotation) {
-        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).document(Session.SessionKey.routeDocumentType).updateData([RouteAnnotation.RouteAnnotationKey.isDriving : false])
+    func firestoreUpdateRouteToWalking(forSession session: Session, forRoute route: Route) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).document(Session.SessionKey.routeDocumentType).updateData([Route.RouteKey.isDriving : false])
     }
 
     
@@ -124,16 +124,16 @@ struct FirebaseService {
         return memberListener
     }
     
-    func firestoreListenToRoutes(forSession session: Session, completion: @escaping(Result<[RouteAnnotation], FirebaseError>) -> Void) -> ListenerRegistration {
-        let routesListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeAnnotationCollectionType).addSnapshotListener { querySnapshot, error in
+    func firestoreListenToRoutes(forSession session: Session, completion: @escaping(Result<[Route], FirebaseError>) -> Void) -> ListenerRegistration {
+        let routesListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).addSnapshotListener { querySnapshot, error in
             if let error = error {
                 completion(.failure(.firebaseError(error)))
             }
             
             guard let documentsData = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
             let routeDictArray      = documentsData.compactMap { $0.data() }
-            let routeAnnotations    = routeDictArray.compactMap { RouteAnnotation(fromRouteAnnotationDictionary: $0) }
-            completion(.success(routeAnnotations))
+            let routes              = routeDictArray.compactMap { Route(fromRouteDictionary: $0) }
+            completion(.success(routes))
         }
         
         return routesListener
