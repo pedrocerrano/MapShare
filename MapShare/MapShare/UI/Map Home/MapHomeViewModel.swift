@@ -152,7 +152,7 @@ class MapHomeViewModel {
     
     func setupMemberAnnotations(for member: Member, on mapView: MKMapView) -> MKAnnotationView? {
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Member", for: member)
-        guard let markerColor = String.convertToColorFromString(string: member.color) else { return nil }
+        guard let markerColor = Member.convertToColorFromString(string: member.color) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.canShowCallout    = false

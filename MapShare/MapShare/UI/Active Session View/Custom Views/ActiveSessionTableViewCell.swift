@@ -20,15 +20,16 @@ class ActiveSessionTableViewCell: UITableViewCell {
     
     //MARK: - FUNCTIONS
     func configureCell(forSession session: Session, with member: Member) {
-        memberNameLabel.text           = "\(member.firstName) \(member.lastName)"
-        memberScreenNameLabel.text     = member.title
-        isOrganizerLabel.textColor     = UIElements.Color.mapShareYellow
-        dotColorLabel.textColor = String.convertToColorFromString(string: member.color)
+        memberNameLabel.text       = "\(member.firstName) \(member.lastName)"
+        memberScreenNameLabel.text = member.title
+        isOrganizerLabel.textColor = UIElements.Color.mapShareYellow
+        dotColorLabel.textColor    = Member.convertToColorFromString(string: member.color)
         
-        guard let timeAsDouble = member.expectedTravelTime else {  return }
+        guard let timeAsDouble = member.expectedTravelTime else { return }
         
         if timeAsDouble > 0 {
-            expectedTravelTimeLabel.text = timeAsDouble.asHoursAndMinsString(style: .abbreviated)
+//            expectedTravelTimeLabel.text = timeAsDouble.asHoursAndMinsString(style: .abbreviated)
+            expectedTravelTimeLabel.text     = timeAsString(timeAsDouble, style: .abbreviated)
             expectedTravelTimeLabel.isHidden = false
             transportTypeLabel.isHidden      = false
         } else if timeAsDouble == 0 {
@@ -53,5 +54,12 @@ class ActiveSessionTableViewCell: UITableViewCell {
                 transportTypeLabel.text = "Walking ETA"
             }
         }
+    }
+    
+    func timeAsString(_ timeAsDouble: Double, style: DateComponentsFormatter.UnitsStyle) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.unitsStyle = style
+        return formatter.string(from: timeAsDouble) ?? "Formatter Failure"
     }
 } //: CLASS

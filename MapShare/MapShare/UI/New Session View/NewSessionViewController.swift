@@ -58,9 +58,11 @@ class NewSessionViewController: UIViewController {
               let firstName          = firstNameTextField.text,
               let lastName           = lastNameTextField.text,
               let screenName         = screenNameTextField.text,
-              let markerColor        = userColorPopUpButton.backgroundColor?.convertColorToString(),
+              let markerColor        = userColorPopUpButton.backgroundColor,
               let organizerLatitude  = newSessionViewModel.locationManager.location?.coordinate.latitude,
-              let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude else { return }
+              let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude
+        else { return }
+    
         var optionalScreenName = ""
         if screenName.isEmpty {
             optionalScreenName = firstName
@@ -77,7 +79,14 @@ class NewSessionViewController: UIViewController {
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
             presentChooseColorAlert()
         } else {
-            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, sessionCode: newSessionViewModel.sessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
+            newSessionViewModel.createNewMapShareSession(sessionName: sessionName,
+                                                         sessionCode: newSessionViewModel.sessionCode,
+                                                         firstName: firstName,
+                                                         lastName: lastName,
+                                                         screenName: optionalScreenName,
+                                                         markerColor: Member.convertColorToString(markerColor),
+                                                         organizerLatitude: organizerLatitude,
+                                                         organizerLongitude: organizerLongitude)
             [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
                 if let textField {
                     textField.resignFirstResponder()
@@ -87,8 +96,8 @@ class NewSessionViewController: UIViewController {
             sheetPresentationController.animateChanges {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
             }
-            PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-            UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
+            PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .off)
+            userColorPopUpButton.backgroundColor = UIElements.Color.dodgerBlue
         }
     }
     
@@ -109,7 +118,7 @@ class NewSessionViewController: UIViewController {
         UIElements.configureTextFieldUI(forTextField: firstNameTextField)
         UIElements.configureTextFieldUI(forTextField: lastNameTextField)
         UIElements.configureTextFieldUI(forTextField: screenNameTextField)
-        PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+        PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .on)
         UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
         UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.dodgerBlue)
     }

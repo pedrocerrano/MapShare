@@ -276,7 +276,7 @@ extension MapHomeViewController: MKMapViewDelegate {
               let markerColor   = activeMembers.first(where: { $0.title == routeTitle })?.color
         else { return MKOverlayRenderer() }
         
-        let strokeColor      = String.convertToColorFromString(string: markerColor)
+        let strokeColor      = Member.convertToColorFromString(string: markerColor)
         let renderer         = MKPolylineRenderer(overlay: routeOverlay)
         renderer.strokeColor = strokeColor
         return renderer

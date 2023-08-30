@@ -14,7 +14,7 @@ class NewSessionViewModel {
     var session: Session?
     let service: FirebaseService
     weak var mapHomeDelegate: MapHomeViewController?
-    var sessionCode = String.generateRandomCode()
+    var sessionCode = ""
     
     init(service: FirebaseService = FirebaseService(), mapHomeDelegate: MapHomeViewController) {
         self.service         = service
@@ -36,7 +36,7 @@ class NewSessionViewModel {
                                              title: screenName)
         
         let newSession  = Session(sessionName: sessionName,
-                                  sessionCode: sessionCode,
+                                  sessionCode: generateRandomCode(sessionCode),
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
                                   route: [],
@@ -47,6 +47,19 @@ class NewSessionViewModel {
             self.mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
         }
         
-        self.sessionCode = String.generateRandomCode()
+        self.sessionCode = ""
+    }
+    
+    func generateRandomCode(_ sessionCode: String) -> String {
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        var randomString = sessionCode
+        
+        for _ in 0..<6 {
+            let randomIndex = Int(arc4random_uniform(UInt32(characters.count)))
+            let character = characters[characters.index(characters.startIndex, offsetBy: randomIndex)]
+            randomString += String(character)
+        }
+        
+        return randomString
     }
 }

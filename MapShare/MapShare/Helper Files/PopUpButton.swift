@@ -9,7 +9,7 @@ import UIKit
 
 struct PopUpButton {
     
-    static func setUpPopUpButton(for button: UIButton) {
+    static func setUpPopUpButton(for button: UIButton, withState state: UIMenuElement.State) {
         let defaultClosure = { (action: UIAction) in
             button.setTitleColor(.white, for: .normal)
             button.backgroundColor = UIElements.Color.dodgerBlue
@@ -64,7 +64,7 @@ struct PopUpButton {
         }
         
         button.menu = UIMenu(children: [
-            UIAction(title: "↓", attributes: .hidden, state: .on, handler: defaultClosure),
+            UIAction(title: "↓", attributes: .hidden, state: state, handler: defaultClosure),
             UIAction(title: "Red",    image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareRed, renderingMode: .alwaysOriginal), handler: redClosure),
             UIAction(title: "Pink",   image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapSharePink, renderingMode: .alwaysOriginal), handler: pinkClosure),
             UIAction(title: "Orange", image: UIImage(systemName: "circle.fill")?.withTintColor(UIElements.Color.mapShareOrange, renderingMode: .alwaysOriginal), handler: orangeClosure),

@@ -77,7 +77,7 @@ class JoinSessionViewController: UIViewController {
         guard let firstName       = memberFirstNameTextField.text,
               let lastName        = memberLastNameTextField.text,
               let screenName      = memberScreenNameTextField.text,
-              let markerColor     = userColorPopUpButton.backgroundColor?.convertColorToString(),
+              let markerColor     = userColorPopUpButton.backgroundColor,
               let memberLatitude  = joinSessionViewModel.locationManager.location?.coordinate.latitude,
               let memberLongitude = joinSessionViewModel.locationManager.location?.coordinate.longitude else { return }
         var optionalScreenName    = ""
@@ -94,7 +94,13 @@ class JoinSessionViewController: UIViewController {
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
             presentChooseColorAlert()
         } else {
-            joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, memberLatitude: memberLatitude, memberLongitude: memberLongitude)
+            joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode,
+                                                             firstName: firstName,
+                                                             lastName: lastName,
+                                                             screenName: optionalScreenName,
+                                                             markerColor: Member.convertColorToString(markerColor),
+                                                             memberLatitude: memberLatitude,
+                                                             memberLongitude: memberLongitude)
             [memberFirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
                 if let textField {
                     textField.resignFirstResponder()
@@ -102,8 +108,8 @@ class JoinSessionViewController: UIViewController {
                 }
             }
             sheetPresentationController.dismissalTransitionWillBegin()
-            PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-            UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
+            PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .off)
+            userColorPopUpButton.backgroundColor = UIElements.Color.dodgerBlue
             logoImageView.isHidden = false
         }
     }
@@ -127,7 +133,7 @@ class JoinSessionViewController: UIViewController {
         UIElements.configureTextFieldUI(forTextField: memberFirstNameTextField)
         UIElements.configureTextFieldUI(forTextField: memberLastNameTextField)
         UIElements.configureTextFieldUI(forTextField: memberScreenNameTextField)
-        PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
+        PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .on)
         UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
         UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
     }
