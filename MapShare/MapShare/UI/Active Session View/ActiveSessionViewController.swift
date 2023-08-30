@@ -53,7 +53,7 @@ class ActiveSessionViewController: UIViewController {
     //MARK: - FUNCTIONS
     @objc func presentShareSheet(_ sender: UIButton) {
         guard let organizer = activeSessionViewModel.session.members.filter ({ $0.isOrganizer }).first else { return }
-        let shareMessage    = "\(organizer.title) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
+        let shareMessage    = "\(String(describing: organizer.title)) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
         let shareSheetVC    = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
         shareSheetVC.popoverPresentationController?.sourceView = sender
         shareSheetVC.popoverPresentationController?.sourceRect = sender.frame
@@ -99,7 +99,8 @@ class ActiveSessionViewController: UIViewController {
     private func organizerEndedActiveSessionAlert() {
         let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             self.activeSessionViewModel.deleteSession()
             self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
@@ -115,8 +116,11 @@ class ActiveSessionViewController: UIViewController {
     private func memberExitsActiveSessionAlert() {
         let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            guard let member = self.activeSessionViewModel.session.members.filter({ $0.deviceID == Constants.Device.deviceID }).first else { return }
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
+            guard let self   = self,
+                  let member = self.activeSessionViewModel.session.members.filter({ $0.deviceID == Constants.Device.deviceID }).first
+            else { return }
+            
             self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
             self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()

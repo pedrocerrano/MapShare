@@ -64,13 +64,7 @@ class JoinSessionViewController: UIViewController {
     @IBAction func searchSessionButtonTapped(_ sender: Any) {
         tellTheGroupLabel.isHidden = true
         guard let codeEntry = codeEntryTextField.text else { return }
-        if codeEntry.isEmpty || codeEntry.count != 6 {
-            hideJoinSessionTextFields()
-            presentNeedsSixDigitsAlert()
-        } else {
-            joinSessionViewModel.searchFirebase(with: codeEntry)
-            codeEntryTextField.resignFirstResponder()
-        }
+        confirmValidCode(with: codeEntry)
     }
     
     @IBAction func joinSessionButtonTapped(_ sender: Any) {
@@ -88,11 +82,11 @@ class JoinSessionViewController: UIViewController {
         }
         
         if firstName.isEmpty {
-            presentNeedsFirstNameAlert()
+            present(Alerts.needFirstName(), animated: true)
         } else if lastName.isEmpty {
-            presentNeedsLastNameAlert()
+            present(Alerts.needLastName(), animated: true)
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
-            presentChooseColorAlert()
+            present(Alerts.needColorChoice(), animated: true)
         } else {
             joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode,
                                                              firstName: firstName,
@@ -139,53 +133,32 @@ class JoinSessionViewController: UIViewController {
     }
     
     private func hideJoinSessionTextFields() {
-        tellTheGroupLabel.isHidden = true
-        memberFirstNameTextField.isHidden = true
-        memberLastNameTextField.isHidden = true
+        tellTheGroupLabel.isHidden         = true
+        memberFirstNameTextField.isHidden  = true
+        memberLastNameTextField.isHidden   = true
         memberScreenNameTextField.isHidden = true
-        iconColorLabel.isHidden = true
-        userColorPopUpButton.isHidden = true
-        joinSessionButton.isHidden = true
+        iconColorLabel.isHidden            = true
+        userColorPopUpButton.isHidden      = true
+        joinSessionButton.isHidden         = true
     }
     
     private func revealJoinSessionTextFields() {
-        tellTheGroupLabel.isHidden = false
-        memberFirstNameTextField.isHidden = false
-        memberLastNameTextField.isHidden = false
+        tellTheGroupLabel.isHidden         = false
+        memberFirstNameTextField.isHidden  = false
+        memberLastNameTextField.isHidden   = false
         memberScreenNameTextField.isHidden = false
-        iconColorLabel.isHidden = false
-        userColorPopUpButton.isHidden = false
-        joinSessionButton.isHidden = false
+        iconColorLabel.isHidden            = false
+        userColorPopUpButton.isHidden      = false
+        joinSessionButton.isHidden         = false
     }
     
-    
-    //MARK: - ALERTS
-    private func presentNeedsSixDigitsAlert() {
-        let needsSixDigitsAlertController = UIAlertController(title: "Invalid Session Code", message: "Please retype a six-digit session code.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        needsSixDigitsAlertController.addAction(dismissAction)
-        present(needsSixDigitsAlertController, animated: true)
-    }
-    
-    private func presentNeedsFirstNameAlert() {
-        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for others to identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyFirstNameAlertController.addAction(dismissAction)
-        present(emptyFirstNameAlertController, animated: true)
-    }
-    
-    private func presentNeedsLastNameAlert() {
-        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for others to identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyLastNameAlertController.addAction(dismissAction)
-        present(emptyLastNameAlertController, animated: true)
-    }
-    
-    private func presentChooseColorAlert() {
-        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color to join.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        noColorSelectedAlertController.addAction(dismissAction)
-        present(noColorSelectedAlertController, animated: true)
+    private func confirmValidCode(with codeEntry: String) {
+        if codeEntry.isEmpty || codeEntry.count != 6 {
+            hideJoinSessionTextFields()
+            present(Alerts.onlySixDigits(), animated: true)
+        } else {
+            joinSessionViewModel.searchFirebase(with: codeEntry)
+        }
     }
     
     
@@ -231,13 +204,8 @@ extension JoinSessionViewController: UITextFieldDelegate {
         case codeEntryTextField:
             tellTheGroupLabel.isHidden = true
             guard let codeEntry = codeEntryTextField.text else { return false }
-            if codeEntry.isEmpty || codeEntry.count != 6 {
-                hideJoinSessionTextFields()
-                presentNeedsSixDigitsAlert()
-            } else {
-                joinSessionViewModel.searchFirebase(with: codeEntry)
-            }
-          memberFirstNameTextField.becomeFirstResponder()
+            confirmValidCode(with: codeEntry)
+            memberFirstNameTextField.becomeFirstResponder()
             return true
         case memberFirstNameTextField:
             return memberLastNameTextField.becomeFirstResponder()

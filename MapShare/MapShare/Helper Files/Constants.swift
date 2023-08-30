@@ -17,6 +17,11 @@ struct Constants {
         static let locationAccessNeeded = Notification.Name("locationAccessNeeded")
     }
     
+    struct AnnotationIdentifiers {
+        static let forRoutes  = "Route"
+        static let forMembers = "Member"
+    }
+    
     
     //MARK: - UI ATTRIBUTES
     struct LabelUI {

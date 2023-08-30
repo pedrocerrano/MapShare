@@ -71,13 +71,13 @@ class NewSessionViewController: UIViewController {
         }
         
         if sessionName.isEmpty {
-            presentSessionNeedsNameAlert()
+            present(Alerts.needSessionName(), animated: true)
         } else if firstName.isEmpty {
-            presentNeedsFirstNameAlert()
+            present(Alerts.needFirstName(), animated: true)
         } else if lastName.isEmpty {
-            presentNeedsLastNameAlert()
+            present(Alerts.needLastName(), animated: true)
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
-            presentChooseColorAlert()
+            present(Alerts.needColorChoice(), animated: true)
         } else {
             newSessionViewModel.createNewMapShareSession(sessionName: sessionName,
                                                          sessionCode: newSessionViewModel.sessionCode,
@@ -127,48 +127,8 @@ class NewSessionViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(alertLocationAccessNeeded), name: Constants.Notifications.locationAccessNeeded, object: nil)
     }
     
-    
-    //MARK: - ALERTS
     @objc func alertLocationAccessNeeded() {
-        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted",
-                                      message: "In order to utilize MapShare, we need access to your location.",
-                                      preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let goToSettingsAction = UIAlertAction(title: "Go To Settings", style: .default) { _ in
-            UIApplication.shared.open(settingsAppURL)
-        }
-        alert.addAction(dismissAction)
-        alert.addAction(goToSettingsAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func presentSessionNeedsNameAlert() {
-        let emptySessionNameAlertController = UIAlertController(title: "No Name Given", message: "Please name this MapShare session.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Will do!", style: .cancel)
-        emptySessionNameAlertController.addAction(dismissAction)
-        present(emptySessionNameAlertController, animated: true)
-    }
-    
-    private func presentNeedsFirstNameAlert() {
-        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for the MapShare members to identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyFirstNameAlertController.addAction(dismissAction)
-        present(emptyFirstNameAlertController, animated: true)
-    }
-    
-    private func presentNeedsLastNameAlert() {
-        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for the MapShare members to identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyLastNameAlertController.addAction(dismissAction)
-        present(emptyLastNameAlertController, animated: true)
-    }
-    
-    private func presentChooseColorAlert() {
-        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color so the MapShare members can identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        noColorSelectedAlertController.addAction(dismissAction)
-        present(noColorSelectedAlertController, animated: true)
+        present(Alerts.needLocationAccess(), animated: true, completion: nil)
     }
     
     

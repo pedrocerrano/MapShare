@@ -60,6 +60,7 @@ struct FirebaseService {
     
     func firestoreDeleteMember(fromSession session: Session, withMember member: Member) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.deviceID).delete()
+//        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document("memberToDelete").setData(["memberID" : member.deviceID])
     }
     
     

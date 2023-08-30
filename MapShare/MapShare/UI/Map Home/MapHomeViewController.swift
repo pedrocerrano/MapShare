@@ -44,8 +44,9 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func travelMethodButtonTapped(_ sender: Any) {
-        guard let drivingImage = UIImage(systemName: "car.circle.fill"),
-              let walkingImage = UIImage(systemName: "figure.walk") else { return }
+        guard let drivingImage = UIImage(systemName: SFSymbols.driving),
+              let walkingImage = UIImage(systemName: SFSymbols.walking)
+        else { return }
         
         if mapHomeViewModel.isDriving {
             mapHomeViewModel.isDriving.toggle()
@@ -63,8 +64,9 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func centerRouteButtonTapped(_ sender: Any) {
-        guard let singleRoute = UIImage(systemName: "point.topleft.down.curvedto.point.bottomright.up"),
-              let multiRoutes = UIImage(systemName: "point.3.connected.trianglepath.dotted") else { return }
+        guard let singleRoute = UIImage(systemName: SFSymbols.singleRoute),
+              let multiRoutes = UIImage(systemName: SFSymbols.multiRoutes)
+        else { return }
         
         if mapHomeViewModel.zoomsToFitAll == false {
             mapHomeViewModel.zoomsToFitAll.toggle()
@@ -104,7 +106,9 @@ class MapHomeViewController: UIViewController {
               let currentMember = member.first(where: { Constants.Device.deviceID == $0.deviceID })
         else { return }
         
-        mapHomeViewModel.updateMemberLocation(forMember: currentMember, withLatitude: coordinates.latitude, withLongitude: coordinates.longitude)
+        mapHomeViewModel.updateMemberLocation(forMember: currentMember,
+                                              withLatitude: coordinates.latitude,
+                                              withLongitude: coordinates.longitude)
     }
     
     
@@ -283,8 +287,8 @@ extension MapHomeViewController: MKMapViewDelegate {
     }
     
     private func registerMapAnnotations() {
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Route")
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Member")
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: Constants.AnnotationIdentifiers.forRoutes)
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: Constants.AnnotationIdentifiers.forMembers)
     }
 } //: MapViewDelegate
 

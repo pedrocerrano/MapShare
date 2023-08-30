@@ -26,6 +26,7 @@ class MapHomeViewModel {
     var routesListener: ListenerRegistration?
     
     var mapShareSession: Session?
+    var memberAnnotationToDelete: Member?
     private weak var delegate: MapHomeViewModelDelegate?
     
     var directionsArray: [MKDirections] = []
@@ -151,7 +152,7 @@ class MapHomeViewModel {
     }
     
     func setupMemberAnnotations(for member: Member, on mapView: MKMapView) -> MKAnnotationView? {
-        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Member", for: member)
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: Constants.AnnotationIdentifiers.forMembers, for: member)
         guard let markerColor = Member.convertToColorFromString(string: member.color) else { return nil }
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.animatesWhenAdded = true
@@ -162,16 +163,16 @@ class MapHomeViewModel {
     }
     
     func setupRouteAnnotations(for routeAnnotation: Route, on mapView: MKMapView) -> MKAnnotationView? {
-        routeAnnotation.title = "Route"
+        routeAnnotation.title = Constants.AnnotationIdentifiers.forRoutes
         
-        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Route", for: routeAnnotation)
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: Constants.AnnotationIdentifiers.forRoutes, for: routeAnnotation)
         if let markerAnnotationView = view as? MKMarkerAnnotationView {
             markerAnnotationView.titleVisibility   = .hidden
             markerAnnotationView.animatesWhenAdded = true
-            markerAnnotationView.glyphImage        = UIImage(systemName: "flag.checkered.2.crossed")
+            markerAnnotationView.glyphImage        = UIImage(systemName: SFSymbols.routeAnnotationImage)
             markerAnnotationView.markerTintColor   = UIElements.Color.dodgerBlue
             markerAnnotationView.canShowCallout    = true
-            routeDirectionsButton.setImage(UIImage(systemName: "arrowshape.turn.up.right.circle.fill"), for: .normal)
+            routeDirectionsButton.setImage(UIImage(systemName: SFSymbols.routeAnnotationButton), for: .normal)
             markerAnnotationView.rightCalloutAccessoryView = routeDirectionsButton
         }
         return view
