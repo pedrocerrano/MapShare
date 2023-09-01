@@ -43,27 +43,15 @@ class MapHomeViewController: UIViewController {
     
     
     // MARK: - IB Actions
-    @IBAction func travelMethodButtonTapped(_ sender: Any) {
-        guard let drivingImage = UIImage(systemName: SFSymbols.driving),
-              let walkingImage = UIImage(systemName: SFSymbols.walking)
-        else { return }
-        
-        if mapHomeViewModel.isDriving {
-            mapHomeViewModel.isDriving.toggle()
-            mapHomeViewModel.updateToWalking()
-            travelMethodButton.setImage(drivingImage, for: .normal)
-        } else {
-            mapHomeViewModel.isDriving.toggle()
-            mapHomeViewModel.updateToDriving()
-            travelMethodButton.setImage(walkingImage, for: .normal)
-        }
+    @IBAction func travelMethodButtonTapped(_ sender: UIButton) {
+        mapHomeViewModel.toggleTravelMethod(for: sender)
     }
     
-    @IBAction func currentLocationButtonTapped(_ sender: Any) {
+    @IBAction func currentLocationButtonTapped(_ sender: UIButton) {
         mapHomeViewModel.centerViewOnMember(mapView: mapView)
     }
     
-    @IBAction func centerRouteButtonTapped(_ sender: Any) {
+    @IBAction func centerRouteButtonTapped(_ sender: UIButton) {
         guard let singleRoute = UIImage(systemName: SFSymbols.singleRoute),
               let multiRoutes = UIImage(systemName: SFSymbols.multiRoutes)
         else { return }
@@ -140,13 +128,14 @@ class MapHomeViewController: UIViewController {
     
     func delegateUpdateWithSession(session: Session) {
         mapHomeViewModel.mapShareSession = session
-        mapHomeViewModel.updateMapWithSessionChanges()
-        mapHomeViewModel.updateMapWithMemberChanges()
-        mapHomeViewModel.updateMapWithRouteChanges()
+        mapHomeViewModel.updateSessionChanges()
+        mapHomeViewModel.updateMemberChanges()
+        mapHomeViewModel.updateRouteChanges()
+        mapHomeViewModel.updateAnnotationsForDeletedMember()
         mapHomeViewModel.shareDirections()
     }
     
-    private func updateMemberCounts() {
+    func updateMemberCounts() {
         guard let members                = mapHomeViewModel.mapShareSession?.members else { return }
         let activeMembers                = members.filter { $0.isActive }.count
         let waitingRoomMembers           = members.filter { !$0.isActive }.count
@@ -199,7 +188,7 @@ class MapHomeViewController: UIViewController {
         }
     }
     
-    private func displayDirectionsForActiveMembers(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
+    func displayDirections(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
         for newRouteAnnotation in session.route {
             mapView.addAnnotation(newRouteAnnotation)
             
@@ -291,83 +280,3 @@ extension MapHomeViewController: MKMapViewDelegate {
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: Constants.AnnotationIdentifiers.forMembers)
     }
 } //: MapViewDelegate
-
-
-//MARK: - EXT: ViewModelDelegate
-extension MapHomeViewController: MapHomeViewModelDelegate {
-    func changesInSession() {
-        guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.isActive {
-            sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
-        }
-    }
-    
-    func changesInMembers() {
-        guard let session = mapHomeViewModel.mapShareSession else { return }
-        if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
-            activeMembersStackView.isHidden   = false
-            waitingRoomStackView.isHidden     = false
-            refreshingLocationButton.isHidden = false
-            updateMemberCounts()
-            
-            let waitingRoomMembers = session.members.filter { !$0.isActive }
-            if waitingRoomMembers.count > 0 {
-                waitingRoomStackView.backgroundColor = .yellow
-            } else {
-                waitingRoomStackView.backgroundColor = .clear
-            }
-            
-            let activeMembers = session.members.filter { $0.isActive }
-            mapView.addAnnotations(activeMembers)
-            if activeMembers.count > 1 {
-                mapView.showAnnotations(activeMembers, animated: true)
-            }
-        } else {
-            // Remove member annotatations here?
-        }
-    }
-    
-    func changesInRoute() {
-        let routeAnnotations = mapView.annotations.filter { !($0 is Member) }
-        mapView.removeAnnotations(routeAnnotations)
-        mapView.removeOverlays(mapView.overlays)
-        
-        guard let session         = mapHomeViewModel.mapShareSession,
-              let routeAnnotation = session.route.first
-        else { return }
-        
-        if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
-            if routeAnnotation.isDriving {
-                displayDirectionsForActiveMembers(forSession: session, withTravelType: .automobile)
-            } else {
-                displayDirectionsForActiveMembers(forSession: session, withTravelType: .walking)
-            }
-            
-            if !session.route.isEmpty && session.route.first(where: { $0.isShowingDirections }) != nil {
-                centerRouteButton.isHidden = false
-            } else {
-                centerRouteButton.isHidden = true
-            }
-        }
-    }
-    
-    func noSessionActive() {
-        mapView.removeOverlays(mapView.overlays)
-        mapView.removeAnnotations(mapView.annotations)
-        activeMembersStackView.isHidden                     = true
-        waitingRoomStackView.isHidden                       = true
-        travelMethodButton.isHidden                         = true
-        mapHomeViewModel.mapShareSession?.isActive          = false
-        mapHomeViewModel.mapShareSession?.members           = []
-        updateMemberCounts()
-        mapHomeViewModel.mapShareSession                    = nil
-        mapView.showsUserLocation                           = true
-        mapHomeViewModel.isDriving                          = true
-        mapHomeViewModel.zoomsToFitAll                      = true
-        sessionActivityIndicatorLabel.textColor             = .systemGray
-        mapHomeViewModel.centerViewOnMember(mapView: mapView)
-        mapHomeViewModel.sessionListener?.remove()
-        mapHomeViewModel.memberListener?.remove()
-        mapHomeViewModel.routesListener?.remove()
-    }
-} //: ViewModelDelegate

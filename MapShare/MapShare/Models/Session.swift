@@ -14,19 +14,22 @@ class Session {
         static let sessionCode           = "sessionCode"
         static let organizerDeviceID     = "organizerDeviceID"
         static let members               = "members"
+        static let deletingMembers       = "deletingMembers"
         static let route                 = "route"
         static let isActive              = "isActive"
         
-        static let sessionCollectionType = "mapShareSession"
-        static let membersCollectionType = "members"
-        static let routeCollectionType   = "routeCollection"
-        static let routeDocumentType     = "routeDocument"
+        static let sessionCollectionType        = "mapShareSession"
+        static let membersCollectionType        = "members"
+        static let deletedMembersCollectionType = "deletedMembers"
+        static let routeCollectionType          = "routeCollection"
+        static let routeDocumentType            = "routeDocument"
     }
     
     var sessionName: String
     var sessionCode: String
     var organizerDeviceID: String
     var members: [Member]
+    var deletedMembers: [DeletedMember]
     var route: [Route]
     var isActive: Bool
     
@@ -39,11 +42,12 @@ class Session {
         ]
     }
     
-    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], route: [Route], isActive: Bool) {
+    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], deletedMembers: [DeletedMember], route: [Route], isActive: Bool) {
         self.sessionName       = sessionName
         self.sessionCode       = sessionCode
         self.organizerDeviceID = organizerDeviceID
         self.members           = members
+        self.deletedMembers    = deletedMembers
         self.route             = route
         self.isActive          = isActive
     }
@@ -63,7 +67,7 @@ extension Session {
             return nil
         }
         
-        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], route: [], isActive: isActive)
+        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], deletedMembers: [], route: [], isActive: isActive)
     }
 }
 

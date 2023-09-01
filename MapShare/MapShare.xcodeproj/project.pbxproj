@@ -18,6 +18,8 @@
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
 		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
+		29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD57582AA219CB00BD6825 /* DeletedMember.swift */; };
+		29AD575C2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD575B2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift */; };
 		29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */; };
 		29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE21142A26931900D9AB2C /* LocationPushService.swift */; };
 		29AE21192A26931900D9AB2C /* LocationPush.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 29AE21122A26931900D9AB2C /* LocationPush.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -79,6 +81,8 @@
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
 		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
+		29AD57582AA219CB00BD6825 /* DeletedMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedMember.swift; sourceTree = "<group>"; };
+		29AD575B2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewController+DelegateFuncs.swift"; sourceTree = "<group>"; };
 		29AE20FA2A2646AF00D9AB2C /* MapShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapShare.entitlements; sourceTree = "<group>"; };
 		29AE21122A26931900D9AB2C /* LocationPush.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LocationPush.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		29AE21142A26931900D9AB2C /* LocationPushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPushService.swift; sourceTree = "<group>"; };
@@ -158,6 +162,14 @@
 			path = "Join Session View";
 			sourceTree = "<group>";
 		};
+		29AD575A2AA226C600BD6825 /* Firebase Service */ = {
+			isa = PBXGroup;
+			children = (
+				29F859AC2A018A7500A53792 /* FirebaseService.swift */,
+			);
+			path = "Firebase Service";
+			sourceTree = "<group>";
+		};
 		29AE20FB2A266C2900D9AB2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +211,7 @@
 				29AE20FA2A2646AF00D9AB2C /* MapShare.entitlements */,
 				29F859A72A0187BF00A53792 /* GoogleService-Info.plist */,
 				29E6A0C529FADE0C00D109B1 /* Models */,
+				29AD575A2AA226C600BD6825 /* Firebase Service */,
 				29E6A0CC29FADE2000D109B1 /* Helper Files */,
 				29E6A0D029FADE4100D109B1 /* UI */,
 				29E5A54D29F81B3A008D8834 /* Supporting Files */,
@@ -224,6 +237,7 @@
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
 				29E69A6C2A9F82CC00960035 /* Member+UIColor.swift */,
+				29AD57582AA219CB00BD6825 /* DeletedMember.swift */,
 				AF86025D2A02F7A800A6519D /* Route.swift */,
 			);
 			path = Models;
@@ -233,7 +247,6 @@
 			isa = PBXGroup;
 			children = (
 				29E6A0CD29FADE2000D109B1 /* Constants.swift */,
-				29F859AC2A018A7500A53792 /* FirebaseService.swift */,
 				29883D922A056F6700DB2D96 /* Detents.swift */,
 				29912B622A0BDFDF00EA9995 /* UIElements.swift */,
 				AF72D7F52A1407980080C9AD /* PopUpButton.swift */,
@@ -259,6 +272,7 @@
 			children = (
 				29EB7FD82A03DFC600F2242F /* MapHome.storyboard */,
 				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
+				29AD575B2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift */,
 				AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */,
 			);
 			path = "Map Home";
@@ -396,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29AD575C2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift in Sources */,
 				29E69A712A9FA2BD00960035 /* SFSymbols.swift in Sources */,
 				AF86025E2A02F7A800A6519D /* Route.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
@@ -417,6 +432,7 @@
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
+				29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */,
 				29E69A6F2A9F96F400960035 /* Alerts.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
 			);

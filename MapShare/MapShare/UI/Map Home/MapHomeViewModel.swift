@@ -11,7 +11,6 @@ import CoreLocation
 import FirebaseFirestore
 
 protocol MapHomeViewModelDelegate: AnyObject {
-    func changesInSession()
     func changesInMembers()
     func changesInRoute()
     func noSessionActive()
@@ -23,6 +22,7 @@ class MapHomeViewModel {
     var service: FirebaseService
     var sessionListener: ListenerRegistration?
     var memberListener: ListenerRegistration?
+    var deletedMemberListener: ListenerRegistration?
     var routesListener: ListenerRegistration?
     
     var mapShareSession: Session?
@@ -43,7 +43,7 @@ class MapHomeViewModel {
     
     
     //MARK: - FIREBASE LISTENERS
-    func updateMapWithSessionChanges() {
+    func updateSessionChanges() {
         guard let mapShareSession else { return }
         sessionListener = service.firestoreListenToSession(forSession: mapShareSession) { result in
             switch result {
@@ -52,15 +52,14 @@ class MapHomeViewModel {
                 mapShareSession.sessionCode       = loadedSession.sessionCode
                 mapShareSession.sessionName       = loadedSession.sessionName
                 mapShareSession.organizerDeviceID = loadedSession.organizerDeviceID
-                self.delegate?.changesInSession()
             case .failure(let error):
                 self.delegate?.noSessionActive()
-                print(error.localizedDescription, "MapHomeViewModel: Session is nil")
+                print(error.localizedDescription, "MapHomeViewModel: Issue with the Session data")
             }
         }
     }
     
-    func updateMapWithMemberChanges() {
+    func updateMemberChanges() {
         guard let mapShareSession else { return }
         memberListener = service.firestoreListenToMembers(forSession: mapShareSession) { result in
             switch result {
@@ -68,12 +67,12 @@ class MapHomeViewModel {
                 mapShareSession.members = loadedMembers
                 self.delegate?.changesInMembers()
             case .failure(let error):
-                print(error.localizedDescription, "MapHomeViewModel: Members are nil")
+                print(error.localizedDescription, "MapHomeViewModel: Issue with the Members data")
             }
         }
     }
     
-    func updateMapWithRouteChanges() {
+    func updateRouteChanges() {
         guard let mapShareSession else { return }
         routesListener = service.firestoreListenToRoutes(forSession: mapShareSession) { result in
             switch result {
@@ -81,7 +80,23 @@ class MapHomeViewModel {
                 mapShareSession.route = loadedRoute
                 self.delegate?.changesInRoute()
             case .failure(let error):
-                print(error.localizedDescription, "MapHomeViewModel: Routes are nil")
+                print(error.localizedDescription, "MapHomeViewModel: Issue with the Routes data")
+            }
+        }
+    }
+    
+    func updateAnnotationsForDeletedMember() {
+        guard let mapShareSession else { return }
+        deletedMemberListener = service.firestoreListenForDeletedMembers(forSession: mapShareSession) { result in
+            switch result {
+            case .success(let deletedMembers):
+                mapShareSession.deletedMembers = deletedMembers
+                self.delegate?.changesInMembers()
+                if !mapShareSession.route.isEmpty {
+                    self.delegate?.changesInRoute()
+                }
+            case .failure(let error):
+                print(error.localizedDescription, "MapHomeViewModel: Issue with the DeletedMembers")
             }
         }
     }
@@ -103,11 +118,6 @@ class MapHomeViewModel {
         service.firestoreUpdateRouteTravelTime(forSession: mapShareSession, withMemberID: deviceID, withTime: travelTime)
     }
     
-    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
-//        guard let mapShareSession else { return }
-        // This is the function to update Real-Time Location update with Ably
-    }
-    
     func updateToDriving() {
         guard let mapShareSession,
               let route = mapShareSession.route.first else { return }
@@ -120,8 +130,33 @@ class MapHomeViewModel {
         service.firestoreUpdateRouteToWalking(forSession: mapShareSession, forRoute: route)
     }
     
+    func clearFirebaseDeletedMemberAfterRemovingAnnotation(for deletedMember: DeletedMember) {
+        guard let mapShareSession else { return }
+        service.firestoreClearDeletedMembers(fromSession: mapShareSession, forDeletedMember: deletedMember)
+    }
+    
+    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
+        // This is the function to update Real-Time Location update with Ably
+    }
+    
     
     //MARK: - MAPKIT FUNCTIONS
+    func toggleTravelMethod(for button: UIButton) {
+        guard let drivingImage = UIImage(systemName: SFSymbols.driving),
+              let walkingImage = UIImage(systemName: SFSymbols.walking)
+        else { return }
+        
+        if isDriving {
+            isDriving.toggle()
+            updateToWalking()
+            button.setImage(drivingImage, for: .normal)
+        } else {
+            isDriving.toggle()
+            updateToDriving()
+            button.setImage(walkingImage, for: .normal)
+        }
+    }
+    
     func shareDirections() {
         routeDirectionsButton.addTarget(self, action: #selector(routeButtonPressed), for: .touchUpInside)
     }

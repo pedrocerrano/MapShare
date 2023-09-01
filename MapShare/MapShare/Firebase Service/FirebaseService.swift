@@ -60,7 +60,14 @@ struct FirebaseService {
     
     func firestoreDeleteMember(fromSession session: Session, withMember member: Member) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.deviceID).delete()
-//        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document("memberToDelete").setData(["memberID" : member.deviceID])
+    }
+    
+    func firestoreSetDeletedMember(forSession session: Session, forMember deletedMember: DeletedMember) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.deletedMembersCollectionType).document(deletedMember.title).setData(deletedMember.deletedMemberDictionaryRepresentation)
+    }
+    
+    func firestoreClearDeletedMembers(fromSession session: Session, forDeletedMember deletedMember: DeletedMember) {
+        ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.deletedMembersCollectionType).document(deletedMember.title).delete()
     }
     
     
@@ -138,5 +145,20 @@ struct FirebaseService {
         }
         
         return routesListener
+    }
+    
+    func firestoreListenForDeletedMembers(forSession session: Session, completion: @escaping(Result<[DeletedMember], FirebaseError>) -> Void) -> ListenerRegistration {
+        let deletedMemberListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.deletedMembersCollectionType).addSnapshotListener { querySnapshot, error in
+            if let error {
+                completion(.failure(.firebaseError(error)))
+            }
+        
+            guard let documentsData     = querySnapshot?.documents else { completion(.failure(.noDataFound)) ; return }
+            let deletedMemberDictionary = documentsData.compactMap { $0.data() }
+            let deletedMembers          = deletedMemberDictionary.compactMap { DeletedMember(fromDeletedMemberDictionary: $0)}
+            completion(.success(deletedMembers))
+        }
+        
+        return deletedMemberListener
     }
 }

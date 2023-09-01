@@ -75,16 +75,25 @@ class ActiveSessionViewModel {
     
     
     //MARK: - CRUD FUNCTIONS
-    func deleteSession() {
+    func deleteSessionAndMemberDocuments() {
         for member in session.members {
             service.firestoreDeleteMember(fromSession: session, withMember: member)
         }
+        
+//        guard let deletedMembers = mapHomeDelegate?.mapHomeViewModel.mapShareSession?.deletedMembers else { return }
+//        for deletedMember in deletedMembers {
+//            service.firestoreClearDeletedMembers(fromSession: session, forDeletedMember: deletedMember)
+//        }
         service.firestoreDeleteRoute(fromSession: session)
         service.firestoreDeleteSession(session: session)
     }
     
-    func deleteMemberFromActiveSession(fromSession session: Session, forMember member: Member) {
+    func deleteMemberSelf(fromSession session: Session, forMember member: Member) {
         service.firestoreDeleteMember(fromSession: session, withMember: member)
+        
+        
+        let deletedMember = DeletedMember(title: member.title ?? "No Annotation Title assigned to Member")
+        service.firestoreSetDeletedMember(forSession: session, forMember: deletedMember)
     }
     
     func admitNewMember(forSession session: Session, withMember member: Member) {

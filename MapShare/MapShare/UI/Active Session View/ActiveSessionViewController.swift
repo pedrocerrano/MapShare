@@ -101,7 +101,7 @@ class ActiveSessionViewController: UIViewController {
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.activeSessionViewModel.deleteSession()
+            self.activeSessionViewModel.deleteSessionAndMemberDocuments()
             self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
@@ -121,7 +121,7 @@ class ActiveSessionViewController: UIViewController {
                   let member = self.activeSessionViewModel.session.members.filter({ $0.deviceID == Constants.Device.deviceID }).first
             else { return }
             
-            self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.activeSessionViewModel.deleteMemberSelf(fromSession: self.activeSessionViewModel.session, forMember: member)
             self.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
