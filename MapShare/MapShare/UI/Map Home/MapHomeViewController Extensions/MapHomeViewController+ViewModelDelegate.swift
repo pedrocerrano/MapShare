@@ -1,5 +1,5 @@
 //
-//  MapHomeViewController+DelegateFuncs.swift
+//  MapHomeViewController+ViewModelDelegate.swift
 //  MapShare
 //
 //  Created by iMac Pro on 9/1/23.
@@ -17,7 +17,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
             activeMembersStackView.isHidden         = false
             waitingRoomStackView.isHidden           = false
             refreshingLocationButton.isHidden       = false
-            updateMemberCounts()
+            mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel, forWaitingLabel: membersInWaitingRoomLabel)
             
             // Updates the Active/Waiting Room members counts
             let waitingRoomMembers = session.members.filter { !$0.isActive }
@@ -35,13 +35,16 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
             }
         }
         
-        // Removes MemberAnnotation after another Member removes himself from the Session
+        // Removes MemberAnnotation from remaining active devices after another Member exits the Session
         let memberAnnotations = mapView.annotations.filter { ($0 is Member) }
         if let deletedMember = session.deletedMembers.first,
            let memberAnnotationToDelete = memberAnnotations.first(where: { $0.title == deletedMember.title }) {
+//            print("DeletedMemeber:           \(deletedMember.title)")
+//            print("MemberAnnotationToDelete: \(memberAnnotationToDelete.title)")
             mapView.removeAnnotation(memberAnnotationToDelete)
             mapHomeViewModel.clearFirebaseDeletedMemberAfterRemovingAnnotation(for: deletedMember)
             mapHomeViewModel.mapShareSession?.deletedMembers = []
+            mapView.showAnnotations(memberAnnotations, animated: true)
         }
     }
     
@@ -51,21 +54,22 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         
-        guard let session         = mapHomeViewModel.mapShareSession,
-              let routeAnnotation = session.route.first
+        guard let session = mapHomeViewModel.mapShareSession,
+              let route   = session.routes.first
         else { return }
         
         if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
-            if routeAnnotation.isDriving {
+            if route.isDriving {
                 displayDirections(forSession: session, withTravelType: .automobile)
             } else {
                 displayDirections(forSession: session, withTravelType: .walking)
             }
             
-            if !session.route.isEmpty && session.route.first(where: { $0.isShowingDirections }) != nil {
+//            if !session.route.isEmpty && session.route.first(where: { $0.isShowingDirections }) != nil {
+            if !session.routes.isEmpty {
                 centerRouteButton.isHidden = false
             } else {
-                centerRouteButton.isHidden = true
+                centerRouteButton.isHidden  = true
             }
         }
     }
@@ -78,18 +82,18 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         travelMethodButton.isHidden                         = true
         centerRouteButton.isHidden                          = true
         refreshingLocationButton.isHidden                   = true
-        mapHomeViewModel.mapShareSession?.isActive          = false
         mapHomeViewModel.mapShareSession?.members           = []
         mapHomeViewModel.mapShareSession?.deletedMembers    = []
-        updateMemberCounts()
+        mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel, forWaitingLabel: membersInWaitingRoomLabel)
         mapHomeViewModel.mapShareSession                    = nil
         mapView.showsUserLocation                           = true
-        mapHomeViewModel.isDriving                          = true
-        mapHomeViewModel.zoomsToFitAll                      = true
         sessionActivityIndicatorLabel.textColor             = .systemGray
-        mapHomeViewModel.centerViewOnMember(mapView: mapView)
+        mapHomeViewModel.isDriving                          = true
+        mapHomeViewModel.zoomAllRoutes                      = true
+        mapHomeViewModel.resetZoomForSingleMember(mapView: mapView)
         mapHomeViewModel.sessionListener?.remove()
         mapHomeViewModel.memberListener?.remove()
         mapHomeViewModel.routesListener?.remove()
+        mapHomeViewModel.deletedMemberListener?.remove()
     }
 }

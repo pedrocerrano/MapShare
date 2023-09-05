@@ -40,12 +40,11 @@ class NewSessionViewModel {
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
                                   deletedMembers: [],
-                                  route: [],
-                                  isActive: true)
+                                  routes: [])
         
         session = newSession
         service.firestoreSaveNewSession(newSession: newSession, withMember: organizer) {
-            self.mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
+            self.mapHomeDelegate?.mapHomeViewModel.delegateUpdateWithSession(session: newSession)
         }
         
         self.sessionCode = ""

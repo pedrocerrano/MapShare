@@ -12,6 +12,8 @@
 		295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 295079322A030A5D0059D774 /* ActiveSession.storyboard */; };
 		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
 		295079382A03179A0059D774 /* ActiveSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */; };
+		2959EF002AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2959EEFF2AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift */; };
+		2959EF022AA7813A001B62AF /* MapHomeViewController+MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2959EF012AA7813A001B62AF /* MapHomeViewController+MapViewDelegate.swift */; };
 		295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */; };
 		297626AF2A09788C00F7BCC4 /* JoinSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */; };
 		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
@@ -19,7 +21,7 @@
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
 		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
 		29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD57582AA219CB00BD6825 /* DeletedMember.swift */; };
-		29AD575C2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD575B2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift */; };
+		29AD575C2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */; };
 		29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */; };
 		29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE21142A26931900D9AB2C /* LocationPushService.swift */; };
 		29AE21192A26931900D9AB2C /* LocationPush.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 29AE21122A26931900D9AB2C /* LocationPush.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -75,6 +77,8 @@
 		295079322A030A5D0059D774 /* ActiveSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActiveSession.storyboard; sourceTree = "<group>"; };
 		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
 		295079372A03179A0059D774 /* ActiveSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionTableViewCell.swift; sourceTree = "<group>"; };
+		2959EEFF2AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewModel+MapKitFuncs.swift"; sourceTree = "<group>"; };
+		2959EF012AA7813A001B62AF /* MapHomeViewController+MapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewController+MapViewDelegate.swift"; sourceTree = "<group>"; };
 		295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionViewModel.swift; sourceTree = "<group>"; };
 		297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = JoinSession.storyboard; sourceTree = "<group>"; };
 		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
@@ -82,7 +86,7 @@
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
 		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
 		29AD57582AA219CB00BD6825 /* DeletedMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedMember.swift; sourceTree = "<group>"; };
-		29AD575B2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewController+DelegateFuncs.swift"; sourceTree = "<group>"; };
+		29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewController+ViewModelDelegate.swift"; sourceTree = "<group>"; };
 		29AE20FA2A2646AF00D9AB2C /* MapShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapShare.entitlements; sourceTree = "<group>"; };
 		29AE21122A26931900D9AB2C /* LocationPush.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LocationPush.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		29AE21142A26931900D9AB2C /* LocationPushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPushService.swift; sourceTree = "<group>"; };
@@ -136,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				295079322A030A5D0059D774 /* ActiveSession.storyboard */,
-				295079302A0309A00059D774 /* ActiveSessionViewController.swift */,
 				295079342A0316740059D774 /* ActiveSessionViewModel.swift */,
+				295079302A0309A00059D774 /* ActiveSessionViewController.swift */,
 				295079362A03177B0059D774 /* Custom Views */,
 			);
 			path = "Active Session View";
@@ -152,12 +156,21 @@
 			path = "Custom Views";
 			sourceTree = "<group>";
 		};
+		2959EF032AA78193001B62AF /* MapHomeViewController Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */,
+				2959EF012AA7813A001B62AF /* MapHomeViewController+MapViewDelegate.swift */,
+			);
+			path = "MapHomeViewController Extensions";
+			sourceTree = "<group>";
+		};
 		297626AD2A09786C00F7BCC4 /* Join Session View */ = {
 			isa = PBXGroup;
 			children = (
 				297626AE2A09788C00F7BCC4 /* JoinSession.storyboard */,
-				297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */,
 				297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */,
+				297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */,
 			);
 			path = "Join Session View";
 			sourceTree = "<group>";
@@ -271,9 +284,10 @@
 			isa = PBXGroup;
 			children = (
 				29EB7FD82A03DFC600F2242F /* MapHome.storyboard */,
-				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
-				29AD575B2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift */,
 				AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */,
+				2959EEFF2AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift */,
+				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
+				2959EF032AA78193001B62AF /* MapHomeViewController Extensions */,
 			);
 			path = "Map Home";
 			sourceTree = "<group>";
@@ -282,8 +296,8 @@
 			isa = PBXGroup;
 			children = (
 				29E6A0D529FAE0CD00D109B1 /* NewSession.storyboard */,
-				29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */,
 				295B879C2A003ACE0016DFFA /* NewSessionViewModel.swift */,
+				29E6A0D329FADEF700D109B1 /* NewSessionViewController.swift */,
 			);
 			path = "New Session View";
 			sourceTree = "<group>";
@@ -410,7 +424,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29AD575C2AA26C8300BD6825 /* MapHomeViewController+DelegateFuncs.swift in Sources */,
+				2959EF022AA7813A001B62AF /* MapHomeViewController+MapViewDelegate.swift in Sources */,
+				29AD575C2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift in Sources */,
 				29E69A712A9FA2BD00960035 /* SFSymbols.swift in Sources */,
 				AF86025E2A02F7A800A6519D /* Route.swift in Sources */,
 				29E6A0C929FADE0C00D109B1 /* Session.swift in Sources */,
@@ -428,6 +443,7 @@
 				29E69A6D2A9F82CC00960035 /* Member+UIColor.swift in Sources */,
 				29E6A0D429FADEF700D109B1 /* NewSessionViewController.swift in Sources */,
 				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
+				2959EF002AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift in Sources */,
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,

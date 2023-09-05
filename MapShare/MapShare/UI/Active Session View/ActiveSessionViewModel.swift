@@ -65,7 +65,7 @@ class ActiveSessionViewModel {
         routesListener = service.firestoreListenToRoutes(forSession: session) { result in
             switch result {
             case .success(let updatedRouteAnnotations):
-                self.session.route = updatedRouteAnnotations
+                self.session.routes = updatedRouteAnnotations
                 self.delegate?.sessionDataUpdated()
             case .failure(let error):
                 print(error.localizedDescription, "ActionSessionViewModel: RouteAnnotations returned nil")

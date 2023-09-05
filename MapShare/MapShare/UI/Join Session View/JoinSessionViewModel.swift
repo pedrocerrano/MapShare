@@ -59,7 +59,7 @@ class JoinSessionViewModel {
         
         guard let searchedSession else { return }
         service.firestoreJoinNewMember(withCode: validCode, withMember: newMember) {
-            self.mapHomeDelegate?.delegateUpdateWithSession(session: searchedSession)
+            self.mapHomeDelegate?.mapHomeViewModel.delegateUpdateWithSession(session: searchedSession)
         }
     }
 }

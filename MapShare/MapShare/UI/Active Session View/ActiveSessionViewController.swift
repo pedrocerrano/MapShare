@@ -43,9 +43,9 @@ class ActiveSessionViewController: UIViewController {
     //MARK: - IB ACTIONS
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
         if Constants.Device.deviceID == activeSessionViewModel.session.organizerDeviceID {
-            organizerEndedActiveSessionAlert()
+            organizerEndingSessionAlert()
         } else {
-            memberExitsActiveSessionAlert()
+            memberExitsAlert()
         }
     }
     
@@ -96,8 +96,8 @@ class ActiveSessionViewController: UIViewController {
     
     
     //MARK: - ALERTS
-    private func organizerEndedActiveSessionAlert() {
-        let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
+    private func organizerEndingSessionAlert() {
+        let organizerEndingSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
             guard let self = self else { return }
@@ -108,13 +108,13 @@ class ActiveSessionViewController: UIViewController {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
         }
-        organizerEndedActiveSessionAlertController.addAction(dismissAction)
-        organizerEndedActiveSessionAlertController.addAction(confirmAction)
-        present(organizerEndedActiveSessionAlertController, animated: true)
+        organizerEndingSessionAlertController.addAction(dismissAction)
+        organizerEndingSessionAlertController.addAction(confirmAction)
+        present(organizerEndingSessionAlertController, animated: true)
     }
     
-    private func memberExitsActiveSessionAlert() {
-        let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
+    private func memberExitsAlert() {
+        let memberExitsAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
             guard let self   = self,
@@ -128,9 +128,9 @@ class ActiveSessionViewController: UIViewController {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
         }
-        memberExitsActiveSessionAlertController.addAction(dismissAction)
-        memberExitsActiveSessionAlertController.addAction(confirmAction)
-        present(memberExitsActiveSessionAlertController, animated: true)
+        memberExitsAlertController.addAction(dismissAction)
+        memberExitsAlertController.addAction(confirmAction)
+        present(memberExitsAlertController, animated: true)
     }
 } //: CLASS
 

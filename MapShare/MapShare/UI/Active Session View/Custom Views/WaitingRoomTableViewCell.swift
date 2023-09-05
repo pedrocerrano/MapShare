@@ -12,6 +12,7 @@ protocol WaitingRoomTableViewCellDelegate: AnyObject {
     func denyMember(fromSession session: Session, forMember member: Member)
 }
 
+
 class WaitingRoomTableViewCell: UITableViewCell {
 
     //MARK: - OUTLETS
@@ -40,12 +41,15 @@ class WaitingRoomTableViewCell: UITableViewCell {
         guard let session = session,
               let member  = member
         else { return }
+        
         delegate?.admitMember(forSession: session, forMember: member)
     }
     
     @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
         guard let member = member,
-              let session = session else { return }
+              let session = session
+        else { return }
+        
         delegate?.denyMember(fromSession: session, forMember: member)
     }
         
