@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Ably
 
 extension MapHomeViewController: MapHomeViewModelDelegate {
     
@@ -16,7 +17,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
             sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
             activeMembersStackView.isHidden         = false
             waitingRoomStackView.isHidden           = false
-            refreshingLocationButton.isHidden       = false
+            refreshLocationButton.isHidden       = false
             mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel, forWaitingLabel: membersInWaitingRoomLabel)
             
             // Updates the Active/Waiting Room members counts
@@ -48,6 +49,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         }
     }
     
+    
     func changesInRoute() {
         // Ensures only one route available at a time
         let routeAnnotations = mapView.annotations.filter { !($0 is Member) }
@@ -65,7 +67,6 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
                 displayDirections(forSession: session, withTravelType: .walking)
             }
             
-//            if !session.route.isEmpty && session.route.first(where: { $0.isShowingDirections }) != nil {
             if !session.routes.isEmpty {
                 centerRouteButton.isHidden = false
             } else {
@@ -75,25 +76,41 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
     }
     
     func noSessionActive() {
+        // Remove ALL annotations
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
-        activeMembersStackView.isHidden                     = true
-        waitingRoomStackView.isHidden                       = true
-        travelMethodButton.isHidden                         = true
-        centerRouteButton.isHidden                          = true
-        refreshingLocationButton.isHidden                   = true
-        mapHomeViewModel.mapShareSession?.members           = []
-        mapHomeViewModel.mapShareSession?.deletedMembers    = []
+        
+        // Hides buttons
+        activeMembersStackView.isHidden = true
+        waitingRoomStackView.isHidden   = true
+        travelMethodButton.isHidden     = true
+        centerRouteButton.isHidden      = true
+        refreshLocationButton.isHidden  = true
+        
+        // Resets the View Model Session data
+        mapHomeViewModel.mapShareSession                 = nil
+        mapHomeViewModel.mapShareSession?.members        = [] // Do I need this if the Session is nil?
+        mapHomeViewModel.mapShareSession?.deletedMembers = [] // Do I need this if the Session is nil?
         mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel, forWaitingLabel: membersInWaitingRoomLabel)
-        mapHomeViewModel.mapShareSession                    = nil
-        mapView.showsUserLocation                           = true
-        sessionActivityIndicatorLabel.textColor             = .systemGray
-        mapHomeViewModel.isDriving                          = true
-        mapHomeViewModel.zoomAllRoutes                      = true
+        
+        // Resets mapView
+        sessionActivityIndicatorLabel.textColor = .systemGray
+        mapHomeViewModel.isDriving              = true
+        mapHomeViewModel.zoomAllRoutes          = true
+        mapView.showsUserLocation               = true
         mapHomeViewModel.resetZoomForSingleMember(mapView: mapView)
+        
+        // Removes Firestore Listeners
         mapHomeViewModel.sessionListener?.remove()
         mapHomeViewModel.memberListener?.remove()
         mapHomeViewModel.routesListener?.remove()
         mapHomeViewModel.deletedMemberListener?.remove()
+    }
+    
+    
+    func ablyMessagesUpdate(message: ARTMessage) {
+        let receivedMessage    = "\(message.name ?? "Bob") says:\n\"\(message.data ?? "ABCDE")\""
+        ablyMessagesLabel.text = receivedMessage
+//        print(receivedMessage)
     }
 }

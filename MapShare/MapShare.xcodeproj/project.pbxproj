@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		29345F972A9524B200B9F386 /* Ably in Frameworks */ = {isa = PBXBuildFile; productRef = 29345F962A9524B200B9F386 /* Ably */; };
+		294D87D22AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294D87D12AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift */; };
 		295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079302A0309A00059D774 /* ActiveSessionViewController.swift */; };
 		295079332A030A5D0059D774 /* ActiveSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 295079322A030A5D0059D774 /* ActiveSession.storyboard */; };
 		295079352A0316740059D774 /* ActiveSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079342A0316740059D774 /* ActiveSessionViewModel.swift */; };
@@ -22,7 +23,6 @@
 		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
 		29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD57582AA219CB00BD6825 /* DeletedMember.swift */; };
 		29AD575C2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */; };
-		29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */; };
 		29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE21142A26931900D9AB2C /* LocationPushService.swift */; };
 		29AE21192A26931900D9AB2C /* LocationPush.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 29AE21122A26931900D9AB2C /* LocationPush.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		29E5A53A29F81B23008D8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E5A53929F81B23008D8834 /* AppDelegate.swift */; };
@@ -73,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		294D87D12AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewModel+Ably.swift"; sourceTree = "<group>"; };
 		295079302A0309A00059D774 /* ActiveSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewController.swift; sourceTree = "<group>"; };
 		295079322A030A5D0059D774 /* ActiveSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActiveSession.storyboard; sourceTree = "<group>"; };
 		295079342A0316740059D774 /* ActiveSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewModel.swift; sourceTree = "<group>"; };
@@ -127,7 +128,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29AE20FD2A266C2900D9AB2C /* FirebaseMessaging in Frameworks */,
 				29F859AB2A01884200A53792 /* FirebaseFirestore in Frameworks */,
 				29345F972A9524B200B9F386 /* Ably in Frameworks */,
 			);
@@ -136,6 +136,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		294D87D02AA8ED0F00E59DF9 /* Map Home ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */,
+				2959EEFF2AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift */,
+				294D87D12AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift */,
+			);
+			path = "Map Home ViewModel";
+			sourceTree = "<group>";
+		};
 		2950792F2A0308FF0059D774 /* Active Session View */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,13 +166,14 @@
 			path = "Custom Views";
 			sourceTree = "<group>";
 		};
-		2959EF032AA78193001B62AF /* MapHomeViewController Extensions */ = {
+		2959EF032AA78193001B62AF /* Map Home ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
 				29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */,
 				2959EF012AA7813A001B62AF /* MapHomeViewController+MapViewDelegate.swift */,
 			);
-			path = "MapHomeViewController Extensions";
+			path = "Map Home ViewController";
 			sourceTree = "<group>";
 		};
 		297626AD2A09786C00F7BCC4 /* Join Session View */ = {
@@ -284,10 +295,8 @@
 			isa = PBXGroup;
 			children = (
 				29EB7FD82A03DFC600F2242F /* MapHome.storyboard */,
-				AF72D7F72A14113A0080C9AD /* MapHomeViewModel.swift */,
-				2959EEFF2AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift */,
-				29E5A53D29F81B23008D8834 /* MapHomeViewController.swift */,
-				2959EF032AA78193001B62AF /* MapHomeViewController Extensions */,
+				294D87D02AA8ED0F00E59DF9 /* Map Home ViewModel */,
+				2959EF032AA78193001B62AF /* Map Home ViewController */,
 			);
 			path = "Map Home";
 			sourceTree = "<group>";
@@ -339,7 +348,6 @@
 			name = MapShare;
 			packageProductDependencies = (
 				29F859AA2A01884200A53792 /* FirebaseFirestore */,
-				29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */,
 				29345F962A9524B200B9F386 /* Ably */,
 			);
 			productName = MapShare;
@@ -448,6 +456,7 @@
 				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
+				294D87D22AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift in Sources */,
 				29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */,
 				29E69A6F2A9F96F400960035 /* Alerts.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
@@ -784,11 +793,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 29345F952A9524B200B9F386 /* XCRemoteSwiftPackageReference "ably-cocoa" */;
 			productName = Ably;
-		};
-		29AE20FC2A266C2900D9AB2C /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 29F859A92A01884200A53792 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
 		};
 		29F859AA2A01884200A53792 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;

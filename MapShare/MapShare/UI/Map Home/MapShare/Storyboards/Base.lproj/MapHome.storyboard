@@ -80,6 +80,13 @@
                                     <constraint firstAttribute="width" constant="40" id="YQW-hJ-Ejx"/>
                                 </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ably Test Messages" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S2f-Hn-fh8">
+                                <rect key="frame" x="70" y="117" width="255" height="20.333333333333343"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="gkL-BH-qhN">
                                 <rect key="frame" x="345" y="117" width="38" height="182"/>
                                 <subviews>
@@ -157,20 +164,24 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="S2f-Hn-fh8" firstAttribute="leading" secondItem="FlN-3W-AN1" secondAttribute="trailing" constant="20" id="2DD-lW-BT4"/>
                             <constraint firstItem="HG3-gy-K1E" firstAttribute="top" secondItem="gkL-BH-qhN" secondAttribute="bottom" constant="25" id="31T-ic-NTZ"/>
                             <constraint firstAttribute="trailing" secondItem="DrH-Fw-j6D" secondAttribute="trailing" id="7K1-EA-BFt"/>
                             <constraint firstAttribute="bottom" secondItem="DrH-Fw-j6D" secondAttribute="bottom" id="D8a-rU-G9T"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HG3-gy-K1E" secondAttribute="trailing" constant="10" id="DgY-Sn-AlJ"/>
                             <constraint firstItem="FlN-3W-AN1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Lde-dl-h4S"/>
+                            <constraint firstItem="S2f-Hn-fh8" firstAttribute="top" secondItem="FlN-3W-AN1" secondAttribute="top" id="ZBa-XF-L7N"/>
                             <constraint firstItem="DrH-Fw-j6D" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="cCy-65-MNH"/>
                             <constraint firstItem="DrH-Fw-j6D" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fmQ-AZ-EUb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gkL-BH-qhN" secondAttribute="trailing" constant="10" id="gWe-aL-brJ"/>
                             <constraint firstItem="FlN-3W-AN1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="58" id="nhl-vD-YRE"/>
                             <constraint firstItem="gkL-BH-qhN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="58" id="p4D-vl-AQV"/>
+                            <constraint firstItem="gkL-BH-qhN" firstAttribute="leading" secondItem="S2f-Hn-fh8" secondAttribute="trailing" constant="20" id="yIh-jz-uID"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Vl0-7c-V40"/>
                     <connections>
+                        <outlet property="ablyMessagesLabel" destination="S2f-Hn-fh8" id="5Zh-U5-nX0"/>
                         <outlet property="activeMembersStackView" destination="rwE-sw-SPI" id="Hyc-pr-pj4"/>
                         <outlet property="centerLocationButton" destination="18j-ye-pGs" id="gnm-dW-JE9"/>
                         <outlet property="centerRouteButton" destination="IcB-qT-f91" id="izA-AI-R6L"/>
@@ -178,7 +189,7 @@
                         <outlet property="mapView" destination="DrH-Fw-j6D" id="u7B-Ep-uAj"/>
                         <outlet property="membersInActiveSessionLabel" destination="Bdg-xw-rNq" id="whV-FC-JCA"/>
                         <outlet property="membersInWaitingRoomLabel" destination="oNS-kK-yPq" id="rJ2-36-ict"/>
-                        <outlet property="refreshingLocationButton" destination="HG3-gy-K1E" id="qY9-CP-JZX"/>
+                        <outlet property="refreshLocationButton" destination="HG3-gy-K1E" id="qY9-CP-JZX"/>
                         <outlet property="sessionActivityIndicatorLabel" destination="IA5-Ht-jl0" id="7gm-ll-nEh"/>
                         <outlet property="travelMethodButton" destination="YdG-Ia-67t" id="d7c-wY-oyj"/>
                         <outlet property="waitingRoomStackView" destination="Gq0-bW-2qK" id="owB-qS-RKO"/>
@@ -223,6 +234,9 @@
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tintColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

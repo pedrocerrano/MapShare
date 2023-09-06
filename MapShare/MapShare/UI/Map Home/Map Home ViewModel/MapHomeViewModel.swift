@@ -7,12 +7,14 @@
 
 import UIKit
 import MapKit
+import Ably
 import FirebaseFirestore
 
 protocol MapHomeViewModelDelegate: AnyObject {
     func changesInMembers()
     func changesInRoute()
     func noSessionActive()
+    func ablyMessagesUpdate(message: ARTMessage)
 }
 
 class MapHomeViewModel {
@@ -25,16 +27,18 @@ class MapHomeViewModel {
     var routesListener: ListenerRegistration?
     
     var mapShareSession: Session?
-    var memberAnnotationToDelete: Member?
-    private weak var delegate: MapHomeViewModelDelegate?
+    weak var delegate: MapHomeViewModelDelegate?
     
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
     var isDriving       = true
     var zoomAllRoutes   = true
     var zoomAllMembers  = true
-    
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
+    
+    // Ably Properties
+    var client: ARTRealtime!
+    var channel: ARTRealtimeChannel!
     
     init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
         self.service  = service
@@ -51,6 +55,7 @@ class MapHomeViewModel {
                 mapShareSession.sessionCode       = loadedSession.sessionCode
                 mapShareSession.sessionName       = loadedSession.sessionName
                 mapShareSession.organizerDeviceID = loadedSession.organizerDeviceID
+                self.connectToAbly(mapShareSession: loadedSession)
             case .failure(let error):
                 self.delegate?.noSessionActive()
                 print(error.localizedDescription, "MapHomeViewModel: Issue with the Session data")

@@ -23,7 +23,8 @@ class MapHomeViewController: UIViewController {
     @IBOutlet weak var centerLocationButton: UIButton!
     @IBOutlet weak var centerRouteButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
-    @IBOutlet weak var refreshingLocationButton: UIButton!
+    @IBOutlet weak var refreshLocationButton: UIButton!
+    @IBOutlet weak var ablyMessagesLabel: UILabel!
     
     
     // MARK: - Properties
@@ -63,14 +64,19 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-        guard let coordinates   = mapHomeViewModel.locationManager.location?.coordinate,
-              let member        = mapHomeViewModel.mapShareSession?.members,
-              let currentMember = member.first(where: { Constants.Device.deviceID == $0.deviceID })
-        else { return }
+//        guard let coordinates   = mapHomeViewModel.locationManager.location?.coordinate else { return }
+//        guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
+//        mapHomeViewModel.updateMemberLocation(forMember: currentMember,
+//                                              withLatitude: coordinates.latitude,
+//                                              withLongitude: coordinates.longitude)
         
-        mapHomeViewModel.updateMemberLocation(forMember: currentMember,
-                                              withLatitude: coordinates.latitude,
-                                              withLongitude: coordinates.longitude)
+        guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
+        mapHomeViewModel.channel.publish(currentMember.title, data: "Testing 1, 2, 3...") { error in
+            guard error == nil else {
+                return print("Publishing Error: \(error?.localizedDescription ?? "Beach Ball of Death")")
+            }
+        }
+//        print("Current Memeber Sending: \(currentMember.title ?? "Uh-Oh")")
     }
     
     
@@ -83,13 +89,13 @@ class MapHomeViewController: UIViewController {
         travelMethodButton.isHidden          = true
         centerRouteButton.isHidden           = true
         clearRouteAnnotationsButton.isHidden = true
-        refreshingLocationButton.isHidden    = true
+        refreshLocationButton.isHidden       = true
         UIElements.configureFilledStyleButtonAttributes(for: travelMethodButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: centerRouteButton, withColor: UIElements.Color.dodgerBlue)
         UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray3)
         clearRouteAnnotationsButton.configuration?.baseForegroundColor = .label
-        UIElements.configureFilledStyleButtonAttributes(for: refreshingLocationButton, withColor: UIElements.Color.mapShareGreen)
+        UIElements.configureFilledStyleButtonAttributes(for: refreshLocationButton, withColor: UIElements.Color.mapShareGreen)
     }
     
     private func setupNewSessionSheetController() {
