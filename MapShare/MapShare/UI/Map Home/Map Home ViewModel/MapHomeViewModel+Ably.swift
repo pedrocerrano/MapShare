@@ -12,14 +12,14 @@ extension MapHomeViewModel {
     
     //MARK: - Functions
     func connectToAbly(mapShareSession: Session) {
-        client = ARTRealtime(key: Constants.Ably.apiKey)
-        client.connection.on { state in
+        ablyRealtimeClient = ARTRealtime(key: Constants.Ably.apiKey)
+        ablyRealtimeClient.connection.on { state in
             switch state.current {
             case .connected:
                 self.subscribeToAblyChannel(mapShareSession: mapShareSession)
-                print("Success connecting to the API!")
+                print("Success connecting to the Ably API!")
             case .failed:
-                print("There was a problem connecting to the Ably")
+                NotificationCenter.default.post(name: Constants.Notifications.ablyRealtimeServer, object: nil)
             default:
                 break
             }
@@ -27,8 +27,8 @@ extension MapHomeViewModel {
     }
     
     func subscribeToAblyChannel(mapShareSession: Session) {
-        channel = client.channels.get(mapShareSession.sessionCode)
-        channel.subscribe { message in
+        ablyChannel = ablyRealtimeClient.channels.get(mapShareSession.sessionCode)
+        ablyChannel.subscribe { message in
             self.delegate?.ablyMessagesUpdate(message: message)
         }
     }

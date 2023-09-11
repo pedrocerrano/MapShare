@@ -15,7 +15,7 @@ protocol ActiveSessionViewModelDelegate: AnyObject {
 
 class ActiveSessionViewModel {
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     var session: Session
     var service: FirebaseService
     var sessionListener: ListenerRegistration?
@@ -35,7 +35,7 @@ class ActiveSessionViewModel {
     }
     
     
-    //MARK: - LISTENERS
+    //MARK: - Firestore Listeners
     func updateSession() {
         sessionListener = service.firestoreListenToSession(forSession: session) { result in
             switch result {
@@ -73,17 +73,25 @@ class ActiveSessionViewModel {
         }
     }
     
+    func configureListeners() {
+        updateSession()
+        updateMembers()
+        updateRouteAnnotations()
+    }
     
-    //MARK: - CRUD FUNCTIONS
+    func removeListeners() {
+        sessionListener?.remove()
+        memberListener?.remove()
+        routesListener?.remove()
+    }
+    
+    
+    //MARK: - Firestore Functions
     func deleteSessionAndMemberDocuments() {
         for member in session.members {
             service.firestoreDeleteMember(fromSession: session, withMember: member)
         }
         
-//        guard let deletedMembers = mapHomeDelegate?.mapHomeViewModel.mapShareSession?.deletedMembers else { return }
-//        for deletedMember in deletedMembers {
-//            service.firestoreClearDeletedMembers(fromSession: session, forDeletedMember: deletedMember)
-//        }
         service.firestoreDeleteRoute(fromSession: session)
         service.firestoreDeleteSession(session: session)
     }

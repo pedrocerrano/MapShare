@@ -9,7 +9,7 @@ import UIKit
 
 class ActiveSessionViewController: UIViewController {
 
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var sessionNameLabel: UILabel!
     @IBOutlet weak var sessionCodeLabel: UILabel!
     @IBOutlet weak var sessionControlButton: UIButton!
@@ -17,7 +17,7 @@ class ActiveSessionViewController: UIViewController {
     @IBOutlet weak var inviteMembersButton: UIButton!
     
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
@@ -25,14 +25,15 @@ class ActiveSessionViewController: UIViewController {
     var activeSessionViewModel: ActiveSessionViewModel!
     
     
-    //MARK: - LIFECYCLE
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate   = self
         configureUI()
-        configureListeners()
+        activeSessionViewModel.configureListeners()
         configureSheetPresentationController()
+        setupNotifications()
         inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
@@ -40,7 +41,7 @@ class ActiveSessionViewController: UIViewController {
     }
     
     
-    //MARK: - IB ACTIONS
+    //MARK: - IB Actions
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
         if Constants.Device.deviceID == activeSessionViewModel.session.organizerDeviceID {
             organizerEndingSessionAlert()
@@ -50,7 +51,7 @@ class ActiveSessionViewController: UIViewController {
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     @objc func presentShareSheet(_ sender: UIButton) {
         guard let organizer = activeSessionViewModel.session.members.filter ({ $0.isOrganizer }).first else { return }
         let shareMessage    = "\(String(describing: organizer.title)) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
@@ -81,28 +82,24 @@ class ActiveSessionViewController: UIViewController {
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
         sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
-
-    private func configureListeners() {
-        activeSessionViewModel.updateSession()
-        activeSessionViewModel.updateMembers()
-        activeSessionViewModel.updateRouteAnnotations()
+    
+    
+    //MARK: - Alerts
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(ablyRealtimeServerIssue), name: Constants.Notifications.locationAccessNeeded, object: nil)
     }
     
-    private func removeListeners() {
-        activeSessionViewModel.sessionListener?.remove()
-        activeSessionViewModel.memberListener?.remove()
-        activeSessionViewModel.routesListener?.remove()
+    @objc func ablyRealtimeServerIssue() {
+        present(AlertControllers.ablyRealtimeServerIssue(), animated: true, completion: nil)
     }
     
-    
-    //MARK: - ALERTS
     private func organizerEndingSessionAlert() {
         let organizerEndingSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
         let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
             guard let self = self else { return }
             self.activeSessionViewModel.deleteSessionAndMemberDocuments()
-            self.removeListeners()
+            self.activeSessionViewModel.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
@@ -122,7 +119,7 @@ class ActiveSessionViewController: UIViewController {
             else { return }
             
             self.activeSessionViewModel.deleteMemberSelf(fromSession: self.activeSessionViewModel.session, forMember: member)
-            self.removeListeners()
+            self.activeSessionViewModel.removeListeners()
             self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()

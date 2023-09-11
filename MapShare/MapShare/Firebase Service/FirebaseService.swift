@@ -17,11 +17,11 @@ enum FirebaseError: Error {
 
 struct FirebaseService {
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     let ref = Firestore.firestore()
     
     
-    //MARK: - SESSION and MEMBER FUNCTIONS
+    //MARK: - Session and Members Functions
     func firestoreSaveNewSession(newSession session: Session, withMember member: Member, completion: @escaping () -> Void) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).setData(session.sessionDictionaryRepresentation)
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.membersCollectionType).document(member.deviceID).setData(member.memberDictionaryRepresentation)
@@ -71,7 +71,7 @@ struct FirebaseService {
     }
     
     
-    //MARK: - ROUTE FUNCTIONS
+    //MARK: - Route Functions
     func firestoreSaveNewRoute(forSession session: Session, route: Route) {
         ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).collection(Session.SessionKey.routeCollectionType).document(Session.SessionKey.routeDocumentType).setData(route.routeDictionaryRepresentation)
     }
@@ -97,7 +97,7 @@ struct FirebaseService {
     }
 
     
-    //MARK: - LISTENERS
+    //MARK: - Listeners
     func firestoreListenToSession(forSession session: Session, completion: @escaping(Result<Session, FirebaseError>) -> Void) -> ListenerRegistration {
         let sessionListener = ref.collection(Session.SessionKey.sessionCollectionType).document(session.sessionCode).addSnapshotListener { documentSnapshot, error in
             if let error = error {

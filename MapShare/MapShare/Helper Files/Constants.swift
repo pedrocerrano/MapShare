@@ -19,6 +19,7 @@ struct Constants {
     
     struct Notifications {
         static let locationAccessNeeded = Notification.Name("locationAccessNeeded")
+        static let ablyRealtimeServer   = Notification.Name("ablyRealtimeServer")
     }
     
     struct AnnotationIdentifiers {
@@ -27,7 +28,7 @@ struct Constants {
     }
     
     
-    //MARK: - UI ATTRIBUTES
+    //MARK: - UI Settings
     struct LabelUI {
         static let shadowColor           = UIColor.black.cgColor
         static let shadowOpacity: Float  = 0.4

@@ -15,14 +15,14 @@ protocol WaitingRoomTableViewCellDelegate: AnyObject {
 
 class WaitingRoomTableViewCell: UITableViewCell {
 
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var waitingRoomMemberNameLabel: UILabel!
     @IBOutlet weak var waitingRoomScreenNameLabel: UILabel!
     @IBOutlet weak var denyNewMemberButton: UIButton!
     @IBOutlet weak var admitNewMemberButton: UIButton!
 
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     var session: Session?
     var member: Member?
     
@@ -36,7 +36,7 @@ class WaitingRoomTableViewCell: UITableViewCell {
     }
     
     
-    //MARK: - IB ACTIONS
+    //MARK: - IB Actions
     @IBAction func admitNewMemberButtonTapped(_ sender: Any) {
         guard let session = session,
               let member  = member
@@ -54,7 +54,7 @@ class WaitingRoomTableViewCell: UITableViewCell {
     }
         
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     func configureWaitingRoomCell(forSession session: Session, withMember member: Member, delegate: WaitingRoomTableViewCellDelegate) {
         waitingRoomMemberNameLabel.text = "\(member.firstName) \(member.lastName)"
         waitingRoomScreenNameLabel.text = member.title

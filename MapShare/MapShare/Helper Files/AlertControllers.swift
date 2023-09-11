@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Alerts {
+struct AlertControllers {
     
     static func needLocationAccess() -> UIAlertController {
         guard let settingsAppURL          = URL(string: UIApplication.openSettingsURLString) else { return UIAlertController() }
@@ -73,5 +73,14 @@ struct Alerts {
         onlySixDigitsAlertController.addAction(dismissAction)
         
         return onlySixDigitsAlertController
+    }
+    
+    static func ablyRealtimeServerIssue() -> UIAlertController {
+        let ablyServerAlertController = UIAlertController(title: "Server Issue", message: "MapShare could not connect to the server to get your real-time location. Please try again.", preferredStyle: .alert)
+        
+        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
+        ablyServerAlertController.addAction(dismissAction)
+        
+        return ablyServerAlertController
     }
 }

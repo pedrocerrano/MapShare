@@ -71,7 +71,7 @@ class MapHomeViewController: UIViewController {
 //                                              withLongitude: coordinates.longitude)
         
         guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
-        mapHomeViewModel.channel.publish(currentMember.title, data: "Testing 1, 2, 3...") { error in
+        mapHomeViewModel.ablyChannel.publish(currentMember.title, data: "Testing 1, 2, 3...") { error in
             guard error == nil else {
                 return print("Publishing Error: \(error?.localizedDescription ?? "Beach Ball of Death")")
             }

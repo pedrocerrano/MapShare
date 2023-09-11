@@ -37,8 +37,8 @@ class MapHomeViewModel {
     let routeDirectionsButton = UIButton(type: .detailDisclosure)
     
     // Ably Properties
-    var client: ARTRealtime!
-    var channel: ARTRealtimeChannel!
+    var ablyRealtimeClient: ARTRealtime!
+    var ablyChannel: ARTRealtimeChannel!
     
     init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
         self.service  = service

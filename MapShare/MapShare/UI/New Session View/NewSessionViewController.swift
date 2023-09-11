@@ -9,7 +9,7 @@ import UIKit
 
 class NewSessionViewController: UIViewController {
     
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var newMapShareButton: UIButton!
     @IBOutlet weak var mapShareLogoImageView: UIImageView!
     @IBOutlet weak var joinMapShareButton: UIButton!
@@ -21,7 +21,7 @@ class NewSessionViewController: UIViewController {
     @IBOutlet weak var userColorPopUpButton: UIButton!
     @IBOutlet weak var createSessionButton: UIButton!
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
@@ -29,7 +29,7 @@ class NewSessionViewController: UIViewController {
     var newSessionViewModel: NewSessionViewModel!
   
     
-    //MARK: - LIFECYCLE
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSheetPresentationController()
@@ -38,7 +38,7 @@ class NewSessionViewController: UIViewController {
     }
     
     
-    //MARK: - IB ACTIONS
+    //MARK: - IB Actions
     @IBAction func mapShareButtonTapped(_ sender: Any) {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
@@ -71,13 +71,13 @@ class NewSessionViewController: UIViewController {
         }
         
         if sessionName.isEmpty {
-            present(Alerts.needSessionName(), animated: true)
+            present(AlertControllers.needSessionName(), animated: true)
         } else if firstName.isEmpty {
-            present(Alerts.needFirstName(), animated: true)
+            present(AlertControllers.needFirstName(), animated: true)
         } else if lastName.isEmpty {
-            present(Alerts.needLastName(), animated: true)
+            present(AlertControllers.needLastName(), animated: true)
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
-            present(Alerts.needColorChoice(), animated: true)
+            present(AlertControllers.needColorChoice(), animated: true)
         } else {
             newSessionViewModel.createNewMapShareSession(sessionName: sessionName,
                                                          sessionCode: newSessionViewModel.sessionCode,
@@ -102,7 +102,7 @@ class NewSessionViewController: UIViewController {
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
@@ -128,7 +128,7 @@ class NewSessionViewController: UIViewController {
     }
     
     @objc func alertLocationAccessNeeded() {
-        present(Alerts.needLocationAccess(), animated: true, completion: nil)
+        present(AlertControllers.needLocationAccess(), animated: true, completion: nil)
     }
     
     
@@ -147,6 +147,8 @@ class NewSessionViewController: UIViewController {
     }
 } //: CLASS
 
+
+//MARK: - TextFieldDelegate
 extension NewSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {

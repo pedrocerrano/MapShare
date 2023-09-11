@@ -9,7 +9,7 @@ import MapKit
 
 class NewSessionViewModel {
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     var locationManager = CLLocationManager()
     var session: Session?
     let service: FirebaseService
@@ -22,7 +22,7 @@ class NewSessionViewModel {
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     func createNewMapShareSession(sessionName: String, sessionCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
         guard let organizerDeviceID = Constants.Device.deviceID else { return }
         let organizerCoordinates    = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
@@ -50,7 +50,7 @@ class NewSessionViewModel {
         self.sessionCode = ""
     }
     
-    func generateRandomCode(_ sessionCode: String) -> String {
+    private func generateRandomCode(_ sessionCode: String) -> String {
         let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
         var randomString = sessionCode
         

@@ -12,7 +12,7 @@ import CoreLocationUI
 
 class JoinSessionViewController: UIViewController {
     
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var closeJoinSessionSheetButton: UIButton!
     @IBOutlet weak var codeEntryTextField: UITextField!
     @IBOutlet weak var searchSessionButton: UIButton!
@@ -26,16 +26,15 @@ class JoinSessionViewController: UIViewController {
     @IBOutlet weak var joinSessionButton: UIButton!
     
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
     
     var joinSessionViewModel: JoinSessionViewModel!
-    var activityIndicator = UIActivityIndicatorView()
     
     
-    //MARK: - LIFECYCLE
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         codeEntryTextField.delegate = self
@@ -43,11 +42,11 @@ class JoinSessionViewController: UIViewController {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
         }
-        hideJoinSessionTextFields()
+        hideJoinSessionTextFields(true)
         configureUI()
     }
     
-    //MARK: - IB ACTIONS
+    //MARK: - IB Actions
     @IBAction func closeJoinSessionSheetButtonTapped(_ sender: Any) {
         sheetPresentationController.presentedViewController.isModalInPresentation = false
         sheetPresentationController.animateChanges {
@@ -82,11 +81,11 @@ class JoinSessionViewController: UIViewController {
         }
         
         if firstName.isEmpty {
-            present(Alerts.needFirstName(), animated: true)
+            present(AlertControllers.needFirstName(), animated: true)
         } else if lastName.isEmpty {
-            present(Alerts.needLastName(), animated: true)
+            present(AlertControllers.needLastName(), animated: true)
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
-            present(Alerts.needColorChoice(), animated: true)
+            present(AlertControllers.needColorChoice(), animated: true)
         } else {
             joinSessionViewModel.addNewMemberToActiveSession(withCode: joinSessionViewModel.validSessionCode,
                                                              firstName: firstName,
@@ -109,7 +108,7 @@ class JoinSessionViewController: UIViewController {
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
@@ -132,30 +131,20 @@ class JoinSessionViewController: UIViewController {
         UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
     }
     
-    private func hideJoinSessionTextFields() {
-        tellTheGroupLabel.isHidden         = true
-        memberFirstNameTextField.isHidden  = true
-        memberLastNameTextField.isHidden   = true
-        memberScreenNameTextField.isHidden = true
-        iconColorLabel.isHidden            = true
-        userColorPopUpButton.isHidden      = true
-        joinSessionButton.isHidden         = true
-    }
-    
-    private func revealJoinSessionTextFields() {
-        tellTheGroupLabel.isHidden         = false
-        memberFirstNameTextField.isHidden  = false
-        memberLastNameTextField.isHidden   = false
-        memberScreenNameTextField.isHidden = false
-        iconColorLabel.isHidden            = false
-        userColorPopUpButton.isHidden      = false
-        joinSessionButton.isHidden         = false
+    private func hideJoinSessionTextFields(_ bool: Bool) {
+        tellTheGroupLabel.isHidden         = bool
+        memberFirstNameTextField.isHidden  = bool
+        memberLastNameTextField.isHidden   = bool
+        memberScreenNameTextField.isHidden = bool
+        iconColorLabel.isHidden            = bool
+        userColorPopUpButton.isHidden      = bool
+        joinSessionButton.isHidden         = bool
     }
     
     private func confirmValidCode(with codeEntry: String) {
         if codeEntry.isEmpty || codeEntry.count != 6 {
-            hideJoinSessionTextFields()
-            present(Alerts.onlySixDigits(), animated: true)
+            hideJoinSessionTextFields(true)
+            present(AlertControllers.onlySixDigits(), animated: true)
         } else {
             joinSessionViewModel.searchFirebase(with: codeEntry)
         }
@@ -184,7 +173,7 @@ extension JoinSessionViewController: JoinSessionViewModelDelegate {
                                  """
         joinSessionViewModel.validSessionCode = codeEntry
         logoImageView.isHidden = true
-        revealJoinSessionTextFields()
+        hideJoinSessionTextFields(false)
     }
     
     func noSessionFoundWithCode() {

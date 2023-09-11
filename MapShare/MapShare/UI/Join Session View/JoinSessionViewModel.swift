@@ -14,7 +14,7 @@ protocol JoinSessionViewModelDelegate: AnyObject {
 
 class JoinSessionViewModel {
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     var locationManager = CLLocationManager()
     var validSessionCode = ""
     var searchedSession: Session?
@@ -29,7 +29,7 @@ class JoinSessionViewModel {
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     func searchFirebase(with code: String) {
         service.firestoreSearchForActiveSession(withCode: code) { result in
             switch result {

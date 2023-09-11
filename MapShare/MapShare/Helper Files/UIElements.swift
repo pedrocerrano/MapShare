@@ -9,7 +9,7 @@ import UIKit
 
 struct UIElements {
     
-    //MARK: - COLORS
+    //MARK: - Custom Colors
     struct Color {
         static let mapShareRed    = UIColor(red: 255/255, green: 35/255, blue: 0/255, alpha: 1)
         static let mapSharePink   = UIColor(red: 255/255, green: 20/255, blue: 150/255, alpha: 1)
@@ -34,7 +34,7 @@ struct UIElements {
     }
     
     
-    //MARK: - MAP HOME UI    
+    //MARK: - Map Home UI
     static func configureLabelUI(for label: UILabel) {
         label.layer.shadowColor   = Constants.LabelUI.shadowColor
         label.layer.shadowOpacity = Constants.LabelUI.shadowOpacity
@@ -44,7 +44,7 @@ struct UIElements {
     }
     
     
-    //MARK: - BUTTON ATTRIBUTES
+    //MARK: - Button Attributes
     static func configureFilledStyleButtonAttributes(for button: UIButton, withColor color: UIColor) {
         button.configuration?.baseBackgroundColor = color
         button.layer.shadowColor                  = Constants.ButtonUI.shadowColor
