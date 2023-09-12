@@ -71,7 +71,7 @@ extension MapHomeViewModel {
             markerAnnotationView.titleVisibility   = .hidden
             markerAnnotationView.animatesWhenAdded = true
             markerAnnotationView.glyphImage        = UIImage(systemName: SFSymbols.routeAnnotationImage)
-            markerAnnotationView.markerTintColor   = UIElements.Color.dodgerBlue
+            markerAnnotationView.markerTintColor   = UIColor.dodgerBlue()
             markerAnnotationView.canShowCallout    = true
             routeDirectionsButton.setImage(UIImage(systemName: SFSymbols.routeAnnotationButton), for: .normal)
             markerAnnotationView.rightCalloutAccessoryView = routeDirectionsButton

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		292DA1182AB0A88600CD5C04 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292DA1172AB0A88600CD5C04 /* UIColor+Ext.swift */; };
 		29345F972A9524B200B9F386 /* Ably in Frameworks */ = {isa = PBXBuildFile; productRef = 29345F962A9524B200B9F386 /* Ably */; };
 		294D87D22AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294D87D12AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift */; };
 		295079312A0309A00059D774 /* ActiveSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295079302A0309A00059D774 /* ActiveSessionViewController.swift */; };
@@ -20,7 +21,7 @@
 		297626B12A0978A300F7BCC4 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */; };
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
-		29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIElements.swift */; };
+		29912B632A0BDFDF00EA9995 /* UIStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIStyling.swift */; };
 		29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD57582AA219CB00BD6825 /* DeletedMember.swift */; };
 		29AD575C2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */; };
 		29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE21142A26931900D9AB2C /* LocationPushService.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		292DA1172AB0A88600CD5C04 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		294D87D12AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewModel+Ably.swift"; sourceTree = "<group>"; };
 		295079302A0309A00059D774 /* ActiveSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionViewController.swift; sourceTree = "<group>"; };
 		295079322A030A5D0059D774 /* ActiveSession.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActiveSession.storyboard; sourceTree = "<group>"; };
@@ -85,7 +87,7 @@
 		297626B02A0978A300F7BCC4 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
-		29912B622A0BDFDF00EA9995 /* UIElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElements.swift; sourceTree = "<group>"; };
+		29912B622A0BDFDF00EA9995 /* UIStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyling.swift; sourceTree = "<group>"; };
 		29AD57582AA219CB00BD6825 /* DeletedMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedMember.swift; sourceTree = "<group>"; };
 		29AD575B2AA26C8300BD6825 /* MapHomeViewController+ViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapHomeViewController+ViewModelDelegate.swift"; sourceTree = "<group>"; };
 		29AE20FA2A2646AF00D9AB2C /* MapShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapShare.entitlements; sourceTree = "<group>"; };
@@ -136,6 +138,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		292DA11B2AB0AFB500CD5C04 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				292DA1172AB0A88600CD5C04 /* UIColor+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		294D87D02AA8ED0F00E59DF9 /* Map Home ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +246,7 @@
 				29F859A72A0187BF00A53792 /* GoogleService-Info.plist */,
 				29E6A0C529FADE0C00D109B1 /* Models */,
 				29AD575A2AA226C600BD6825 /* Firebase Service */,
+				292DA11B2AB0AFB500CD5C04 /* Extensions */,
 				29E6A0CC29FADE2000D109B1 /* Helper Files */,
 				29E6A0D029FADE4100D109B1 /* UI */,
 				29E5A54D29F81B3A008D8834 /* Supporting Files */,
@@ -272,7 +283,7 @@
 			children = (
 				29E6A0CD29FADE2000D109B1 /* Constants.swift */,
 				29883D922A056F6700DB2D96 /* Detents.swift */,
-				29912B622A0BDFDF00EA9995 /* UIElements.swift */,
+				29912B622A0BDFDF00EA9995 /* UIStyling.swift */,
 				AF72D7F52A1407980080C9AD /* PopUpButton.swift */,
 				29E69A6E2A9F96F400960035 /* AlertControllers.swift */,
 				29E69A702A9FA2BD00960035 /* SFSymbols.swift */,
@@ -453,12 +464,13 @@
 				295B879D2A003ACE0016DFFA /* NewSessionViewModel.swift in Sources */,
 				2959EF002AA7653C001B62AF /* MapHomeViewModel+MapKitFuncs.swift in Sources */,
 				29EC20F82A0AC1CB0085743A /* WaitingRoomTableViewCell.swift in Sources */,
-				29912B632A0BDFDF00EA9995 /* UIElements.swift in Sources */,
+				29912B632A0BDFDF00EA9995 /* UIStyling.swift in Sources */,
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
 				294D87D22AA8F6A100E59DF9 /* MapHomeViewModel+Ably.swift in Sources */,
 				29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */,
 				29E69A6F2A9F96F400960035 /* AlertControllers.swift in Sources */,
+				292DA1182AB0A88600CD5C04 /* UIColor+Ext.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -64,38 +64,36 @@ class MapHomeViewController: UIViewController {
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-//        guard let coordinates   = mapHomeViewModel.locationManager.location?.coordinate else { return }
-//        guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
-//        mapHomeViewModel.updateMemberLocation(forMember: currentMember,
-//                                              withLatitude: coordinates.latitude,
-//                                              withLongitude: coordinates.longitude)
-        
         guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
         mapHomeViewModel.ablyChannel.publish(currentMember.title, data: "Testing 1, 2, 3...") { error in
             guard error == nil else {
                 return print("Publishing Error: \(error?.localizedDescription ?? "Beach Ball of Death")")
             }
         }
-//        print("Current Memeber Sending: \(currentMember.title ?? "Uh-Oh")")
     }
     
     
     //MARK: - Functions
+    func hideButtons(_ bool: Bool) {
+        activeMembersStackView.isHidden = bool
+        waitingRoomStackView.isHidden   = bool
+        travelMethodButton.isHidden     = bool
+        centerRouteButton.isHidden      = bool
+        refreshLocationButton.isHidden  = bool
+    }
+    
+    
     private func configureUI() {
-        UIElements.configureLabelUI(for: sessionActivityIndicatorLabel)
-        activeMembersStackView.isHidden      = true
-        waitingRoomStackView.isHidden        = true
         navigationItem.hidesBackButton       = true
-        travelMethodButton.isHidden          = true
-        centerRouteButton.isHidden           = true
         clearRouteAnnotationsButton.isHidden = true
-        refreshLocationButton.isHidden       = true
-        UIElements.configureFilledStyleButtonAttributes(for: travelMethodButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: centerLocationButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: centerRouteButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureFilledStyleButtonAttributes(for: clearRouteAnnotationsButton, withColor: .systemGray3)
+        hideButtons(true)
+        [travelMethodButton, centerLocationButton, centerRouteButton].forEach { button in
+            if let button { UIStyling.styleFilledButton(for: button, withColor: UIColor.dodgerBlue()) }
+        }
+        UIStyling.styleLabel(for: sessionActivityIndicatorLabel)
+        UIStyling.styleFilledButton(for: clearRouteAnnotationsButton, withColor: .systemGray3)
+        UIStyling.styleFilledButton(for: refreshLocationButton, withColor: UIColor.mapShareGreen())
         clearRouteAnnotationsButton.configuration?.baseForegroundColor = .label
-        UIElements.configureFilledStyleButtonAttributes(for: refreshLocationButton, withColor: UIElements.Color.mapShareGreen)
     }
     
     private func setupNewSessionSheetController() {

@@ -102,7 +102,7 @@ class JoinSessionViewController: UIViewController {
             }
             sheetPresentationController.dismissalTransitionWillBegin()
             PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .off)
-            userColorPopUpButton.backgroundColor = UIElements.Color.dodgerBlue
+            userColorPopUpButton.backgroundColor = UIColor.dodgerBlue()
             logoImageView.isHidden = false
         }
     }
@@ -118,17 +118,16 @@ class JoinSessionViewController: UIViewController {
     }
     
     private func configureUI() {
-        UIElements.configureCircleButtonAttributes(for: closeJoinSessionSheetButton, backgroundColor: UIElements.Color.dodgerBlue, tintColor: .white)
-        UIElements.configureTextFieldUI(forTextField: codeEntryTextField)
-        UIElements.configureFilledStyleButtonAttributes(for: searchSessionButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureImageView(forImageView: logoImageView)
+        UIStyling.styleCircleButton(for: closeJoinSessionSheetButton, backgroundColor: UIColor.dodgerBlue(), tintColor: .white)
+        UIStyling.styleFilledButton(for: searchSessionButton, withColor: UIColor.dodgerBlue())
+        UIStyling.styleFilledButton(for: joinSessionButton, withColor: UIColor.dodgerBlue())
+        UIStyling.styleLogo(forImageView: logoImageView)
         logoImageView.isHidden = false
-        UIElements.configureTextFieldUI(forTextField: memberFirstNameTextField)
-        UIElements.configureTextFieldUI(forTextField: memberLastNameTextField)
-        UIElements.configureTextFieldUI(forTextField: memberScreenNameTextField)
+        [codeEntryTextField, memberFirstNameTextField, memberLastNameTextField, memberScreenNameTextField].forEach { textField in
+            if let textField { UIStyling.styleTextField(forTextField: textField) }
+        }
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .on)
-        UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
-        UIElements.configureFilledStyleButtonAttributes(for: joinSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIStyling.stylePopUpButton(for: userColorPopUpButton)
     }
     
     private func hideJoinSessionTextFields(_ bool: Bool) {

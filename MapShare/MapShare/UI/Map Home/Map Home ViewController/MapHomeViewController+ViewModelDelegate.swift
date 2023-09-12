@@ -5,7 +5,7 @@
 //  Created by iMac Pro on 9/1/23.
 //
 
-import Foundation
+import UIKit
 import Ably
 
 extension MapHomeViewController: MapHomeViewModelDelegate {
@@ -14,7 +14,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         guard let session = mapHomeViewModel.mapShareSession else { return }
         
         if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
-            sessionActivityIndicatorLabel.textColor = UIElements.Color.mapShareGreen
+            sessionActivityIndicatorLabel.textColor = UIColor.mapShareGreen()
             activeMembersStackView.isHidden         = false
             waitingRoomStackView.isHidden           = false
             refreshLocationButton.isHidden       = false
@@ -81,11 +81,7 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapView.removeAnnotations(mapView.annotations)
         
         // Hides buttons
-        activeMembersStackView.isHidden = true
-        waitingRoomStackView.isHidden   = true
-        travelMethodButton.isHidden     = true
-        centerRouteButton.isHidden      = true
-        refreshLocationButton.isHidden  = true
+        hideButtons(true)
         
         // Resets the View Model Session data
         mapHomeViewModel.mapShareSession                 = nil
@@ -95,9 +91,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         
         // Resets mapView
         sessionActivityIndicatorLabel.textColor = .systemGray
-        mapHomeViewModel.isDriving              = true
-        mapHomeViewModel.zoomAllRoutes          = true
-        mapView.showsUserLocation               = true
+        mapHomeViewModel.isDriving     = true
+        mapHomeViewModel.zoomAllRoutes = true
+        mapView.showsUserLocation      = true
         mapHomeViewModel.resetZoomForSingleMember(mapView: mapView)
         
         // Removes Firestore Listeners

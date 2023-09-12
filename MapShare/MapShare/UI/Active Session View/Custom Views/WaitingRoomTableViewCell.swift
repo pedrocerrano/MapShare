@@ -63,8 +63,8 @@ class WaitingRoomTableViewCell: UITableViewCell {
         self.member   = member
         self.delegate = delegate
         
-        UIElements.configureWaitingRoomButton(for: admitNewMemberButton, withColor: UIElements.Color.mapShareGreen)
-        UIElements.configureWaitingRoomButton(for: denyNewMemberButton, withColor: UIElements.Color.mapShareRed)
+        UIStyling.styleWaitingRoomButton(for: admitNewMemberButton, withColor: UIColor.mapShareGreen())
+        UIStyling.styleWaitingRoomButton(for: denyNewMemberButton, withColor: UIColor.mapShareRed())
         if Constants.Device.deviceID != session.organizerDeviceID {
             admitNewMemberButton.isHidden = true
             denyNewMemberButton.isHidden  = true

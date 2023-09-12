@@ -66,8 +66,8 @@ class ActiveSessionViewController: UIViewController {
         sessionNameLabel.text = session.sessionName
         sessionCodeLabel.text = session.sessionCode
         
-        UIElements.configureFilledStyleButtonAttributes(for: inviteMembersButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureCircleButtonAttributes(for: sessionControlButton, backgroundColor: .systemRed, tintColor: .white)
+        UIStyling.styleFilledButton(for: inviteMembersButton, withColor: UIColor.dodgerBlue())
+        UIStyling.styleCircleButton(for: sessionControlButton, backgroundColor: .systemRed, tintColor: .white)
         if let _ = session.members.filter ({ $0.isOrganizer }).first {
             inviteMembersButton.isHidden = false
         } else {

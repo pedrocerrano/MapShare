@@ -97,7 +97,7 @@ class NewSessionViewController: UIViewController {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
             }
             PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .off)
-            userColorPopUpButton.backgroundColor = UIElements.Color.dodgerBlue
+            userColorPopUpButton.backgroundColor = UIColor.dodgerBlue()
         }
     }
     
@@ -111,16 +111,15 @@ class NewSessionViewController: UIViewController {
     }
     
     private func configureUI() {
-        UIElements.configureFilledStyleButtonAttributes(for: newMapShareButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureImageView(forImageView: mapShareLogoImageView)
-        UIElements.configureFilledStyleButtonAttributes(for: joinMapShareButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureTextFieldUI(forTextField: sessionNameTextField)
-        UIElements.configureTextFieldUI(forTextField: firstNameTextField)
-        UIElements.configureTextFieldUI(forTextField: lastNameTextField)
-        UIElements.configureTextFieldUI(forTextField: screenNameTextField)
+        UIStyling.styleLogo(forImageView: mapShareLogoImageView)
+        [newMapShareButton, joinMapShareButton, createSessionButton].forEach { button in
+            if let button { UIStyling.styleFilledButton(for: button, withColor: UIColor.dodgerBlue()) }
+        }
+        [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
+            if let textField { UIStyling.styleTextField(forTextField: textField) }
+        }
         PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .on)
-        UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
-        UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIStyling.stylePopUpButton(for: userColorPopUpButton)
     }
     
     private func setupNotifications() {
