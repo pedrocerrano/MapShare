@@ -146,6 +146,17 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		292DA11C2AB0B73500CD5C04 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				29883D922A056F6700DB2D96 /* Detents.swift */,
+				AF72D7F52A1407980080C9AD /* PopUpButton.swift */,
+				29E69A6E2A9F96F400960035 /* AlertControllers.swift */,
+				29912B622A0BDFDF00EA9995 /* UIStyling.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		294D87D02AA8ED0F00E59DF9 /* Map Home ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +258,7 @@
 				29E6A0C529FADE0C00D109B1 /* Models */,
 				29AD575A2AA226C600BD6825 /* Firebase Service */,
 				292DA11B2AB0AFB500CD5C04 /* Extensions */,
+				292DA11C2AB0B73500CD5C04 /* Utilities */,
 				29E6A0CC29FADE2000D109B1 /* Helper Files */,
 				29E6A0D029FADE4100D109B1 /* UI */,
 				29E5A54D29F81B3A008D8834 /* Supporting Files */,
@@ -282,10 +294,6 @@
 			isa = PBXGroup;
 			children = (
 				29E6A0CD29FADE2000D109B1 /* Constants.swift */,
-				29883D922A056F6700DB2D96 /* Detents.swift */,
-				29912B622A0BDFDF00EA9995 /* UIStyling.swift */,
-				AF72D7F52A1407980080C9AD /* PopUpButton.swift */,
-				29E69A6E2A9F96F400960035 /* AlertControllers.swift */,
 				29E69A702A9FA2BD00960035 /* SFSymbols.swift */,
 			);
 			path = "Helper Files";
