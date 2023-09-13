@@ -65,7 +65,10 @@ class MapHomeViewController: UIViewController {
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
         guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
-        mapHomeViewModel.ablyChannel.publish(currentMember.title, data: "Testing 1, 2, 3...") { error in
+        let latitude  = "\(mapHomeViewModel.locationManager.location?.coordinate.latitude ?? 111)"
+        let longitude = "\(mapHomeViewModel.locationManager.location?.coordinate.longitude ?? 222)"
+
+        mapHomeViewModel.ablyChannel.publish(currentMember.title, data: "\(latitude):\(longitude)") { error in
             guard error == nil else {
                 return print("Publishing Error: \(error?.localizedDescription ?? "Beach Ball of Death")")
             }
@@ -162,7 +165,7 @@ class MapHomeViewController: UIViewController {
         mapHomeViewModel.directionsArray.append(directions)
         let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
     }
-} //: CLASS
+} //: Class
 
 
 //MARK: - EXT: LocationManagerDelegate

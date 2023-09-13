@@ -30,7 +30,7 @@ class Member: NSObject, MKAnnotation {
     var isOrganizer: Bool
     var isActive: Bool
     var expectedTravelTime: Double?
-    var coordinate: CLLocationCoordinate2D
+    @objc dynamic var coordinate: CLLocationCoordinate2D
     var title: String?
     
     

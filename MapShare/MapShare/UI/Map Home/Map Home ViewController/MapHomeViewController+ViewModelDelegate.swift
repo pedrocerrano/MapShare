@@ -7,52 +7,60 @@
 
 import UIKit
 import Ably
+import CoreLocation
 
 extension MapHomeViewController: MapHomeViewModelDelegate {
     
     func changesInMembers() {
-        guard let session = mapHomeViewModel.mapShareSession else { return }
+        guard let session      = mapHomeViewModel.mapShareSession else { return }
+        let waitingRoomMembers = session.members.filter { !$0.isActive }
+        let activeMembers      = session.members.filter { $0.isActive }
+        let memberAnnotations  = mapView.annotations.filter { ($0 is Member) }
         
         if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
+            // Configures the Session Info at the top
             sessionActivityIndicatorLabel.textColor = UIColor.mapShareGreen()
-            activeMembersStackView.isHidden         = false
-            waitingRoomStackView.isHidden           = false
-            refreshLocationButton.isHidden       = false
-            mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel, forWaitingLabel: membersInWaitingRoomLabel)
+            activeMembersStackView.isHidden = false
+            waitingRoomStackView.isHidden   = false
+            refreshLocationButton.isHidden  = false
+            mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel,
+                                                forWaitingLabel: membersInWaitingRoomLabel)
             
-            // Updates the Active/Waiting Room members counts
-            let waitingRoomMembers = session.members.filter { !$0.isActive }
+            // Updates the Active/Waiting Room UI
             if waitingRoomMembers.count > 0 {
                 waitingRoomStackView.backgroundColor = .yellow
             } else {
                 waitingRoomStackView.backgroundColor = .clear
             }
             
-            // Adds a MemberAnnoation after a member is admitted to the active session
-            let activeMembers = session.members.filter { $0.isActive }
+            // Adds a Member as an annoation after a member isActive
             mapView.addAnnotations(activeMembers)
+            // Sets zoom for when there is more than one members
             if activeMembers.count > 1 {
                 mapView.showAnnotations(activeMembers, animated: true)
             }
         }
         
+        print("PRE Delete MemberAnnotations:       \(memberAnnotations)")
+        print("PRE Delete MemberAnnotations Count: \(memberAnnotations.count)")
         // Removes MemberAnnotation from remaining active devices after another Member exits the Session
-        let memberAnnotations = mapView.annotations.filter { ($0 is Member) }
         if let deletedMember = session.deletedMembers.first,
            let memberAnnotationToDelete = memberAnnotations.first(where: { $0.title == deletedMember.title }) {
-//            print("DeletedMemeber:           \(deletedMember.title)")
-//            print("MemberAnnotationToDelete: \(memberAnnotationToDelete.title)")
+            guard let memberAnnotationTitle = memberAnnotationToDelete.title else { return }
+//            print("DeletedMemeber:               \(deletedMember.title)")
+//            print("MemberAnnotationToDelete:     \(memberAnnotationToDelete.title)")
             mapView.removeAnnotation(memberAnnotationToDelete)
             mapHomeViewModel.clearFirebaseDeletedMemberAfterRemovingAnnotation(for: deletedMember)
             mapHomeViewModel.mapShareSession?.deletedMembers = []
             mapView.showAnnotations(memberAnnotations, animated: true)
+            print("POST Delete MemberAnnotations:       \(memberAnnotations)")
+            print("POST Delete MemberAnnotations Count: \(memberAnnotations.count)")
         }
     }
     
-    
     func changesInRoute() {
         // Ensures only one route available at a time
-        let routeAnnotations = mapView.annotations.filter { !($0 is Member) }
+        let routeAnnotations = mapView.annotations.filter { ($0 is Route) }
         mapView.removeAnnotations(routeAnnotations)
         mapView.removeOverlays(mapView.overlays)
         
@@ -84,10 +92,9 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         hideButtons(true)
         
         // Resets the View Model Session data
-        mapHomeViewModel.mapShareSession                 = nil
-        mapHomeViewModel.mapShareSession?.members        = [] // Do I need this if the Session is nil?
-        mapHomeViewModel.mapShareSession?.deletedMembers = [] // Do I need this if the Session is nil?
-        mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel, forWaitingLabel: membersInWaitingRoomLabel)
+        mapHomeViewModel.mapShareSession = nil
+        mapHomeViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel,
+                                            forWaitingLabel: membersInWaitingRoomLabel)
         
         // Resets mapView
         sessionActivityIndicatorLabel.textColor = .systemGray
@@ -103,10 +110,22 @@ extension MapHomeViewController: MapHomeViewModelDelegate {
         mapHomeViewModel.deletedMemberListener?.remove()
     }
     
-    
     func ablyMessagesUpdate(message: ARTMessage) {
-        let receivedMessage    = "\(message.name ?? "Bob") says:\n\"\(message.data ?? "ABCDE")\""
-        ablyMessagesLabel.text = receivedMessage
-//        print(receivedMessage)
+        guard let memberToUpdate = mapHomeViewModel.mapShareSession?.members.first(where: { $0.title == message.name }) else { return }
+        if memberToUpdate.title == message.name {
+            let receivedCoordinateString = "\(message.data ?? "ZYX")"
+            let coordinates              = receivedCoordinateString.components(separatedBy: ":")
+            guard let latitudeString  = coordinates.first,
+                  let longitudeString = coordinates.last,
+                  let latitude        = Double(latitudeString),
+                  let longitude       = Double(longitudeString)
+            else { return }
+            
+            ablyMessagesLabel.text = "\(memberToUpdate.title ?? "AAA")\nLat: \(latitude)\nLon: \(longitude)"
+            let updatedCoordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            UIView.animate(withDuration: 0.5) {
+                memberToUpdate.coordinate = updatedCoordinates
+            }
+        }
     }
 }
