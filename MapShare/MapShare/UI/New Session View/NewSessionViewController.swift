@@ -134,14 +134,14 @@ class NewSessionViewController: UIViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toActiveSessionVC" {
-            guard let destinationVC   = segue.destination as? ActiveSessionViewController,
-                  let mapHomeDelegate = newSessionViewModel.mapHomeDelegate,
-                  let session         = newSessionViewModel.session else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self, mapHomeDelegate: mapHomeDelegate)
+            guard let destinationVC = segue.destination as? ActiveSessionViewController,
+                  let mapDelegate   = newSessionViewModel.mapDelegate,
+                  let session       = newSessionViewModel.session else { return }
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self, mapDelegate: mapDelegate)
         } else if segue.identifier == "toJoinSessionVC" {
             guard let destinationVC = segue.destination as? JoinSessionViewController,
-                  let delegate      = newSessionViewModel.mapHomeDelegate else { return }
-            destinationVC.joinSessionViewModel = JoinSessionViewModel(delegate: destinationVC, mapHomeDelegate: delegate)
+                  let delegate      = newSessionViewModel.mapDelegate else { return }
+            destinationVC.joinSessionViewModel = JoinSessionViewModel(delegate: destinationVC, mapDelegate: delegate)
         }
     }
 } //: CLASS

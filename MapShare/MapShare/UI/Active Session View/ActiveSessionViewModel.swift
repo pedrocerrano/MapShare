@@ -13,6 +13,7 @@ protocol ActiveSessionViewModelDelegate: AnyObject {
     func sessionReturnedNil()
 }
 
+
 class ActiveSessionViewModel {
     
     //MARK: - Properties
@@ -23,15 +24,15 @@ class ActiveSessionViewModel {
     var routesListener: ListenerRegistration?
     
     private weak var delegate: ActiveSessionViewModelDelegate?
-    weak var mapHomeDelegate: MapHomeViewController?
+    weak var mapDelegate: MapViewController?
     
     let sectionTitles = ["Active Members", "Waiting Room"]
     
-    init(session: Session, service: FirebaseService = FirebaseService(), delegate: ActiveSessionViewModelDelegate, mapHomeDelegate: MapHomeViewController) {
-        self.session         = session
-        self.service         = service
-        self.delegate        = delegate
-        self.mapHomeDelegate = mapHomeDelegate
+    init(session: Session, service: FirebaseService = FirebaseService(), delegate: ActiveSessionViewModelDelegate, mapDelegate: MapViewController) {
+        self.session     = session
+        self.service     = service
+        self.delegate    = delegate
+        self.mapDelegate = mapDelegate
     }
     
     

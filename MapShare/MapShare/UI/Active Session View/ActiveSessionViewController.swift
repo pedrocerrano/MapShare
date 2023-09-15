@@ -77,8 +77,8 @@ class ActiveSessionViewController: UIViewController {
     
     private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
-        sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
-        sheetPresentationController.prefersGrabberVisible = true
+        sheetPresentationController.detents                         = Detents.buildDetent(screenHeight: screenHeight)
+        sheetPresentationController.prefersGrabberVisible           = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
         sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
@@ -100,7 +100,7 @@ class ActiveSessionViewController: UIViewController {
             guard let self = self else { return }
             self.activeSessionViewModel.deleteSessionAndMemberDocuments()
             self.activeSessionViewModel.removeListeners()
-            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+            self.activeSessionViewModel.mapDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
@@ -120,7 +120,7 @@ class ActiveSessionViewController: UIViewController {
             
             self.activeSessionViewModel.deleteMemberSelf(fromSession: self.activeSessionViewModel.session, forMember: member)
             self.activeSessionViewModel.removeListeners()
-            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+            self.activeSessionViewModel.mapDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
@@ -188,7 +188,7 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
     
     func sessionReturnedNil() {
         sheetPresentationController.dismissalTransitionWillBegin()
-        activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+        activeSessionViewModel.mapDelegate?.noSessionActive()
     }
 } //: ViewModelDelegate
 

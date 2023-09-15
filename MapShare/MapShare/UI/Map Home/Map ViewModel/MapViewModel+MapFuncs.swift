@@ -1,5 +1,5 @@
 //
-//  MapHomeViewModel+MapKitFuncs.swift
+//  MapViewModel+MapKitFuncs.swift
 //  MapShare
 //
 //  Created by iMac Pro on 9/5/23.
@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-extension MapHomeViewModel {
+extension MapViewModel {
     
     //MARK: - Route and Directions Functions
     func toggleTravelMethod(for button: UIButton) {

@@ -8,7 +8,7 @@
 import Foundation
 import Ably
 
-extension MapHomeViewModel {
+extension MapViewModel {
     
     //MARK: - Functions
     func connectToAbly(mapShareSession: Session) {

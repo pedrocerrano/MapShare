@@ -1,5 +1,5 @@
 //
-//  MapHomeViewController.swift
+//  MapViewController.swift
 //  MapShare
 //
 //  Created by iMac Pro on 4/25/23.
@@ -10,7 +10,7 @@ import MapKit
 import CoreLocation
 import CoreLocationUI
 
-class MapHomeViewController: UIViewController {
+class MapViewController: UIViewController {
     
     //MARK: - Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -28,14 +28,14 @@ class MapHomeViewController: UIViewController {
     
     
     // MARK: - Properties
-    var mapHomeViewModel: MapHomeViewModel!
+    var mapViewModel: MapViewModel!
     
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapHomeViewModel = MapHomeViewModel(delegate: self)
-        mapHomeViewModel.locationManager.delegate = self
+        mapViewModel = MapViewModel(delegate: self)
+        mapViewModel.locationManager.delegate = self
         setupNewSessionSheetController()
         registerMapAnnotations()
         addGesture()
@@ -45,34 +45,29 @@ class MapHomeViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func travelMethodButtonTapped(_ sender: UIButton) {
-        mapHomeViewModel.toggleTravelMethod(for: sender)
+        mapViewModel.toggleTravelMethod(for: sender)
     }
     
     @IBAction func centerLocationButtonTapped(_ sender: UIButton) {
-        mapHomeViewModel.resetZoomToCenterMembers(forMapView: mapView, centerLocationButton: centerLocationButton)
+        mapViewModel.resetZoomToCenterMembers(forMapView: mapView, centerLocationButton: centerLocationButton)
     }
     
     @IBAction func centerRouteButtonTapped(_ sender: UIButton) {
-        mapHomeViewModel.resetZoomToCenterRoute(forMapView: mapView, centerRouteButton: centerRouteButton)
+        mapViewModel.resetZoomToCenterRoute(forMapView: mapView, centerRouteButton: centerRouteButton)
     }
     
     @IBAction func clearRouteAnnotationsButtonTapped(_ sender: Any) {
-        mapHomeViewModel.clearRouteAnnotations(forMapView: mapView,
+        mapViewModel.clearRouteAnnotations(forMapView: mapView,
                                                centerRouteButton: centerRouteButton,
                                                clearRouteAnnotationsButton: clearRouteAnnotationsButton,
                                                travelMethodButton: travelMethodButton)
     }
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-        guard let currentMember = mapHomeViewModel.mapShareSession?.members.first(where: { Constants.Device.deviceID == $0.deviceID }) else { return }
-        let latitude  = "\(mapHomeViewModel.locationManager.location?.coordinate.latitude ?? 111)"
-        let longitude = "\(mapHomeViewModel.locationManager.location?.coordinate.longitude ?? 222)"
-
-        mapHomeViewModel.ablyChannel.publish(currentMember.title, data: "\(latitude):\(longitude)") { error in
-            guard error == nil else {
-                return print("Publishing Error: \(error?.localizedDescription ?? "Beach Ball of Death")")
-            }
-        }
+        let memberAnnotations      = mapView.annotations.filter { ($0 is Member) }
+        let memberAnnotationTitles = memberAnnotations.map { $0.title ?? "ABC" }
+        print("[BUTTON] MemberAnnotations Titles: \(memberAnnotationTitles)")
+        print("[BUTTON] MemberAnnotations Count:  \(memberAnnotations.count)")
     }
     
     
@@ -84,7 +79,6 @@ class MapHomeViewController: UIViewController {
         centerRouteButton.isHidden      = bool
         refreshLocationButton.isHidden  = bool
     }
-    
     
     private func configureUI() {
         navigationItem.hidesBackButton       = true
@@ -103,7 +97,7 @@ class MapHomeViewController: UIViewController {
         let storyboard = UIStoryboard(name: "NewSession", bundle: nil)
         guard let sheetController = storyboard.instantiateViewController(withIdentifier: "NewSessionVC") as? NewSessionViewController else { return }
         sheetController.isModalInPresentation = true
-        sheetController.newSessionViewModel = NewSessionViewModel(mapHomeDelegate: self)
+        sheetController.newSessionViewModel = NewSessionViewModel(mapDelegate: self)
         self.parent?.present(sheetController, animated: true, completion: nil)
     }
     
@@ -113,12 +107,12 @@ class MapHomeViewController: UIViewController {
     }
     
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
-        guard let session = mapHomeViewModel.mapShareSession else { return }
+        guard let session = mapViewModel.mapShareSession else { return }
         if session.organizerDeviceID == Constants.Device.deviceID && session.routes.isEmpty {
             let tappedLocation     = gestureRecognizer.location(in: mapView)
             let tappedCoordinate   = mapView.convert(tappedLocation, toCoordinateFrom: mapView)
             let newRouteAnnotation = Route(coordinate: tappedCoordinate, title: nil, isShowingDirections: false, isDriving: true)
-            mapHomeViewModel.saveRouteToFirestore(newRoute: newRouteAnnotation)
+            mapViewModel.saveRouteToFirestore(newRoute: newRouteAnnotation)
             clearRouteAnnotationsButton.isHidden = false
             travelMethodButton.isHidden          = false
         } else {
@@ -127,24 +121,24 @@ class MapHomeViewController: UIViewController {
     }
     
     private func getDirections(routeAnnotation: MKAnnotation, withTravelType travelType: MKDirectionsTransportType) {
-        guard let activeMembers = mapHomeViewModel.mapShareSession?.members.filter ({ $0.isActive }) else { return }
+        guard let activeMembers = mapViewModel.mapShareSession?.members.filter ({ $0.isActive }) else { return }
         for member in activeMembers {
             let location   = CLLocationCoordinate2D(latitude: member.coordinate.latitude, longitude: member.coordinate.longitude)
-            let request    = mapHomeViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withTravelType: travelType)
+            let request    = mapViewModel.createDirectionsRequest(from: location, annotation: routeAnnotation, withTravelType: travelType)
             let directions = MKDirections(request: request)
             resetMapView(withNew: directions)
             directions.calculate { [weak self] response, error in
                 if let error = error { print(error.localizedDescription) ; return }
                 
                 guard let response = response,
-                      let self = self
+                      let self     = self
                 else { return }
                 
                 for route in response.routes {
-                    self.mapHomeViewModel.updateMemberTravelTime(withMemberID: member.deviceID, withTravelTime: route.expectedTravelTime)
+                    self.mapViewModel.updateMemberTravelTime(withMemberID: member.deviceID, withTravelTime: route.expectedTravelTime)
                     route.polyline.title = member.title
                     self.mapView.addOverlay(route.polyline)
-                    self.mapHomeViewModel.resetZoomForAllMembersRoutes(forMapView: mapView)
+                    self.mapViewModel.resetZoomForAllMembersRoutes(forMapView: mapView)
                 }
             }
         }
@@ -153,6 +147,7 @@ class MapHomeViewController: UIViewController {
     func displayDirections(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
         for newRouteAnnotation in session.routes {
             mapView.addAnnotation(newRouteAnnotation)
+            print("[DISPLAY DIRECTIONS]: I added \(newRouteAnnotation.title ?? "ABC")")
             
             if newRouteAnnotation.isShowingDirections {
                 getDirections(routeAnnotation: newRouteAnnotation, withTravelType: travelType)
@@ -162,24 +157,24 @@ class MapHomeViewController: UIViewController {
     
     private func resetMapView(withNew directions: MKDirections) {
         mapView.removeOverlays(mapView.overlays)
-        mapHomeViewModel.directionsArray.append(directions)
-        let _ = mapHomeViewModel.directionsArray.map { $0.cancel() }
+        mapViewModel.directionsArray.append(directions)
+        let _ = mapViewModel.directionsArray.map { $0.cancel() }
     }
 } //: Class
 
 
 //MARK: - EXT: LocationManagerDelegate
-extension MapHomeViewController: CLLocationManagerDelegate {
+extension MapViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch mapHomeViewModel.locationManager.authorizationStatus {
+        switch mapViewModel.locationManager.authorizationStatus {
         case .notDetermined:
-            mapHomeViewModel.locationManager.requestWhenInUseAuthorization()
+            mapViewModel.locationManager.requestWhenInUseAuthorization()
             break
         case .restricted, .denied:
             NotificationCenter.default.post(name: Constants.Notifications.locationAccessNeeded, object: nil)
             break
         case .authorizedWhenInUse:
-            mapHomeViewModel.startTrackingLocation(mapView: mapView)
+            mapViewModel.startTrackingLocation(mapView: mapView)
             break
         default:
             break

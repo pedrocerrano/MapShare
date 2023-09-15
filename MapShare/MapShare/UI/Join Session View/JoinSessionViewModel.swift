@@ -15,17 +15,18 @@ protocol JoinSessionViewModelDelegate: AnyObject {
 class JoinSessionViewModel {
     
     //MARK: - Properties
-    var locationManager = CLLocationManager()
-    var validSessionCode = ""
     var searchedSession: Session?
     var service: FirebaseService
     private weak var delegate: JoinSessionViewModelDelegate?
-    weak var mapHomeDelegate: MapHomeViewController?
+    weak var mapDelegate: MapViewController?
     
-    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, mapHomeDelegate: MapHomeViewController) {
-        self.service         = service
-        self.delegate        = delegate
-        self.mapHomeDelegate = mapHomeDelegate
+    var locationManager  = CLLocationManager()
+    var validSessionCode = ""
+    
+    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, mapDelegate: MapViewController) {
+        self.service     = service
+        self.delegate    = delegate
+        self.mapDelegate = mapDelegate
     }
     
     
@@ -59,7 +60,7 @@ class JoinSessionViewModel {
         
         guard let searchedSession else { return }
         service.firestoreJoinNewMember(withCode: validCode, withMember: newMember) {
-            self.mapHomeDelegate?.mapHomeViewModel.delegateUpdateWithSession(session: searchedSession)
+            self.mapDelegate?.mapViewModel.delegateUpdateWithSession(session: searchedSession)
         }
     }
 }

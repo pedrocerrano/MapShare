@@ -1,5 +1,5 @@
 //
-//  MapHomeViewModel.swift
+//  MapViewModel.swift
 //  MapShare
 //
 //  Created by Chase on 5/16/23.
@@ -10,14 +10,14 @@ import MapKit
 import Ably
 import FirebaseFirestore
 
-protocol MapHomeViewModelDelegate: AnyObject {
+protocol MapViewModelDelegate: AnyObject {
     func changesInMembers()
     func changesInRoute()
     func noSessionActive()
     func ablyMessagesUpdate(message: ARTMessage)
 }
 
-class MapHomeViewModel {
+class MapViewModel {
     
     //MARK: - Properties
     var service: FirebaseService
@@ -27,7 +27,7 @@ class MapHomeViewModel {
     var routesListener: ListenerRegistration?
     
     var mapShareSession: Session?
-    weak var delegate: MapHomeViewModelDelegate?
+    weak var delegate: MapViewModelDelegate?
     
     var directionsArray: [MKDirections] = []
     let locationManager = CLLocationManager()
@@ -40,9 +40,15 @@ class MapHomeViewModel {
     var ablyRealtimeClient: ARTRealtime!
     var ablyChannel: ARTRealtimeChannel!
     
-    init(service: FirebaseService = FirebaseService(), delegate: MapHomeViewModelDelegate) {
+    init(service: FirebaseService = FirebaseService(), delegate: MapViewModelDelegate) {
         self.service  = service
         self.delegate = delegate
+    }
+    
+    var runCode = 0
+    
+    func addOne() {
+        runCode += 1
     }
     
     
