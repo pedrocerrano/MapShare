@@ -23,7 +23,6 @@ class MapViewModel {
     var service: FirebaseService
     var sessionListener: ListenerRegistration?
     var memberListener: ListenerRegistration?
-    var deletedMemberListener: ListenerRegistration?
     var routesListener: ListenerRegistration?
     
     var mapShareSession: Session?
@@ -43,12 +42,6 @@ class MapViewModel {
     init(service: FirebaseService = FirebaseService(), delegate: MapViewModelDelegate) {
         self.service  = service
         self.delegate = delegate
-    }
-    
-    var runCode = 0
-    
-    func addOne() {
-        runCode += 1
     }
     
     
@@ -95,22 +88,6 @@ class MapViewModel {
         }
     }
     
-    func updateAnnotationsForDeletedMember() {
-        guard let mapShareSession else { return }
-        deletedMemberListener = service.firestoreListenForDeletedMembers(forSession: mapShareSession) { result in
-            switch result {
-            case .success(let deletedMembers):
-                mapShareSession.deletedMembers = deletedMembers
-                if !mapShareSession.routes.isEmpty {
-                    self.delegate?.changesInRoute()
-                }
-                self.delegate?.changesInMembers()
-            case .failure(let error):
-                print(error.localizedDescription, "MapHomeViewModel: Issue with the DeletedMembers")
-            }
-        }
-    }
-    
     
     //MARK: - Firebase CRUD Functions
     func saveRouteToFirestore(newRoute: Route) {
@@ -144,15 +121,6 @@ class MapViewModel {
         service.firestoreUpdateRouteToWalking(forSession: mapShareSession, forRoute: route)
     }
     
-    func clearFirebaseDeletedMemberAfterRemovingAnnotation(for deletedMember: DeletedMember) {
-        guard let mapShareSession else { return }
-        service.firestoreClearDeletedMembers(fromSession: mapShareSession, forDeletedMember: deletedMember)
-    }
-    
-    func updateMemberLocation(forMember member: Member, withLatitude: Double, withLongitude: Double) {
-        // This is the function to update Real-Time Location update with Ably
-    }
-    
     
     //MARK: - Other Functions
     func delegateUpdateWithSession(session: Session) {
@@ -160,7 +128,6 @@ class MapViewModel {
         updateSessionChanges()
         updateMemberChanges()
         updateRouteChanges()
-        updateAnnotationsForDeletedMember()
         shareDirections()
     }
     

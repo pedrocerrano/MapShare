@@ -24,7 +24,6 @@ class MapViewController: UIViewController {
     @IBOutlet weak var centerRouteButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
     @IBOutlet weak var refreshLocationButton: UIButton!
-    @IBOutlet weak var ablyMessagesLabel: UILabel!
     
     
     // MARK: - Properties
@@ -65,7 +64,7 @@ class MapViewController: UIViewController {
     
     @IBAction func refreshLocationButtonTapped(_ sender: Any) {
         let memberAnnotations      = mapView.annotations.filter { ($0 is Member) }
-        let memberAnnotationTitles = memberAnnotations.map { $0.title ?? "ABC" }
+        let memberAnnotationTitles = memberAnnotations.map { $0.title! }
         print("[BUTTON] MemberAnnotations Titles: \(memberAnnotationTitles)")
         print("[BUTTON] MemberAnnotations Count:  \(memberAnnotations.count)")
     }

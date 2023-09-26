@@ -40,7 +40,6 @@ class NewSessionViewModel {
                                   sessionCode: generateRandomCode(sessionCode),
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
-                                  deletedMembers: [],
                                   routes: [])
         
         session = newSession

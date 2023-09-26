@@ -40,10 +40,10 @@ class ActiveSessionTableViewCell: UITableViewCell {
             transportTypeLabel.isHidden      = true
         }
         
-        if member.isOrganizer == false {
-            isOrganizerLabel.isHidden = true
-        } else {
+        if member.isOrganizer {
             isOrganizerLabel.isHidden = false
+        } else {
+            isOrganizerLabel.isHidden = true
         }
         
         if let routeAnnotation = session.routes.first {

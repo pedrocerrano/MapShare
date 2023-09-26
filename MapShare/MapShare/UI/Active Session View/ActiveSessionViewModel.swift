@@ -99,10 +99,6 @@ class ActiveSessionViewModel {
     
     func deleteMemberSelf(fromSession session: Session, forMember member: Member) {
         service.firestoreDeleteMember(fromSession: session, withMember: member)
-        
-        
-        let deletedMember = DeletedMember(title: member.title ?? "No Annotation Title assigned to Member")
-        service.firestoreSetDeletedMember(forSession: session, forMember: deletedMember)
     }
     
     func admitNewMember(forSession session: Session, withMember member: Member) {

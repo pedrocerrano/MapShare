@@ -22,7 +22,6 @@
 		297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */; };
 		29883D932A056F6700DB2D96 /* Detents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29883D922A056F6700DB2D96 /* Detents.swift */; };
 		29912B632A0BDFDF00EA9995 /* UIStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29912B622A0BDFDF00EA9995 /* UIStyling.swift */; };
-		29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD57582AA219CB00BD6825 /* DeletedMember.swift */; };
 		29AD575C2AA26C8300BD6825 /* MapViewController+ViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AD575B2AA26C8300BD6825 /* MapViewController+ViewModelDelegate.swift */; };
 		29AE21152A26931900D9AB2C /* LocationPushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AE21142A26931900D9AB2C /* LocationPushService.swift */; };
 		29AE21192A26931900D9AB2C /* LocationPush.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 29AE21122A26931900D9AB2C /* LocationPush.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -88,7 +87,6 @@
 		297626B22A0978BA00F7BCC4 /* JoinSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinSessionViewModel.swift; sourceTree = "<group>"; };
 		29883D922A056F6700DB2D96 /* Detents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detents.swift; sourceTree = "<group>"; };
 		29912B622A0BDFDF00EA9995 /* UIStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyling.swift; sourceTree = "<group>"; };
-		29AD57582AA219CB00BD6825 /* DeletedMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedMember.swift; sourceTree = "<group>"; };
 		29AD575B2AA26C8300BD6825 /* MapViewController+ViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapViewController+ViewModelDelegate.swift"; sourceTree = "<group>"; };
 		29AE20FA2A2646AF00D9AB2C /* MapShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapShare.entitlements; sourceTree = "<group>"; };
 		29AE21122A26931900D9AB2C /* LocationPush.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LocationPush.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -284,7 +282,6 @@
 				29E6A0C629FADE0C00D109B1 /* Session.swift */,
 				29E6A0C729FADE0C00D109B1 /* Member.swift */,
 				29E69A6C2A9F82CC00960035 /* Member+UIColor.swift */,
-				29AD57582AA219CB00BD6825 /* DeletedMember.swift */,
 				AF86025D2A02F7A800A6519D /* Route.swift */,
 			);
 			path = Models;
@@ -381,7 +378,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					29AE21112A26931900D9AB2C = {
 						CreatedOnToolsVersion = 14.3;
@@ -476,7 +473,6 @@
 				297626B32A0978BA00F7BCC4 /* JoinSessionViewModel.swift in Sources */,
 				29E6A0CA29FADE0C00D109B1 /* Member.swift in Sources */,
 				294D87D22AA8F6A100E59DF9 /* MapViewModel+Ably.swift in Sources */,
-				29AD57592AA219CB00BD6825 /* DeletedMember.swift in Sources */,
 				29E69A6F2A9F96F400960035 /* AlertControllers.swift in Sources */,
 				292DA1182AB0A88600CD5C04 /* UIColor+Ext.swift in Sources */,
 				29883D932A056F6700DB2D96 /* Detents.swift in Sources */,
@@ -601,6 +597,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -615,7 +612,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -661,6 +658,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -669,7 +667,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -700,7 +698,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -739,7 +737,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = MapHome;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -15,7 +15,7 @@ enum SFSymbols {
     static let driving = "car.circle.fill"
     static let walking = "figure.walk"
     
-    static let singleRoute    = "point.topleft.down.curvedto.point.bottomright.up"
+    static let singleRoute    = "point.topleft.down.to.point.bottomright.curvepath"
     static let multipleRoutes = "point.3.connected.trianglepath.dotted"
     
     static let routeAnnotationImage  = "flag.checkered.2.crossed"

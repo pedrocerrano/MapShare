@@ -14,12 +14,10 @@ class Session {
         static let sessionCode           = "sessionCode"
         static let organizerDeviceID     = "organizerDeviceID"
         static let members               = "members"
-        static let deletingMembers       = "deletingMembers"
         static let routes                = "routes"
         
         static let sessionCollectionType        = "mapShareSession"
         static let membersCollectionType        = "members"
-        static let deletedMembersCollectionType = "deletedMembers"
         static let routeCollectionType          = "routeCollection"
         static let routeDocumentType            = "routeDocument"
     }
@@ -28,7 +26,6 @@ class Session {
     var sessionCode: String
     var organizerDeviceID: String
     var members: [Member]
-    var deletedMembers: [DeletedMember]
     var routes: [Route]
     
     var sessionDictionaryRepresentation: [String : AnyHashable] {
@@ -39,12 +36,11 @@ class Session {
         ]
     }
     
-    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], deletedMembers: [DeletedMember], routes: [Route]) {
+    init(sessionName: String, sessionCode: String, organizerDeviceID: String, members: [Member], routes: [Route]) {
         self.sessionName       = sessionName
         self.sessionCode       = sessionCode
         self.organizerDeviceID = organizerDeviceID
         self.members           = members
-        self.deletedMembers    = deletedMembers
         self.routes            = routes
     }
     
@@ -62,7 +58,7 @@ extension Session {
             return nil
         }
         
-        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], deletedMembers: [], routes: [])
+        self.init(sessionName: sessionName, sessionCode: sessionCode, organizerDeviceID: organizerDeviceID, members: [], routes: [])
     }
 }
 
