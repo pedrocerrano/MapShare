@@ -118,6 +118,8 @@ extension MapViewModel {
         return CLLocation(latitude: latitude, longitude: longitude)
     }
     
+    
+    // Zoom settings for Members
     func resetZoomForSingleMember(mapView: MKMapView) {
         guard let location = locationManager.location?.coordinate else { return }
         let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 1000.0, longitudinalMeters: 1000.0)
@@ -132,6 +134,7 @@ extension MapViewModel {
         }
     }
     
+    // COMBINED Zoom settings for MEMBERS
     func resetZoomToCenterMembers(forMapView mapView: MKMapView, centerLocationButton: UIButton) {
         guard let singleMember    = UIImage(systemName: SFSymbols.singleMember),
               let multipleMembers = UIImage(systemName: SFSymbols.multipleMembers)
@@ -157,6 +160,8 @@ extension MapViewModel {
         }
     }
     
+    
+    // Zoom settings for Routes
     func resetZoomForSingleMemberRoute(forMapView mapView: MKMapView) {
         guard let currentUser  = mapShareSession?.members.first(where: { $0.deviceID == Constants.Device.deviceID }),
               let userPolyline = mapView.overlays.first(where: { $0.title == currentUser.title })
@@ -171,19 +176,25 @@ extension MapViewModel {
         mapView.setVisibleMapRect(newMapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 200, right: 80), animated: true)
     }
     
+    // COMBINED Zoom settings for ROUTES
     func resetZoomToCenterRoute(forMapView mapView: MKMapView, centerRouteButton: UIButton) {
         guard let singleRoute    = UIImage(systemName: SFSymbols.singleRoute),
               let multipleRoutes = UIImage(systemName: SFSymbols.multipleRoutes)
         else { return }
         
-        if zoomAllRoutes == false {
-            zoomAllRoutes.toggle()
-            resetZoomForAllMembersRoutes(forMapView: mapView)
-            centerRouteButton.setImage(singleRoute, for: .normal)
+        guard let activeMembers = mapShareSession?.members else { return }
+        if activeMembers.count >= 2 {
+            if zoomAllRoutes == false {
+                zoomAllRoutes.toggle()
+                resetZoomForAllMembersRoutes(forMapView: mapView)
+                centerRouteButton.setImage(singleRoute, for: .normal)
+            } else {
+                zoomAllRoutes.toggle()
+                resetZoomForSingleMemberRoute(forMapView: mapView)
+                centerRouteButton.setImage(multipleRoutes, for: .normal)
+            }
         } else {
-            zoomAllRoutes.toggle()
             resetZoomForSingleMemberRoute(forMapView: mapView)
-            centerRouteButton.setImage(multipleRoutes, for: .normal)
         }
     }
 }

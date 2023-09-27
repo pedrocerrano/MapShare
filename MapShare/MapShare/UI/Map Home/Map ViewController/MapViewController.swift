@@ -23,7 +23,6 @@ class MapViewController: UIViewController {
     @IBOutlet weak var centerLocationButton: UIButton!
     @IBOutlet weak var centerRouteButton: UIButton!
     @IBOutlet weak var clearRouteAnnotationsButton: UIButton!
-    @IBOutlet weak var refreshLocationButton: UIButton!
     
     
     // MARK: - Properties
@@ -62,13 +61,6 @@ class MapViewController: UIViewController {
                                                travelMethodButton: travelMethodButton)
     }
     
-    @IBAction func refreshLocationButtonTapped(_ sender: Any) {
-        let memberAnnotations      = mapView.annotations.filter { ($0 is Member) }
-        let memberAnnotationTitles = memberAnnotations.map { $0.title! }
-        print("[BUTTON] MemberAnnotations Titles: \(memberAnnotationTitles)")
-        print("[BUTTON] MemberAnnotations Count:  \(memberAnnotations.count)")
-    }
-    
     
     //MARK: - Functions
     func hideButtons(_ bool: Bool) {
@@ -76,7 +68,6 @@ class MapViewController: UIViewController {
         waitingRoomStackView.isHidden   = bool
         travelMethodButton.isHidden     = bool
         centerRouteButton.isHidden      = bool
-        refreshLocationButton.isHidden  = bool
     }
     
     private func configureUI() {
@@ -88,7 +79,6 @@ class MapViewController: UIViewController {
         }
         UIStyling.styleLabel(for: sessionActivityIndicatorLabel)
         UIStyling.styleFilledButton(for: clearRouteAnnotationsButton, withColor: .systemGray3)
-        UIStyling.styleFilledButton(for: refreshLocationButton, withColor: UIColor.mapShareGreen())
         clearRouteAnnotationsButton.configuration?.baseForegroundColor = .label
     }
     
@@ -146,11 +136,19 @@ class MapViewController: UIViewController {
     func displayDirections(forSession session: Session, withTravelType travelType: MKDirectionsTransportType) {
         for newRouteAnnotation in session.routes {
             mapView.addAnnotation(newRouteAnnotation)
-            print("[DISPLAY DIRECTIONS]: I added \(newRouteAnnotation.title ?? "ABC")")
             
             if newRouteAnnotation.isShowingDirections {
                 getDirections(routeAnnotation: newRouteAnnotation, withTravelType: travelType)
             }
+        }
+    }
+    
+    func displayDirectionsWithTravelType(forSession session: Session) {
+        guard let route = session.routes.first else { return }
+        if route.isDriving {
+            displayDirections(forSession: session, withTravelType: .automobile)
+        } else {
+            displayDirections(forSession: session, withTravelType: .walking)
         }
     }
     

@@ -7,6 +7,7 @@
 
 import UIKit
 import Ably
+import MapKit
 import CoreLocation
 
 extension MapViewController: MapViewModelDelegate {
@@ -22,7 +23,6 @@ extension MapViewController: MapViewModelDelegate {
             sessionActivityIndicatorLabel.textColor = UIColor.mapShareGreen()
             activeMembersStackView.isHidden = false
             waitingRoomStackView.isHidden   = false
-            refreshLocationButton.isHidden  = false
             mapViewModel.updateMemberCounts(forActiveLabel: membersInActiveSessionLabel,
                                                 forWaitingLabel: membersInWaitingRoomLabel)
             
@@ -34,32 +34,33 @@ extension MapViewController: MapViewModelDelegate {
             }
             
             // Adds a Member Annoation after a member isActive
-            mapView.removeAnnotations(memberAnnotations)
-            mapView.addAnnotations(activeMembers)
+            if session.routes.isEmpty {
+                mapView.removeAnnotations(memberAnnotations)
+                mapView.addAnnotations(activeMembers)
+                mapViewModel.resetZoomToCenterMembers(forMapView: mapView, centerLocationButton: centerLocationButton)
+            } else {
+                mapView.removeAnnotations(memberAnnotations)
+                mapView.addAnnotations(activeMembers)
+            }
         }
     }
     
     func changesInRoute() {
-        // Ensures only one route available at a time
+        // ONE ROUTE AT A TIME: Removes Route Annotation after tapping clear button
         let routeAnnotations = mapView.annotations.filter { ($0 is Route) }
         mapView.removeAnnotations(routeAnnotations)
+        // ONE ROUTE AT A TIME: Removes route directions after tapping clear button
         mapView.removeOverlays(mapView.overlays)
         
-        guard let session = mapViewModel.mapShareSession,
-              let route   = session.routes.first
-        else { return }
-        
+        guard let session = mapViewModel.mapShareSession else { return }
         if session.members.first(where: { Constants.Device.deviceID == $0.deviceID && $0.isActive }) != nil {
-            if route.isDriving {
-                displayDirections(forSession: session, withTravelType: .automobile)
-            } else {
-                displayDirections(forSession: session, withTravelType: .walking)
-            }
+            // Displays directions for all Active Members and sets zoom to include all
+            displayDirectionsWithTravelType(forSession: session)
             
-            if !session.routes.isEmpty {
-                centerRouteButton.isHidden = false
-            } else {
+            if session.routes.isEmpty {
                 centerRouteButton.isHidden  = true
+            } else {
+                centerRouteButton.isHidden = false
             }
         }
     }

@@ -16,7 +16,7 @@ extension MapViewModel {
         ablyRealtimeClient.connection.on { state in
             switch state.current {
             case .connected:
-                self.subscribeToAblyChannel(mapShareSession: mapShareSession)
+//                self.subscribeToAblyChannel(mapShareSession: mapShareSession)
                 print("Success connecting to the Ably API!")
             case .failed:
                 NotificationCenter.default.post(name: Constants.Notifications.ablyRealtimeServer, object: nil)

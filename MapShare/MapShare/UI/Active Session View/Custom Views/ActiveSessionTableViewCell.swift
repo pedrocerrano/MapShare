@@ -25,8 +25,8 @@ class ActiveSessionTableViewCell: UITableViewCell {
         isOrganizerLabel.textColor = UIColor.mapShareYellow()
         dotColorLabel.textColor    = Member.convertToColorFromString(string: member.color)
         
+        // Expected Travel Time
         guard let timeAsDouble = member.expectedTravelTime else { return }
-        
         if timeAsDouble > 0 {
             expectedTravelTimeLabel.text     = timeAsString(timeAsDouble, style: .abbreviated)
             expectedTravelTimeLabel.isHidden = false

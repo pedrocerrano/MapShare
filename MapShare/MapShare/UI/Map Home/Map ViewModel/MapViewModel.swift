@@ -69,6 +69,7 @@ class MapViewModel {
             case .success(let loadedMembers):
                 mapShareSession.members = loadedMembers
                 self.delegate?.changesInMembers()
+                self.subscribeToAblyChannel(mapShareSession: mapShareSession)
             case .failure(let error):
                 print(error.localizedDescription, "MapHomeViewModel: Issue with the Members data")
             }
