@@ -9,11 +9,12 @@ import CoreLocation
 
 class LocationPushService: NSObject, CLLocationPushServiceExtension, CLLocationManagerDelegate {
 
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     var completion: (() -> Void)?
     var locationManager: CLLocationManager?
     
-    //MARK: - FUNCTIONS
+    
+    //MARK: - Functions
     func didReceiveLocationPushPayload(_ payload: [String : Any], completion: @escaping () -> Void) {
         self.completion = completion
         self.locationManager = CLLocationManager()
@@ -26,8 +27,8 @@ class LocationPushService: NSObject, CLLocationPushServiceExtension, CLLocationM
         self.completion?()
     }
 
-    // MARK: - CLLocationManagerDelegate methods
     
+    // MARK: - CLLocationManagerDelegate methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        let location = locations.first
        

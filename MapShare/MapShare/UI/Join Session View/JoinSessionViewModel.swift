@@ -14,24 +14,25 @@ protocol JoinSessionViewModelDelegate: AnyObject {
 
 class JoinSessionViewModel {
     
-    //MARK: - PROPERTIES
-    var locationManager = CLLocationManager()
-    var validSessionCode = ""
+    //MARK: - Properties
     var searchedSession: Session?
     var service: FirebaseService
     private weak var delegate: JoinSessionViewModelDelegate?
-    weak var mapHomeDelegate: MapHomeViewController?
+    weak var mapDelegate: MapViewController?
     
-    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, mapHomeDelegate: MapHomeViewController) {
-        self.service         = service
-        self.delegate        = delegate
-        self.mapHomeDelegate = mapHomeDelegate
+    var locationManager  = CLLocationManager()
+    var validSessionCode = ""
+    
+    init(service: FirebaseService = FirebaseService(), delegate: JoinSessionViewModelDelegate, mapDelegate: MapViewController) {
+        self.service     = service
+        self.delegate    = delegate
+        self.mapDelegate = mapDelegate
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     func searchFirebase(with code: String) {
-        service.searchForActiveSessionOnFirestore(withCode: code) { result in
+        service.firestoreSearchForActiveSession(withCode: code) { result in
             switch result {
             case .success(let searchedSession):
                 self.delegate?.sessionExists()
@@ -45,27 +46,21 @@ class JoinSessionViewModel {
     
     func addNewMemberToActiveSession(withCode validCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, memberLatitude: Double, memberLongitude: Double) {
         guard let memberDeviceID = Constants.Device.deviceID else { return }
+        let newMemberCoordinates = CLLocationCoordinate2D(latitude: memberLatitude, longitude: memberLongitude)
         let newMember            = Member(firstName: firstName,
                                           lastName: lastName,
-                                          screenName: screenName,
-                                          mapMarkerColor: markerColor,
-                                          memberDeviceID: memberDeviceID,
+                                          color: markerColor,
+                                          deviceID: memberDeviceID,
                                           isOrganizer: false,
-                                          isActive: false)
-        
-        let newMemberCoordinates = CLLocationCoordinate2D(latitude: memberLatitude, longitude: memberLongitude)
-        let newMemberAnnotation  = MemberAnnotation(deviceID: memberDeviceID,
-                                                    coordinate: newMemberCoordinates,
-                                                    title: screenName,
-                                                    color: newMember.mapMarkerColor,
-                                                    isShowing: false)
+                                          isActive: false,
+                                          coordinate: newMemberCoordinates,
+                                          title: screenName)
         
         searchedSession?.members.append(newMember)
-        searchedSession?.memberAnnotations.append(newMemberAnnotation)
         
         guard let searchedSession else { return }
-        service.joinNewMemberToActiveSessionOnFirestore(withCode: validCode, withMember: newMember, withMemberAnnotation: newMemberAnnotation) {
-            self.mapHomeDelegate?.delegateUpdateWithSession(session: searchedSession)
+        service.firestoreJoinNewMember(withCode: validCode, withMember: newMember) {
+            self.mapDelegate?.mapViewModel.delegateUpdateWithSession(session: searchedSession)
         }
     }
 }

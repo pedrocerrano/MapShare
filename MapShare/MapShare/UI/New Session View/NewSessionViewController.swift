@@ -9,7 +9,7 @@ import UIKit
 
 class NewSessionViewController: UIViewController {
     
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var newMapShareButton: UIButton!
     @IBOutlet weak var mapShareLogoImageView: UIImageView!
     @IBOutlet weak var joinMapShareButton: UIButton!
@@ -21,7 +21,7 @@ class NewSessionViewController: UIViewController {
     @IBOutlet weak var userColorPopUpButton: UIButton!
     @IBOutlet weak var createSessionButton: UIButton!
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
@@ -29,7 +29,7 @@ class NewSessionViewController: UIViewController {
     var newSessionViewModel: NewSessionViewModel!
   
     
-    //MARK: - LIFECYCLE
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSheetPresentationController()
@@ -38,7 +38,7 @@ class NewSessionViewController: UIViewController {
     }
     
     
-    //MARK: - IB ACTIONS
+    //MARK: - IB Actions
     @IBAction func mapShareButtonTapped(_ sender: Any) {
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[2].identifier
@@ -58,9 +58,11 @@ class NewSessionViewController: UIViewController {
               let firstName          = firstNameTextField.text,
               let lastName           = lastNameTextField.text,
               let screenName         = screenNameTextField.text,
-              let markerColor        = userColorPopUpButton.backgroundColor?.convertColorToString(),
+              let markerColor        = userColorPopUpButton.backgroundColor,
               let organizerLatitude  = newSessionViewModel.locationManager.location?.coordinate.latitude,
-              let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude else { return }
+              let organizerLongitude = newSessionViewModel.locationManager.location?.coordinate.longitude
+        else { return }
+    
         var optionalScreenName = ""
         if screenName.isEmpty {
             optionalScreenName = firstName
@@ -69,15 +71,22 @@ class NewSessionViewController: UIViewController {
         }
         
         if sessionName.isEmpty {
-            presentSessionNeedsNameAlert()
+            present(AlertControllers.needSessionName(), animated: true)
         } else if firstName.isEmpty {
-            presentNeedsFirstNameAlert()
+            present(AlertControllers.needFirstName(), animated: true)
         } else if lastName.isEmpty {
-            presentNeedsLastNameAlert()
+            present(AlertControllers.needLastName(), animated: true)
         } else if userColorPopUpButton.titleLabel?.text == "↓" {
-            presentChooseColorAlert()
+            present(AlertControllers.needColorChoice(), animated: true)
         } else {
-            newSessionViewModel.createNewMapShareSession(sessionName: sessionName, sessionCode: newSessionViewModel.sessionCode, firstName: firstName, lastName: lastName, screenName: optionalScreenName, markerColor: markerColor, organizerLatitude: organizerLatitude, organizerLongitude: organizerLongitude)
+            newSessionViewModel.createNewMapShareSession(sessionName: sessionName,
+                                                         sessionCode: newSessionViewModel.sessionCode,
+                                                         firstName: firstName,
+                                                         lastName: lastName,
+                                                         screenName: optionalScreenName,
+                                                         markerColor: Member.convertColorToString(markerColor),
+                                                         organizerLatitude: organizerLatitude,
+                                                         organizerLongitude: organizerLongitude)
             [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
                 if let textField {
                     textField.resignFirstResponder()
@@ -87,13 +96,13 @@ class NewSessionViewController: UIViewController {
             sheetPresentationController.animateChanges {
                 sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[0].identifier
             }
-            PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-            UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
+            PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .off)
+            userColorPopUpButton.backgroundColor = UIColor.dodgerBlue()
         }
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
         sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
@@ -102,64 +111,23 @@ class NewSessionViewController: UIViewController {
     }
     
     private func configureUI() {
-        UIElements.configureFilledStyleButtonAttributes(for: newMapShareButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureImageView(forImageView: mapShareLogoImageView)
-        UIElements.configureFilledStyleButtonAttributes(for: joinMapShareButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureTextFieldUI(forTextField: sessionNameTextField)
-        UIElements.configureTextFieldUI(forTextField: firstNameTextField)
-        UIElements.configureTextFieldUI(forTextField: lastNameTextField)
-        UIElements.configureTextFieldUI(forTextField: screenNameTextField)
-        PopUpButton.setUpPopUpButton(for: userColorPopUpButton)
-        UIElements.configureTintedStylePopUpButton(for: userColorPopUpButton)
-        UIElements.configureFilledStyleButtonAttributes(for: createSessionButton, withColor: UIElements.Color.dodgerBlue)
+        UIStyling.styleLogo(forImageView: mapShareLogoImageView)
+        [newMapShareButton, joinMapShareButton, createSessionButton].forEach { button in
+            if let button { UIStyling.styleFilledButton(for: button, withColor: UIColor.dodgerBlue()) }
+        }
+        [sessionNameTextField, firstNameTextField, lastNameTextField, screenNameTextField].forEach { textField in
+            if let textField { UIStyling.styleTextField(forTextField: textField) }
+        }
+        PopUpButton.setUpPopUpButton(for: userColorPopUpButton, withState: .on)
+        UIStyling.stylePopUpButton(for: userColorPopUpButton)
     }
     
     private func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(alertLocationAccessNeeded), name: Constants.Notifications.locationAccessNeeded, object: nil)
     }
     
-    
-    //MARK: - ALERTS
     @objc func alertLocationAccessNeeded() {
-        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(title: "Permission Has Been Denied Or Restricted",
-                                      message: "In order to utilize MapShare, we need access to your location.",
-                                      preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let goToSettingsAction = UIAlertAction(title: "Go To Settings", style: .default) { _ in
-            UIApplication.shared.open(settingsAppURL)
-        }
-        alert.addAction(dismissAction)
-        alert.addAction(goToSettingsAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func presentSessionNeedsNameAlert() {
-        let emptySessionNameAlertController = UIAlertController(title: "No Name Given", message: "Please name this MapShare session.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Will do!", style: .cancel)
-        emptySessionNameAlertController.addAction(dismissAction)
-        present(emptySessionNameAlertController, animated: true)
-    }
-    
-    private func presentNeedsFirstNameAlert() {
-        let emptyFirstNameAlertController = UIAlertController(title: "Need First Name", message: "Please share your first name for the MapShare members to identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyFirstNameAlertController.addAction(dismissAction)
-        present(emptyFirstNameAlertController, animated: true)
-    }
-    
-    private func presentNeedsLastNameAlert() {
-        let emptyLastNameAlertController = UIAlertController(title: "Need Last Name", message: "Please share your last name for the MapShare members to identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        emptyLastNameAlertController.addAction(dismissAction)
-        present(emptyLastNameAlertController, animated: true)
-    }
-    
-    private func presentChooseColorAlert() {
-        let noColorSelectedAlertController = UIAlertController(title: "Select Color", message: "Please select your desired color so the MapShare members can identify you.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Okay", style: .cancel)
-        noColorSelectedAlertController.addAction(dismissAction)
-        present(noColorSelectedAlertController, animated: true)
+        present(AlertControllers.needLocationAccess(), animated: true, completion: nil)
     }
     
     
@@ -167,17 +135,19 @@ class NewSessionViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toActiveSessionVC" {
             guard let destinationVC = segue.destination as? ActiveSessionViewController,
-                  let mapHomeDelegate = newSessionViewModel.mapHomeDelegate,
-                  let session = newSessionViewModel.session else { return }
-            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self, mapHomeDelegate: mapHomeDelegate)
+                  let mapDelegate   = newSessionViewModel.mapDelegate,
+                  let session       = newSessionViewModel.session else { return }
+            destinationVC.activeSessionViewModel = ActiveSessionViewModel(session: session, delegate: destinationVC.self, mapDelegate: mapDelegate)
         } else if segue.identifier == "toJoinSessionVC" {
             guard let destinationVC = segue.destination as? JoinSessionViewController,
-                  let delegate = newSessionViewModel.mapHomeDelegate else { return }
-            destinationVC.joinSessionViewModel = JoinSessionViewModel(delegate: destinationVC, mapHomeDelegate: delegate)
+                  let delegate      = newSessionViewModel.mapDelegate else { return }
+            destinationVC.joinSessionViewModel = JoinSessionViewModel(delegate: destinationVC, mapDelegate: delegate)
         }
     }
 } //: CLASS
 
+
+//MARK: - TextFieldDelegate
 extension NewSessionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {

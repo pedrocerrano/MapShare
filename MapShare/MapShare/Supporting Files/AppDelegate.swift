@@ -8,51 +8,16 @@
 import UIKit
 import FirebaseCore
 import FirebaseFirestore
-import FirebaseMessaging
 import UserNotifications
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
-        Messaging.messaging().delegate = self
-        
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            
-            guard success else { return }
-            print("Success in APNs registry")
-        }
-
-        application.registerForRemoteNotifications()
         
         return true
-    }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        messaging.token { token, error in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            
-            guard let token else { return }
-            print("Firebase token: \(token)")
-        }
-    }
-    
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        #warning("self.sendDeviceTokenToServer(data: deviceToken)")
-    }
-    
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        // Try again later
     }
     
 

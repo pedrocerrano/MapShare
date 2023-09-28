@@ -9,7 +9,7 @@ import UIKit
 
 class ActiveSessionViewController: UIViewController {
 
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var sessionNameLabel: UILabel!
     @IBOutlet weak var sessionCodeLabel: UILabel!
     @IBOutlet weak var sessionControlButton: UIButton!
@@ -17,7 +17,7 @@ class ActiveSessionViewController: UIViewController {
     @IBOutlet weak var inviteMembersButton: UIButton!
     
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     override var sheetPresentationController: UISheetPresentationController {
         presentationController as! UISheetPresentationController
     }
@@ -25,14 +25,15 @@ class ActiveSessionViewController: UIViewController {
     var activeSessionViewModel: ActiveSessionViewModel!
     
     
-    //MARK: - LIFECYCLE
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         activeSessionTableView.dataSource = self
         activeSessionTableView.delegate   = self
         configureUI()
-        configureListeners()
+        activeSessionViewModel.configureListeners()
         configureSheetPresentationController()
+        setupNotifications()
         inviteMembersButton.addTarget(self, action: #selector(presentShareSheet), for: .touchUpInside)
         sheetPresentationController.animateChanges {
             sheetPresentationController.selectedDetentIdentifier = sheetPresentationController.detents[1].identifier
@@ -40,22 +41,21 @@ class ActiveSessionViewController: UIViewController {
     }
     
     
-    //MARK: - IB ACTIONS
+    //MARK: - IB Actions
     @IBAction func sessionControlButtonTapped(_ sender: Any) {
         if Constants.Device.deviceID == activeSessionViewModel.session.organizerDeviceID {
-            organizerEndedActiveSessionAlert()
+            organizerEndingSessionAlert()
         } else {
-            memberExitsActiveSessionAlert()
+            memberExitsAlert()
         }
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     @objc func presentShareSheet(_ sender: UIButton) {
-        let session = activeSessionViewModel.session
-        guard let organizer = session.members.filter ({ $0.isOrganizer }).first else { return }
-        let shareMessage = "\(organizer.screenName) is inviting you to a MapShare Session! Join with code: \(session.sessionCode)"
-        let shareSheetVC = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
+        guard let organizer = activeSessionViewModel.session.members.filter ({ $0.isOrganizer }).first else { return }
+        let shareMessage    = "\(String(describing: organizer.title)) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
+        let shareSheetVC    = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
         shareSheetVC.popoverPresentationController?.sourceView = sender
         shareSheetVC.popoverPresentationController?.sourceRect = sender.frame
         present(shareSheetVC, animated: true)
@@ -66,8 +66,8 @@ class ActiveSessionViewController: UIViewController {
         sessionNameLabel.text = session.sessionName
         sessionCodeLabel.text = session.sessionCode
         
-        UIElements.configureFilledStyleButtonAttributes(for: inviteMembersButton, withColor: UIElements.Color.dodgerBlue)
-        UIElements.configureCircleButtonAttributes(for: sessionControlButton, backgroundColor: .systemRed, tintColor: .white)
+        UIStyling.styleFilledButton(for: inviteMembersButton, withColor: UIColor.dodgerBlue())
+        UIStyling.styleCircleButton(for: sessionControlButton, backgroundColor: .systemRed, tintColor: .white)
         if let _ = session.members.filter ({ $0.isOrganizer }).first {
             inviteMembersButton.isHidden = false
         } else {
@@ -77,59 +77,57 @@ class ActiveSessionViewController: UIViewController {
     
     private func configureSheetPresentationController() {
         let screenHeight = view.frame.height
-        sheetPresentationController.detents = Detents.buildDetent(screenHeight: screenHeight)
-        sheetPresentationController.prefersGrabberVisible = true
+        sheetPresentationController.detents                         = Detents.buildDetent(screenHeight: screenHeight)
+        sheetPresentationController.prefersGrabberVisible           = true
         sheetPresentationController.largestUndimmedDetentIdentifier = sheetPresentationController.detents[2].identifier
         sheetPresentationController.presentedViewController.isModalInPresentation = true
     }
-
-    private func configureListeners() {
-        activeSessionViewModel.updateSession()
-        activeSessionViewModel.updateMembers()
-        activeSessionViewModel.updateRouteAnnotations()
-        activeSessionViewModel.updateMemberAnnotations()
+    
+    
+    //MARK: - Alerts
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(ablyRealtimeServerIssue), name: Constants.Notifications.locationAccessNeeded, object: nil)
     }
     
-    private func removeListeners() {
-        activeSessionViewModel.sessionListener?.remove()
-        activeSessionViewModel.memberListener?.remove()
-        activeSessionViewModel.routesListener?.remove()
-        activeSessionViewModel.memberAnnotationsListener?.remove()
+    @objc func ablyRealtimeServerIssue() {
+        present(AlertControllers.ablyRealtimeServerIssue(), animated: true, completion: nil)
     }
     
-    
-    //MARK: - ALERTS
-    private func organizerEndedActiveSessionAlert() {
-        let organizerEndedActiveSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
+    private func organizerEndingSessionAlert() {
+        let organizerEndingSessionAlertController = UIAlertController(title: "End Session?", message: "Press 'Confirm' to end MapShare for all members.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            self.activeSessionViewModel.deleteSession()
-            self.removeListeners()
-            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.activeSessionViewModel.deleteSessionAndMemberDocuments()
+            self.activeSessionViewModel.removeListeners()
+            self.activeSessionViewModel.mapDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
         }
-        organizerEndedActiveSessionAlertController.addAction(dismissAction)
-        organizerEndedActiveSessionAlertController.addAction(confirmAction)
-        present(organizerEndedActiveSessionAlertController, animated: true)
+        organizerEndingSessionAlertController.addAction(dismissAction)
+        organizerEndingSessionAlertController.addAction(confirmAction)
+        present(organizerEndingSessionAlertController, animated: true)
     }
     
-    private func memberExitsActiveSessionAlert() {
-        let memberExitsActiveSessionAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
+    private func memberExitsAlert() {
+        let memberExitsAlertController = UIAlertController(title: "Exit Session?", message: "Press 'Confirm' to exit MapShare.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { alert in
-            guard let member = self.activeSessionViewModel.session.members.filter({ $0.memberDeviceID == Constants.Device.deviceID }).first else { return }
-            self.activeSessionViewModel.deleteMemberFromActiveSession(fromSession: self.activeSessionViewModel.session, forMember: member)
-            self.removeListeners()
-            self.activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
+            guard let self   = self,
+                  let member = self.activeSessionViewModel.session.members.filter({ $0.deviceID == Constants.Device.deviceID }).first
+            else { return }
+            
+            self.activeSessionViewModel.deleteMemberSelf(fromSession: self.activeSessionViewModel.session, forMember: member)
+            self.activeSessionViewModel.removeListeners()
+            self.activeSessionViewModel.mapDelegate?.noSessionActive()
             self.sheetPresentationController.animateChanges {
                 self.sheetPresentationController.dismissalTransitionWillBegin()
             }
         }
-        memberExitsActiveSessionAlertController.addAction(dismissAction)
-        memberExitsActiveSessionAlertController.addAction(confirmAction)
-        present(memberExitsActiveSessionAlertController, animated: true)
+        memberExitsAlertController.addAction(dismissAction)
+        memberExitsAlertController.addAction(confirmAction)
+        present(memberExitsAlertController, animated: true)
     }
 } //: CLASS
 
@@ -161,18 +159,16 @@ extension ActiveSessionViewController: UITableViewDataSource, UITableViewDelegat
             guard let activeCell = tableView.dequeueReusableCell(withIdentifier: "activeMemberCell", for: indexPath) as? ActiveSessionTableViewCell else { return UITableViewCell() }
             
             let activeSession = activeSessionViewModel.session
-            let member        = activeSession.members.filter { $0.isActive }[indexPath.row]
+            let member        = activeSession.members.filter({ $0.isActive })[indexPath.row]
             activeCell.configureCell(forSession: activeSession, with: member)
             
             return activeCell
         case 1:
+            guard let waitingRoomCell = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
+
             let activeSession = activeSessionViewModel.session
             let member        = activeSession.members.filter { !$0.isActive }[indexPath.row]
-            
-            guard let memberAnnotation = activeSession.memberAnnotations.filter({ $0.deviceID == member.memberDeviceID }).first,
-                  let waitingRoomCell  = tableView.dequeueReusableCell(withIdentifier: "waitingMemberCell", for: indexPath) as? WaitingRoomTableViewCell else { return UITableViewCell() }
-            
-            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, withMemberAnnotation: memberAnnotation, delegate: self)
+            waitingRoomCell.configureWaitingRoomCell(forSession: activeSession, withMember: member, delegate: self)
             
             return waitingRoomCell
         default:
@@ -192,15 +188,15 @@ extension ActiveSessionViewController: ActiveSessionViewModelDelegate {
     
     func sessionReturnedNil() {
         sheetPresentationController.dismissalTransitionWillBegin()
-        activeSessionViewModel.mapHomeDelegate?.noSessionActive()
+        activeSessionViewModel.mapDelegate?.noSessionActive()
     }
 } //: ViewModelDelegate
 
 
 //MARK: - EXT: WaitingRoomCellDelegate
 extension ActiveSessionViewController: WaitingRoomTableViewCellDelegate {
-    func admitMember(forSession session: Session, forMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation) {
-        self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member, withMemberAnnotation: memberAnnotation)
+    func admitMember(forSession session: Session, forMember member: Member) {
+        self.activeSessionViewModel.admitNewMember(forSession: session, withMember: member)
     }
         
     func denyMember(fromSession session: Session, forMember member: Member) {

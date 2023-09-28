@@ -8,65 +8,66 @@
 import UIKit
 
 protocol WaitingRoomTableViewCellDelegate: AnyObject {
-    func admitMember(forSession session: Session, forMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation)
+    func admitMember(forSession session: Session, forMember member: Member)
     func denyMember(fromSession session: Session, forMember member: Member)
 }
 
+
 class WaitingRoomTableViewCell: UITableViewCell {
 
-    //MARK: - OUTLETS
+    //MARK: - Outlets
     @IBOutlet weak var waitingRoomMemberNameLabel: UILabel!
     @IBOutlet weak var waitingRoomScreenNameLabel: UILabel!
     @IBOutlet weak var denyNewMemberButton: UIButton!
     @IBOutlet weak var admitNewMemberButton: UIButton!
 
     
-    //MARK: - PROPERTIES
+    //MARK: - Properties
     var session: Session?
     var member: Member?
-    var memberAnnotation: MemberAnnotation?
+    
     weak var delegate: WaitingRoomTableViewCellDelegate?
     
     override func prepareForReuse() {
         super.prepareForReuse()
         session          = nil
         member           = nil
-        memberAnnotation = nil
         delegate         = nil
     }
     
-    //MARK: - IB ACTIONS
+    
+    //MARK: - IB Actions
     @IBAction func admitNewMemberButtonTapped(_ sender: Any) {
-        guard let session          = session,
-              let member           = member,
-              let memberAnnotation = memberAnnotation else { return }
-        delegate?.admitMember(forSession: session, forMember: member, withMemberAnnotation: memberAnnotation)
+        guard let session = session,
+              let member  = member
+        else { return }
+        
+        delegate?.admitMember(forSession: session, forMember: member)
     }
     
     @IBAction func denyNewMemberButtonTapped(_ sender: Any) {
         guard let member = member,
-              let session = session else { return }
+              let session = session
+        else { return }
+        
         delegate?.denyMember(fromSession: session, forMember: member)
     }
         
     
-    //MARK: - FUNCTIONS
-    func configureWaitingRoomCell(forSession session: Session, withMember member: Member, withMemberAnnotation memberAnnotation: MemberAnnotation , delegate: WaitingRoomTableViewCellDelegate) {
+    //MARK: - Functions
+    func configureWaitingRoomCell(forSession session: Session, withMember member: Member, delegate: WaitingRoomTableViewCellDelegate) {
         waitingRoomMemberNameLabel.text = "\(member.firstName) \(member.lastName)"
-        waitingRoomScreenNameLabel.text = member.screenName
+        waitingRoomScreenNameLabel.text = member.title
         
-        self.session          = session
-        self.member           = member
-        self.memberAnnotation = memberAnnotation
-        self.delegate         = delegate
+        self.session  = session
+        self.member   = member
+        self.delegate = delegate
         
-        UIElements.configureWaitingRoomButton(for: admitNewMemberButton, withColor: UIElements.Color.mapShareGreen)
-        UIElements.configureWaitingRoomButton(for: denyNewMemberButton, withColor: UIElements.Color.mapShareRed)
+        UIStyling.styleWaitingRoomButton(for: admitNewMemberButton, withColor: UIColor.mapShareGreen())
+        UIStyling.styleWaitingRoomButton(for: denyNewMemberButton, withColor: UIColor.mapShareRed())
         if Constants.Device.deviceID != session.organizerDeviceID {
             admitNewMemberButton.isHidden = true
             denyNewMemberButton.isHidden  = true
         }
-
     }
-    
 } //: CLASS

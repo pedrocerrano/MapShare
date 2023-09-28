@@ -8,9 +8,9 @@
 import MapKit
 import CoreLocation
 
-class RouteAnnotation: NSObject, MKAnnotation {
+class Route: NSObject, MKAnnotation {
     
-    enum RouteAnnotationKey {
+    enum RouteKey {
         static let routeLatitude       = "routeLatitude"
         static let routeLongitude      = "routeLongitude"
         static let title               = "title"
@@ -23,13 +23,13 @@ class RouteAnnotation: NSObject, MKAnnotation {
     var isShowingDirections: Bool
     var isDriving: Bool
     
-    var routeAnnotationDictionaryRepresentation: [String : AnyHashable] {
+    var routeDictionaryRepresentation: [String : AnyHashable] {
         [
-            RouteAnnotationKey.routeLatitude       : self.coordinate.latitude,
-            RouteAnnotationKey.routeLongitude      : self.coordinate.longitude,
-            RouteAnnotationKey.title               : self.title,
-            RouteAnnotationKey.isShowingDirections : self.isShowingDirections,
-            RouteAnnotationKey.isDriving           : self.isDriving
+            RouteKey.routeLatitude       : self.coordinate.latitude,
+            RouteKey.routeLongitude      : self.coordinate.longitude,
+            RouteKey.title               : self.title,
+            RouteKey.isShowingDirections : self.isShowingDirections,
+            RouteKey.isDriving           : self.isDriving
         ]
     }
     
@@ -43,17 +43,18 @@ class RouteAnnotation: NSObject, MKAnnotation {
 
 
 //MARK: - EXT: Convenience Initializer
-extension RouteAnnotation {
-    convenience init?(fromRouteAnnotationDictionary routeAnnotationDictionary: [String : Any]) {
-        guard let routeLatitude       = routeAnnotationDictionary[RouteAnnotationKey.routeLatitude] as? Double,
-              let routeLongitude      = routeAnnotationDictionary[RouteAnnotationKey.routeLongitude] as? Double,
-              let isShowingDirections = routeAnnotationDictionary[RouteAnnotationKey.isShowingDirections] as? Bool,
-              let isDriving           = routeAnnotationDictionary[RouteAnnotationKey.isDriving] as? Bool else {
+extension Route {
+    convenience init?(fromRouteDictionary routeDictionary: [String : Any]) {
+        guard let routeLatitude       = routeDictionary[RouteKey.routeLatitude] as? Double,
+              let routeLongitude      = routeDictionary[RouteKey.routeLongitude] as? Double,
+              let isShowingDirections = routeDictionary[RouteKey.isShowingDirections] as? Bool,
+              let isDriving           = routeDictionary[RouteKey.isDriving] as? Bool
+        else {
             print("Failed to initialize RouteAnnotation model object")
             return nil
         }
         
-        let title = routeAnnotationDictionary[RouteAnnotationKey.title] as? String ?? "Route"
+        let title = routeDictionary[RouteKey.title] as? String ?? "Route"
         
         self.init(coordinate: CLLocationCoordinate2D(latitude: routeLatitude, longitude: routeLongitude), title: title, isShowingDirections: isShowingDirections, isDriving: isDriving)
     }

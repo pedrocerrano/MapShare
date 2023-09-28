@@ -9,50 +9,57 @@ import MapKit
 
 class NewSessionViewModel {
     
-    //MARK: - PROPERTIES
-    var locationManager = CLLocationManager()
+    //MARK: - Properties
     var session: Session?
     let service: FirebaseService
-    weak var mapHomeDelegate: MapHomeViewController?
-    var sessionCode = String.generateRandomCode()
+    weak var mapDelegate: MapViewController?
     
-    init(service: FirebaseService = FirebaseService(), mapHomeDelegate: MapHomeViewController) {
-        self.service         = service
-        self.mapHomeDelegate = mapHomeDelegate
+    var locationManager = CLLocationManager()
+    var sessionCode     = ""
+    
+    init(service: FirebaseService = FirebaseService(), mapDelegate: MapViewController) {
+        self.service     = service
+        self.mapDelegate = mapDelegate
     }
     
     
-    //MARK: - FUNCTIONS
+    //MARK: - Functions
     func createNewMapShareSession(sessionName: String, sessionCode: String, firstName: String, lastName: String, screenName: String, markerColor: String, organizerLatitude: Double, organizerLongitude: Double) {
         guard let organizerDeviceID = Constants.Device.deviceID else { return }
+        let organizerCoordinates    = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
         let organizer               = Member(firstName: firstName,
                                              lastName: lastName,
-                                             screenName: screenName,
-                                             mapMarkerColor: markerColor,
-                                             memberDeviceID: organizerDeviceID,
+                                             color: markerColor,
+                                             deviceID: organizerDeviceID,
                                              isOrganizer: true,
-                                             isActive: true)
-        
-        let organizerCoordinates = CLLocationCoordinate2D(latitude: organizerLatitude, longitude: organizerLongitude)
-        let organizerAnnotation = MemberAnnotation(deviceID: organizerDeviceID,
-                                                   coordinate: organizerCoordinates,
-                                                   title: screenName,
-                                                   color: markerColor,
-                                                   isShowing: true)
+                                             isActive: true,
+                                             coordinate: organizerCoordinates,
+                                             title: screenName)
         
         let newSession  = Session(sessionName: sessionName,
-                                  sessionCode: sessionCode,
+                                  sessionCode: generateRandomCode(sessionCode),
                                   organizerDeviceID: organizerDeviceID,
                                   members: [organizer],
-                                  routeAnnotations: [],
-                                  memberAnnotations: [organizerAnnotation],
-                                  isActive: true)
+                                  routes: [])
         
         session = newSession
-        service.saveNewSessionToFirestore(newSession: newSession, withMember: organizer, withMemberAnnotation: organizerAnnotation) {
-            self.mapHomeDelegate?.delegateUpdateWithSession(session: newSession)
+        service.firestoreSaveNewSession(newSession: newSession, withMember: organizer) {
+            self.mapDelegate?.mapViewModel.delegateUpdateWithSession(session: newSession)
         }
         
-        self.sessionCode = String.generateRandomCode()
+        self.sessionCode = ""
+    }
+    
+    private func generateRandomCode(_ sessionCode: String) -> String {
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        var randomString = sessionCode
+        
+        for _ in 0..<6 {
+            let randomIndex = Int(arc4random_uniform(UInt32(characters.count)))
+            let character = characters[characters.index(characters.startIndex, offsetBy: randomIndex)]
+            randomString += String(character)
+        }
+        
+        return randomString
     }
 }
