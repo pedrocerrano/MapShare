@@ -54,7 +54,7 @@ class ActiveSessionViewController: UIViewController {
     //MARK: - Functions
     @objc func presentShareSheet(_ sender: UIButton) {
         guard let organizer = activeSessionViewModel.session.members.filter ({ $0.isOrganizer }).first else { return }
-        let shareMessage    = "\(String(describing: organizer.title)) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
+        let shareMessage    = "\(organizer.firstName) \(organizer.lastName) is inviting you to a MapShare Session! Join with code: \(activeSessionViewModel.session.sessionCode)"
         let shareSheetVC    = UIActivityViewController(activityItems: [shareMessage], applicationActivities: nil)
         shareSheetVC.popoverPresentationController?.sourceView = sender
         shareSheetVC.popoverPresentationController?.sourceRect = sender.frame
